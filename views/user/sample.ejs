@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Styles4U</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+
+    <!-- Favicon -->
+    <link href="images/fashion-heart-like-svgrepo-com.svg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body style="background-color: #F7F7F7;">
+  <div class="container py-5">
+    <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">Category </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+<%cats.forEach(cat=>{%>
+<%if(cat.sub.length===0){%>
+            <li><a class="dropdown-item" href="#"><%=cat.name%></a></li>
+<%}else{%>
+<li class="dropdown dropend">
+<a class="dropdown-item dropdown-toggle" href="#" id="multilevelDropdownMenu1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%=cat.name%></a>
+                        <ul class="dropdown-menu" aria-labelledby="multilevelDropdownMenu1">
+<%cat.sub.forEach(s=>{%>
+                    <li><a class="dropdown-item" href="#"><%=s%></a></li>
+                        <%})%>
+                        </ul>
+                    </li>
+                 <%}%>
+<%})%> 
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<%- include ('../layouts/userfooter.ejs') %>   

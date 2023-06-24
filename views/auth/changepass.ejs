@@ -1,0 +1,54 @@
+<%- include ('../layouts/userheader.ejs') %>
+<div class="container shadow p-3 mb-5 bg-white rounded col-lg-5 col-8 mt-5">
+  <div class="mb-5 col-12">
+    <br>
+    <br>
+      <h4  class="text-center text-normal">Reset password</h4>
+      <p class="text-center" style="font-size: 15px;">You cannot enter your old password</p>
+    </div>
+    <br>
+
+    <div class="ml-auto mr-auto col-12 col-lg-11">
+<form action="/forgot-password/change" method="post"  id="form1">
+    <!-- Username input -->
+    <div class="form-outline mb-4">
+      <label class="form-label" for="password">Enter new password</label>
+      <div class="input-group form-outline mb-4">
+        <input type="password" id="password" name="password" class="form-control">
+        <div class="input-group-append" id="password_error" style="display: none;">
+            <span class="input-group-text bg-transparent text-primary py-0">
+              <button type="button" class="btn btn-light btn-sm py-0" data-toggle="tooltip" data-placement="right" title="Password shoul have at least 8 characters, a digit and a letter" style="height: 36px;">
+                <i class="fas fa-exclamation-circle" style="color: rgb(255, 162, 0); font-size: 15px; line-height: 0px; "></i>
+              </button>
+            </span>
+            </div>
+            </div>
+  
+    </div>
+    <div class="form-outline mb-4">
+      <label class="form-label" for="re_password">Confirm new password</label>
+      <div class="input-group form-outline mb-4">
+        <input type="password" id="re_password" name="re_password" class="form-control">
+        <div class="input-group-append" id="password_error" style="display: none;">
+            <span class="input-group-text bg-transparent text-primary py-0">
+              <button type="button" class="btn btn-light btn-sm py-0" data-toggle="tooltip" data-placement="right" title="The password do not match with previous input" style="height: 36px;">
+                <i class="fas fa-exclamation-circle" style="color: rgb(255, 162, 0); font-size: 15px; line-height: 0px; "></i>
+              </button>
+            </span>
+            </div>
+            </div>
+  
+    </div>
+    <br>
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary btn-block mb-4 col-lg-3">Send</button>
+      </div>
+    </div>
+
+  </form>
+  <br>
+  <br>
+</div>
+</div>
+  
+<%- include ('../layouts/userfooter.ejs') %>

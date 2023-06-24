@@ -1,0 +1,60 @@
+<%- include ('../layouts/adminheader.ejs') %>
+
+  <div style="padding: 20px 20px 20px 20px;">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>sl.no</th>
+          <th>Name</th>
+          <th>Main Category</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <% for(i=0;i<cat.length;i++){ %>
+        <tr>
+          <td>
+            <%=i+1%>
+          </td>
+            <td>
+              <%=cat[i].sub%>
+            </td>
+          <td>
+            <%=cat[i].name %>
+          </td>
+                <td>
+                  <a href="/admin/edit-category?id=<%=cat[i]._id%>" class="btn btn-primary">Edit category</a>
+                </td>
+        </tr>
+        <%}%>
+    </table>
+  </div>
+  <div class="col-12 pb-1">
+    <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+              <% if (page > 1) { %>
+                <li class="page-item">
+                  <a class="page-link" href="/admin/categories?page=<%= page - 1 %>">&laquo; Previous</a>
+                </li>
+              <% } %>
+          
+              <% for (let i = 1; i <= totalPages; i++) { %>
+                <% if (i === page) { %>
+                  <li class="page-item active">
+                    <a class="page-link" href="/admin/categories?page=<%= i %>"><%= i %></a>
+                  </li>
+                <% } else { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/admin/categories?page=<%= i %>"><%= i %></a>
+                  </li>
+                <% } %>
+              <% } %>
+          
+              <% if (page < totalPages) { %>
+                <li class="page-item">
+                  <a class="page-link" href="/admin/categories?page=<%= page + 1 %>">Next &raquo;</a>
+                </li>
+              <% } %>
+            </ul>
+          </nav>
+          </div>
+  <%- include ('../layouts/adminfooter.ejs') %>

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: true,
   },
@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  profile: {
+    type: String,
+    default: "",
+  },
   isAdmin: {
     type: Boolean,
     default: false,
@@ -20,6 +24,18 @@ const userSchema = new mongoose.Schema({
   access: {
     type: Boolean,
     default: true,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+  createdDate: {
+    type: Date,
+    default: Date.now(),
+  },
+  totalOrders: {
+    type: Number,
+    default: 0,
   },
 });
 
@@ -31,5 +47,4 @@ const userSchema = new mongoose.Schema({
 //     virtuals: true,
 // });
 
-module.exports= mongoose.model("users", userSchema);
-
+module.exports = mongoose.model("users", userSchema);

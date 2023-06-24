@@ -83,6 +83,7 @@
         }
     });
 
+    
 
     // Product Quantity
     $('.quantity button').on('click', function () {
@@ -99,6 +100,10 @@
         }
         button.parent().parent().find('input').val(newVal);
     });
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
     
 })(jQuery);
 
