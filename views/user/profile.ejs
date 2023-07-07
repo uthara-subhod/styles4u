@@ -1,0 +1,42 @@
+<%- include("../layouts/profileheader.ejs") %>
+
+            <!-- end left panel -->
+
+            <!-- right panel -->
+            <div class="col-lg-8">
+                <div class="card mt-4">
+                <div class="card-header bg-light py-4 ">
+                    <h4 class="mb-0">My Profile</h4>
+                    <p class="mb-0">Time for a Sharp My profile.</p>
+                </div>
+                <div class="card-body ">
+                    
+                    <form>
+                            <div class="form-group focused">
+                              <label class="form-control-label" for="input-username">Username</label>
+                              <input type="text" id="input-username" class="form-control form-control-alternative bg-light" value="<%=user.username%>" readonly>
+                          </div>
+                            <div class="form-group">
+                              <label class="form-control-label" for="input-email">Email address</label>
+                              <input type="email" id="input-email" class="form-control form-control-alternative bg-light" value="<%=user.email%>" readonly>
+                          </div>
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-email">Password</label>
+                            <input type="password" id="input-password" class="form-control form-control-alternative bg-light" value="1234567a" readonly>
+                      </div>
+                    </form>
+                    <div class="d-flex justify-content-between align-items-center pt-2">
+                    <a href="/user/<%=user.username%>/editProfile" class="btn btn-primary ">Edit Profile</a>
+                    <a href="/user/<%=user.username%>/changePassword" class="btn btn-primary ">Change Password</a>
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+<!-- FOOTER
+================================================== -->
+<%- include("../layouts/userfooter.ejs") %>
+

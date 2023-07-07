@@ -30,8 +30,9 @@ const addressSchema = new mongoose.Schema({
         required:true
     },
     user:{
-        type:String,
-        required:true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+        required:true,
     },
     type:{
         type:String,

@@ -1,0 +1,203 @@
+<%- include("../layouts/profileheader.ejs") %>
+
+<div class="col-lg-8">
+    <%if(contact){%>
+    <div class="card mt-4">
+    <div class="card-header bg-light py-4 ">
+        <h4 class="mb-0">Contact Address</h4>
+        <p class="mb-0">We can contact you here</p>
+    </div>
+    <div class="card-body ">
+        
+        <form>
+                <div class="form-group">
+                  <label for="building">Building Name</label>
+                  <input type="text" class="form-control" id="building" name="building" value="<%=contact.buildingName%>" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="state">Street</label>
+                  <input type="text" class="form-control" id="state" name="street" value="<%=contact.street%>" readonly>
+                </div>
+              <div class="form-row">
+                <div class="form-group col-md-5">
+                  <label for="inputCity">City</label>
+                  <input type="text" class="form-control" id="inputCity" name="city"  value="<%=contact.city%>" readonly>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="inputState">State</label>
+                  <input type="text" class="form-control" id="inputState" name="state" value="<%=contact.state%>" readonly >
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="inputZip">Zip</label>
+                  <input type="text" class="form-control" id="inputZip" name="zip" value="<%=contact.zipCode%>" readonly >
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" class="form-control" id="country" name="country" value="<%=contact.country%>" readonly >
+              </div>
+              <div class="form-group">
+                <label for="country">Phone Number</label>
+                <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]" value="<%=contact.phoneNumber%>" readonly >
+              </div>
+        </form>
+        <div class="d-flex justify-content-between align-items-center pt-2">
+        <a href="/user/<%=user.username%>/address/edit?type=contact" class="btn btn-primary ">Edit Address</a>
+        </div>
+      </div>
+    </div>
+    <%}else{%>
+        <div class="card mt-4">
+            <div class="card-header bg-light py-4 ">
+                <h4 class="mb-0">Contact Address</h4>
+                <p class="mb-0">We can contact you here</p>
+            </div>
+            <div class="card-body ">
+                <a href="/user/<%=user.username%>/address/add?type=contact" class="btn btn-primary">Add new Address</a>
+                </div>
+                </div>
+                <%}%>
+    <%if(main){%>
+    <div class="card mt-4">
+        <div class="card-header bg-light py-4 ">
+            <h4 class="mb-0">Shipping Address</h4>
+            <p class="mb-0">Main</p>
+        </div>
+        <div class="card-body ">
+            
+            <form>
+                <div class="form-group">
+                  <label for="building">Building Name</label>
+                  <input type="text" class="form-control" id="building" name="building" value="<%=main.buildingName%>" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="state">Street</label>
+                  <input type="text" class="form-control" id="state" name="street" value="<%=main.street%>" readonly>
+                </div>
+              <div class="form-row">
+                <div class="form-group col-md-5">
+                  <label for="inputCity">City</label>
+                  <input type="text" class="form-control" id="inputCity" name="city"  value="<%=main.city%>" readonly>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="inputState">State</label>
+                  <input type="text" class="form-control" id="inputState" name="state" value="<%=main.state%>" readonly >
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="inputZip">Zip</label>
+                  <input type="text" class="form-control" id="inputZip" name="zip" value="<%=main.zipCode%>" readonly >
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" class="form-control" id="country" name="country" value="<%=main.country%>" readonly >
+              </div>
+              <div class="form-group">
+                <label for="country">Phone Number</label>
+                <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]" value="<%=main.phoneNumber%>" readonly >
+              </div>
+        </form>
+            <div class="d-flex justify-content-between align-items-center pt-2">
+            <a href="/user/<%=user.username%>/address/edit?type=main" class="btn btn-primary ">Edit Address</a>
+            </div>
+          </div>
+        </div>
+        <%if(secondary){%>
+          <%for(s of secondary){%>
+            <div class="card mt-4">
+                <div class="card-header bg-light py-4 ">
+                    <h4 class="mb-0">Shipping Address</h4>
+                    <p class="mb-0">Secondary</p>
+                </div>
+                <div class="card-body ">
+                    
+                    <form>
+                        <div class="form-group">
+                            <label for="building">Building Name</label>
+                            <input type="text" class="form-control" id="building" name="building" value="<%=s.buildingName%>" readonly>
+                          </div>
+                          <div class="form-group">
+                            <label for="state">Street</label>
+                            <input type="text" class="form-control" id="state" name="street" value="<%=s.street%>" readonly>
+                          </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-5">
+                            <label for="inputCity">City</label>
+                            <input type="text" class="form-control" id="inputCity" name="city"  value="<%=s.city%>" readonly>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label for="inputState">State</label>
+                            <input type="text" class="form-control" id="inputState" name="state" value="<%=s.state%>" readonly >
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="inputZip">Zip</label>
+                            <input type="text" class="form-control" id="inputZip" name="zip" value="<%=s.zipCode%>" readonly >
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="country">Country</label>
+                          <input type="text" class="form-control" id="country" name="country" value="<%=s.country%>" readonly >
+                        </div>
+                        <div class="form-group">
+                          <label for="country">Phone Number</label>
+                          <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]" value="<%=s.phoneNumber%>" readonly >
+                        </div>
+                    </form>
+                    <div class="d-flex justify-content-between align-items-center pt-2">
+                    <a href="/user/<%=user.username%>/address/edit?type=secondary&id=<%=s._id%>" class="btn btn-primary ">Edit Address</a>
+                    <a onclick="deleteAddress('<%=s._id%>')" class="btn btn-primary ">Delete</a>
+      
+                    </div>
+                  </div>
+                </div>
+          <%}%>
+         <%}%>
+                <div class="card mt-4">
+                    <div class="card-header bg-light py-4 ">
+                        <h4 class="mb-0">Shipping Address</h4>
+                        <p class="mb-0">Secondary</p>
+                    </div>
+                    <div class="card-body ">
+                        <a href="/user/<%=user.username%>/address/add?type=secondary" class="btn btn-primary">Add new Address</a>
+                    </div>
+                </div>
+    <%}else{%> 
+        <div class="card mt-4">
+            <div class="card-header bg-light py-4 ">
+                <h4 class="mb-0">Shipping Address</h4>
+                <p class="mb-0">Main</p>
+            </div>
+            <div class="card-body ">
+                <a href="/user/<%=user.username%>/address/add?type=main" class="btn btn-primary">Add new Address</a>
+
+            </div>
+        </div>
+            <%}%>
+
+    </div>
+</div>
+</div>
+</section>
+<script>
+  function deleteAddress(id) {
+            Swal.fire({
+                icon: "warning",
+                title: "Are you sure?",
+                text: "Delete Address?",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "remove",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete(`/user/<%=user.username%>/address/delete?id=${id}`).then((result) => {
+                        Swal.fire("removed!", "Address has been deleted.", "success").then((response) => {
+                            location.reload();
+                        });
+                    });
+                }
+            });
+        }
+</script>
+
+<%- include("../layouts/userfooter.ejs") %>

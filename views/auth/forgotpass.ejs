@@ -1,26 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Styles4U</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-<%- include ('../layouts/userheader.ejs') %>
+
+    <!-- Favicon -->
+    <link href="images/fashion-heart-like-svgrepo-com.svg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Topbar Start -->
+    <div class="container-fluid">
+        <div class="row py-2 px-xl-5" style="background-color: #e9d4d4;">
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="d-inline-flex align-items-center">
+                    <a class="text-dark" href="">FAQs</a>
+                    <span class="text-muted px-2">|</span>
+                    <a class="text-dark" href="">Contact Us</a>
+                    <span class="text-muted px-2">|</span>
+                    <a class="text-dark" href="">Support</a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center text-lg-right">
+               
+            </div>
+        </div>
+        <div class="row align-items-center py-3 px-xl-5">
+            <div class="col-lg-3 d-none d-lg-block">
+                <a href="/" class="text-decoration-none">
+                    <h1 class="m-0 px-4 display-5">Styles<span class="text-primary px-1 mr-1">4U</span></h1>
+                </a>
+            </div>
+
+        </div>
+    </div>
 <div class="container shadow p-3 mb-5 bg-white rounded col-lg-5 col-8 mt-5">
   <div class="mb-5 col-12">
     <br>
       <h4  class="text-center text-normal">Lost your password?</h4>
-      <p class="text-center" style="font-size: 15px;">Type your email/username and we will sent<br>you instructions on how to reset it.</p>
+      <p class="text-center" style="font-size: 15px;">Type your username and we will sent<br>you instructions on how to reset it.</p>
     </div>
     <div class="ml-auto mr-auto col-12 col-lg-11">
-<form action="/forgot-password" method="post"  id="form1">
+<form action="/forgotPassword" method="post"  id="form">
     <!-- Username input -->
     <div class="form-outline mb-4">
-      <label class="form-label" for="user">Username or Email Address</label>
+      <label class="form-label" for="user">Username</label>
       <div class="input-group form-outline mb-4">
-
-        <input type="text" id="user" name="user" class="form-control">
-        <div class="input-group-append" id="username_error" style="display: none;">
-            <span class="input-group-text bg-transparent text-primary py-0">
-              <button type="button" class="btn btn-light btn-sm py-0" data-toggle="tooltip" data-placement="right" title="Invalid username/email" style="height: 36px;">
-                <i class="fas fa-exclamation-circle" style="color: rgb(255, 162, 0); font-size: 15px; line-height: 0px; "></i>
-              </button>
-            </span>
-            </div>
+      <input type="text" id="user" name="user" class="form-control">
             </div>
   
     </div>
@@ -29,6 +67,9 @@
       <p class="pr-5">For more information, visit <a href="#!" class="mr-3">support</a></p> 
       <button type="submit" class="btn btn-primary btn-block mb-4 col-lg-3">Send</button>
       </div>
+      <% if (message) { %>
+        <p style="color: red; text-align: center;"><%= message %></p>
+      <% }  %>
     </div>
 
   </form>

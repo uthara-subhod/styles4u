@@ -1,0 +1,234 @@
+<%- include ('../layouts/homeheader.ejs') %>
+
+
+    <!-- PAGE TITLE
+        ================================================== -->
+    </div>
+    </div>
+    </div>
+    <div class="container-fluid  bg-secondary mb-5" style="height:35vh">
+        <div class="container d-flex align-items-center justify-content-center">
+
+            <div class="pt-5">
+                <p class="text-dark text-normal text-center" style="font-size: 3.5vw;">My Cart</p>
+                <ul class="list-inline text-center">
+                    <li class="list-inline-item"><a href="/">Home</a></li>
+                    <li class="list-inline-item ">&gt;</li>
+                    <li class="list-inline-item"><a href="">Cart</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- CART TABLE
+        ================================================== -->
+    <section class="md">
+        <div class="container">
+            <% if (cartItems&&cartItems.items.length) { %>
+                <% if (cartItems.items.length) { %>
+                    <div class="row">
+
+
+                        <div class="col-9">
+                            <table class="table text-center table-primary">
+                                <colgroup>
+                                    <col width="100" />
+                                    <col />
+                                    <col width="1" />
+                                    <col />
+                                    <col width="100" />
+                                    <col />
+                                    <col width="1" />
+                                    <col />
+
+                                </colgroup>
+                                <thead class="bg-primary text-dark">
+                                    <tr>
+                                        <th class="first">Image</th>
+                                        <th class="text-center font-weight-500" >Product</th>
+                                        <th class="text-center font-weight-500" >Size</th>
+                                        <th class="text-center  font-weight-500" >Price</th>
+                                        <th class="text-center  font-weight-500">Qty</th>
+                                        <th class="text-start  font-weight-500">Sub Total</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-bordered">
+                                    <% for( let i=0; i < cartItems.items.length; i++ ) { %>
+                                        <tr class="bg-light">
+                                            <td class="product-thumbnail text-start">
+                                                <a href="#"><img
+                                                        src="<%=cartItems.items[i].productId.productImages[0]%>"
+                                                        alt="..." class="img-fluid" width="60vw"></a>
+                                            </td>
+                                            <td class="text-center" style="font-size: 1.2vw;">
+                                                <a href="/product?id=<%=cartItems.items[i].productId._id%>" class="text-dark ">
+                                                    <%=cartItems.items[i].productId.productName%>
+                                                </a>
+                                            </td>
+                                            <td class="text-center text-dark" style="font-size: 1vw;">
+                                                <%=cartItems.items[i].size%>
+                                            </td>
+                                            <td class="text-center"><span>&#x20B9;</span>
+                                                <%=cartItems.items[i].productId.price%>
+                                            </td>
+                                            <td class="product-quantity"  style="font-size: 1vw;">
+                                                <button
+                                                    onclick="changeQuantity('<%=cartItems.items[i].productId._id%>','<%=cartItems._id%>','<%=cartItems.items[i].size%>',-1)"
+                                                    class="btn btn-primary btn-sm minusBtn p-0 px-1"
+                                                    id="minusBtn<%=cartItems.items[i].productId._id%>" <% if
+                                                    (cartItems.items[i].quantity>
+                                                    1) { %> style="visibility: visible" <% } else { %> disabled <% } %>
+                                                            > -
+                                                </button>
+                                                <input type="text" class="text-center"
+                                                    id="<%=cartItems.items[i].productId._id%>" name=""
+                                                    value="<%=cartItems.items[i].quantity%>" style="width:20px; height:20px; font-size: 1vw;" />
+                                                <button
+                                                    onclick="changeQuantity('<%=cartItems.items[i].productId._id%>','<%=cartItems._id%>', '<%=cartItems.items[i].size%>',1)"
+                                                    class="btn btn-primary plusBtn btn-sm p-0 px-1">
+                                                    +
+                                                </button>
+                                            </td>
+                                            <td id="totalPrice<%=cartItems.items[i].productId._id%>"
+                                                class="product-subtotal text-center" style="font-size: 1vw;">
+                                                <span>&#x20B9;</span>
+                                                <%=cartItems.items[i].totalPrice%>
+                                            </td>
+                                            <td class="product-remove text-center">
+                                                <a
+                                                    onclick="deleteCart('<%=cartItems.items[i].productId._id%>','<%=cartItems.items[i].size%>')"><i
+                                                        class="fas fa-times"></i></a>
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-lg-3 cart-total col-sm-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-3 pt-1">
+                                        <h6 class="font-weight-medium">Cart Subtotal</h6>
+                                        <h6 class="font-weight-medium"><span>&#x20B9;</span>
+                                            <%=cartItems.cartPrice%>.00
+                                        </h6>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between mt-2">
+                                        <h5 class="font-weight-bold">Total</h5>
+                                        <h5 class="font-weight-bold"><span>&#x20B9;</span>
+                                            <%=cartItems.cartPrice%>.00
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="card-footer  text-center">
+                                    <a class="btn btn-primary"
+                                        href="/checkout?id=<%=cartItems._id%>"><span>Proceed to Checkout</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+
+        <% }} else { %>
+            <div class="row">
+                <div>
+                    <h1>Your cart is Empty</h1>
+                    <br /><br />
+                    <a class="butn-style2 p-2 m-3" href="/shop">Go to shop</a>
+                    <a class="butn-style2 p-2 m-3" href="/">Go to Home</a>
+                </div>
+            </div>
+
+            <% } %>
+                </div>
+    </section>
+
+
+    <!-- SCROLL TO TOP
+    ================================================== -->
+    <!-- all js include start -->
+
+    <!-- axios cdn -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
+
+    <!-- sweet alert cdn -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+
+
+        async function changeQuantity(prodctId, cartid, size, cnt) {
+            let quant = document.getElementById(prodctId).value;
+            let count = parseInt(cnt);
+            let qty = document.getElementById(prodctId).value;
+            qty = parseInt(qty);
+
+            let result = await axios({
+                url: "/cart/quantity",
+                method: "POST",
+                data: {
+                    productId: prodctId,
+                    count: count,
+                    cartId: cartid,
+                    size:size
+                },
+            })
+                if (result.data.stock) {
+                    await Swal.fire({
+                        icon: "error",
+                        title: "product stock unavailable",
+                        text: "Sorry , Product unavailable",
+                        showConfirmButton: false,
+                        timer: 3000,
+                    });
+                    location.reload();
+                    document.getElementById("plusBtn" + prodctId).disabled = true;
+                }
+                location.reload();
+                document.getElementById(prodctId).value = response.data.qty;
+                document.getElementById("cartPrice").innerHTML = `$ ${response.data.cartPrice}.00`;
+                document.getElementById("SubcartPrice").innerHTML = `$ ${response.data.cartPrice}.00`;
+                document.getElementById("totalPrice" + prodctId).innerHTML = ` $ ${response.data.totalPrice}.00 `;
+                if (response.data.qty == 1) {
+                    document.getElementById("minusBtn" + prodctId).disabled = true;
+                } else {
+                    document.getElementById("minusBtn" + prodctId).style.visibility = "visible";
+                }
+        }
+
+        function deleteCart(productId, size) {
+            Swal.fire({
+                icon: "warning",
+                title: "Are you sure?",
+                text: "Product remove form cart!",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "remove",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete(`/cart/delete?productId=${productId}&size=${size}`).then((result) => {
+                        Swal.fire("removed!", "item has been deleted.", "success").then((response) => {
+                            location.reload();
+                        });
+                    });
+                }
+            });
+        }
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "center-end",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+        });
+    </script>
+
+    <%- include('../layouts/userfooter.ejs') %>

@@ -1,14 +1,12 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
-const morgan = require("morgan");
 const user = require("./routes/user");
 const admin = require("./routes/admin");
-const cloudinary=require('cloudinary').v2
 const cookieParser = require("cookie-parser");
 const session=require("express-session");
 const nocache=require('nocache');
+const count=require('./middlwares/count')
 require("dotenv/config");
 
 app.set('views', __dirname + '/views');
@@ -27,13 +25,7 @@ mongoose.connect(process.env.DATABASE_URL,{
     console.log(err)
 })
 
-cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key:process.env.CLOUD_KEY,
-    api_secret:process.env.CLOUD_SECRET
-})
 
-//server
 
 //middleware
 app.use(express.json());
@@ -46,13 +38,17 @@ app.use(session({
     saveUninitialized: true
   }));
 
-// app.use(morgan("tiny"));
+
 app.use(express.static("public"));
 app.use(cookieParser())
 app.use(nocache())
+app.use(count.countCart)
+app.use(count.wishlistCount)
 app.use('/',user)
 app.use('/admin',admin)
 
+
+//server
 app.listen(process.env.PORT, ()=>{
     console.log('server is running http://localhost:8000');
 })

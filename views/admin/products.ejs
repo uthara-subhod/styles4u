@@ -1,71 +1,104 @@
 <%- include ('../layouts/adminheader.ejs') %>
 
-<div class="col-lg-9 col-md-12">
-    <div class="row pb-3">
+<div class="row d-flex justify-content-between">
         <div class="col-12 pb-1">
-            <div class="d-flex align-items-center justify-content-between mb-4">
+            <div class="d-flex align-items-center justify-content-end">
                 <form action="">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search by name" name="search">
                         <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
+                            <button type="submit" class="input-group-text bg-white text-primary">
                                 <i class="fa fa-search"></i>
                             </span>
                         </div>
                     </div>
+                    </form>
             </div>
         </div>
-        <img class="img-fluid w-100" src="/images/temp/media_114b76a23afe9ee97a6d31503ae2ce6edf0140dd2.jpeg" alt="">
-
-       
-        <%items.forEach(item=>{%>
+        <div class="col-12 p-5" style="overflow: auto;">
+          <table class="table table-bordered bg-white">
+      
+            <thead>
+              <tr>
+                <th width="5%" class="text-center">sl.no</th>
+                <th width="10%" class="text-center">Image</th>
+                <th width="30%" class="text-center">Product Name</th>
+                <th width="5%" class="text-center">Quantity</th>
+                <th width="20%" class="text-center">Sub Category</th>
+                <th width="10%" class="text-center">Category</th>
+                <th width="10%" class="text-center">Edit</th>
+                <th width="10%" class="text-center">Delete</th>
+              </tr>
+            </thead>
+              <% for(let i=0;i<items.length;i++){ %>
+                <tr>
+                  <td class="text-center">
+                    <%=i+1+(page*5)-5%>
+                  </td>
+                  <td>
+                   <img src="<%=items[i].productImages[0]%>" alt="" class="ml-3 img-fluid" width="60%"> 
+                  </td>
+                  <td>
+                    <%=items[i].productName %>
+                  </td>
+                  <td>
+                    <%=items[i].quantity %>
+                  </td>
+                  <td>
+                    <%if(items[i].subcategory){%>
+                      <%=items[i].subcategory%>
+                        <%}else{%>
+                          <%=items[i].category %>
+                            <%}%>
+                  </td>
+                  <td>
+                          <%=items[i].category %>
+                  </td>
+                  <td class="text-center">
+                    <a href="/admin/product/edit?id=<%=items[i]._id%>"
+                      class="btn btn-primary px-4">Edit</a>
+                      </td>
+                      <td>
+                    <button type="button" style="background-color: rgb(122, 52, 52);" onclick="deleteProduct('<%=items[i]._id%>')"  class="btn text-light">Delete</button>
+                  </td>
+                </tr>
+                
+                
         
-        <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-            <div class="card product-item border-0 mb-4">
-                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                    <img class="img-fluid w-100" src="<%=item.productImages[2]%>" alt="">
-                </div>
-
-                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                    <h6 class="text-truncate mb-3"><%=item.productName%></h6>
-                    <div class="d-flex justify-content-center">
-                        <h6>$123.00</h6><h6 class="text-muted ml-2"><del><%=item.price%></del></h6>
-                    </div>
-                </div>
-                <div class="card-footer d-flex justify-content-between bg-light border">
-                    <a href="/admin/product?id=<%=item._id%>" class="btn btn-sm text-dark p-0">View Detail</a>
-                    <a href="/admin/edit-product?id=<%=item._id%>" class="btn btn-sm text-dark p-0">Edit-Product</a>
-                </div>
-            </div>
-        </div>
-        <%})%>
+                <%}%>
+            </table>
+          </div>
+      </div>
         <div class="col-12 pb-1">
             <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center">
                       <% if (page > 1) { %>
                         <li class="page-item">
-                          <a class="page-link" href="/admin/products?page=<%= page - 1 %>">&laquo; Previous</a>
+                          <a class="page-link" href="/admin/product?page=<%= page - 1 %>">&laquo; Previous</a>
                         </li>
                       <% } %>
                   
                       <% for (let i = 1; i <= totalPages; i++) { %>
                         <% if (i === page) { %>
                           <li class="page-item active">
-                            <a class="page-link" href="/admin/products?page=<%= i %>"><%= i %></a>
+                            <a class="page-link" href="/admin/product?page=<%= i %>"><%= i %></a>
                           </li>
                         <% } else { %>
                           <li class="page-item">
-                            <a class="page-link" href="/admin/products?page=<%= i %>"><%= i %></a>
+                            <a class="page-link" href="/admin/product?page=<%= i %>"><%= i %></a>
                           </li>
                         <% } %>
                       <% } %>
                   
                       <% if (page < totalPages) { %>
                         <li class="page-item">
-                          <a class="page-link" href="/admin/products?page=<%= page + 1 %>">Next &raquo;</a>
+                          <a class="page-link" href="/admin/product?page=<%= page + 1 %>">Next &raquo;</a>
                         </li>
                       <% } %>
                     </ul>
                   </nav>
-                  </div>
+         </div>
+</div>
+
+
                   <%- include ('../layouts/adminfooter.ejs') %>

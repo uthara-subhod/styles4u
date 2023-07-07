@@ -1,240 +1,202 @@
 <%- include ('../layouts/homeheader.ejs') %>
-
 </div>
 </div>
 </div>
-<div class="container-fluid pt-5">
-    <div class="row px-xl-5">
-        <!-- Shop Sidebar Start -->
-        <div class="col-lg-3 col-md-12">
-            <!-- filter start -->
-                <form action="" id="form">
-                    <div class="border-bottom mb-4 pb-4">
-                      <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
-                      <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input price-checkbox" checked id="price-all">
-                        <label class="custom-control-label" for="price-all">All Price</label>
-                      </div>
-                      <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input price-checkbox" id="price-1">
-                        <label class="custom-control-label" for="price-1">$0 - $100</label>
-                      </div>
-                       <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input price-checkbox" id="price-2">
-                        <label class="custom-control-label" for="price-2">$100 - $200</label>
-                      </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input price-checkbox" id="price-3">
-                        <label class="custom-control-label" for="price-3">$200 - $300</label>
-                      </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input price-checkbox" id="price-4">
-                        <label class="custom-control-label" for="price-4">$300 - $400</label>
-                      </div>
-                    </div>
-                    <!-- Price End -->
-                    
-                    <!-- Color Start -->
-                    <div class="border-bottom mb-4 pb-4">
-                      <h5 class="font-weight-semi-bold mb-4">Filter by color</h5>
-                      <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input color-checkbox" checked id="color-all">
-                        <label class="custom-control-label" for="color-all">All Color</label>
-                      </div>
-                      <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input color-checkbox" id="color-1">
-                        <label class="custom-control-label" for="color-1">Black</label>
-                      </div>
-                      <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input color-checkbox" id="color-2">
-                        <label class="custom-control-label" for="color-2">White</label>
-                      </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input color-checkbox" id="color-3">
-                        <label class="custom-control-label" for="color-3">Red</label>
-                      </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input color-checkbox" id="color-4">
-                        <label class="custom-control-label" for="color-4">Blue</label>
-                      </div>
-                    </div>
-
-                    <!-- Color End -->
-                  
-                    <!-- Size Start -->
-                    <div class="mb-5">
-                      <h5 class="font-weight-semi-bold mb-4">Filter by size</h5>
-                      <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input size-checkbox" checked id="size-all">
-                        <label class="custom-control-label" for="size-all">All Size</label>
-                      </div>
-                      <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input size-checkbox" id="size-1">
-                        <label class="custom-control-label" for="size-1">XS</label>
-                      </div>
-                      <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input size-checkbox" id="size-3">
-                        <label class="custom-control-label" for="size-3">M</label>
-                      </div>
-                  <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input size-checkbox" id="size-4">
-                        <label class="custom-control-label" for="size-4">L</label>
-                      </div>
-                  <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input size-checkbox" id="size-5">
-                        <label class="custom-control-label" for="size-5">XL</label>
-                      </div>
-                  
-                    </div>
-                    <!-- Size End -->
-                  
-                  
-                    <button type="submit">Apply Filters</button>
-                  </form>
-            <!-- Size End -->
-        </div>
-        <!-- Shop Sidebar End -->
-
-
-        <!-- Shop Product Start -->
-        <div class="col-lg-9 col-md-12">
-            <div class="row pb-3">
-                <div class="col-12 pb-1">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <form action="">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by name" name="search">
-                                <div class="input-group-append">
-                                    <span class="input-group-text bg-transparent text-primary">
-                                        <i class="fa fa-search"></i>
-                                    </span>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-                <%items.forEach(item=>{%>
-                
-                <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                    <div class="card product-item border-0 mb-4">
-                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0  d-flex align-items-center justify-content-center">
-                            <img src="<%=item.productImages[0]%>" alt="" width="60%">
-                        </div>
-
-                        <div class="card-body border-left border-right text-center p-0 pt-4">
-                            <h6 class="text-truncate mb-2"><%=item.productName%></h6>
-                            <div class="d-flex justify-content-center">
-                                <p class="text-dark">$<%=item.price%></p>
-                            </div>
-                        </div>
-                        <div class="card-footer d-flex justify-content-between bg-light border">
-                            <a href="/product?id=<%=item._id%>" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                        </div>
-                    </div>
-                </div>
-                <%})%>
-                <div class="col-12 pb-1">
-                    <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-center">
-                              <% if (page > 1) { %>
-                                <li class="page-item">
-                                  <a class="page-link" href="/shop?page=<%= page - 1 %>">&laquo; Previous</a>
-                                </li>
-                              <% } %>
-                          
-                              <% for (let i = 1; i <= totalPages; i++) { %>
-                                <% if (i === page) { %>
-                                  <li class="page-item active">
-                                    <a class="page-link" href="/shop?page=<%= i %>"><%= i %></a>
-                                  </li>
-                                <% } else { %>
-                                  <li class="page-item">
-                                    <a class="page-link" href="/shop?page=<%= i %>"><%= i %></a>
-                                  </li>
-                                <% } %>
-                              <% } %>
-                          
-                              <% if (page < totalPages) { %>
-                                <li class="page-item">
-                                  <a class="page-link" href="/shop?page=<%= page + 1 %>">Next &raquo;</a>
-                                </li>
-                              <% } %>
-                            </ul>
-                          </nav>
-                          
-                      <!-- <ul class="pagination justify-content-center mb-3">
-                        <li class="page-item disabled">
-                          <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                          </a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                          <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                          </a>
-                        </li>
-                      </ul> -->
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <!-- Shop Product End -->
+  <div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+      <h1 class="font-weight-semi-bold text-uppercase mb-3">Shop Detail</h1>
+      <div class="d-inline-flex">
+        <p class="m-0"><a href="">Home</a></p>
+        <p class="m-0 px-2">-</p>
+        <p class="m-0">Shop Detail</p>
+      </div>
     </div>
-</div>
-<!-- Shop End -->
-</div>
-<script>
-    $(document).ready(function() {
-    $('#form').on('submit', function(event) {
-  event.preventDefault(); // Prevent form submission
+  </div>
 
-  // Get the selected filter values
-  var selectedPrices = $('input[name="price"]:checked').map(function() {
-    return $(this).val();
-  }).get();
 
-  var selectedPriceCheckboxes = $('input.price-checkbox:checked');
-  var lowestPrice;
-  var highestPrice;
+  <div class="container-fluid pt-5">
+    <div class="row px-xl-5">
+      <!-- Shop Sidebar Start -->
+      <div class="col-lg-3 col-md-12 py-4 border">
+        <!-- filter start -->
+        <form action="">
+          <!-- Price Start-->
+          <div class="border-bottom mb-4 pb-4">
+            <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
+            <div class="price-range col-8">
+              <input type="text" id="priceRange"  class="slider-custom" name="price" />
+            </div>
+          </div>
+          <!-- Price End -->
 
-  // Iterate through the selected price checkboxes
-  selectedPriceCheckboxes.each(function() {
-    var priceRange = $(this).val().split('-');
-    var priceLow = parseFloat(priceRange[0]);
-    var priceHigh = parseFloat(priceRange[1]);
+          <!-- Color Start -->
+          <div class="border-bottom mb-4 pb-4">
+            <h5 class="font-weight-semi-bold mb-4">Filter by color</h5>
+            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+              <input type="checkbox" class="custom-control-input color-checkbox" id="color-1" name="color"
+                value="Black">
+              <label class="custom-control-label" for="color-1">Black</label>
+            </div>
+            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+              <input type="checkbox" class="custom-control-input color-checkbox" id="color-2" name="color"
+                value="White">
+              <label class="custom-control-label" for="color-2">White</label>
+            </div>
+            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+              <input type="checkbox" class="custom-control-input color-checkbox" id="color-3" name="color" value="Red">
+              <label class="custom-control-label" for="color-3">Red</label>
+            </div>
+            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+              <input type="checkbox" class="custom-control-input color-checkbox" id="color-4" name="color" value="Blue">
+              <label class="custom-control-label" for="color-4">Blue</label>
+            </div>
+            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+              <input type="checkbox" class="custom-control-input color-checkbox" id="color-4" name="color"
+                value="Yellow">
+              <label class="custom-control-label" for="color-4">Yellow</label>
+            </div>
+            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+              <input type="checkbox" class="custom-control-input color-checkbox" id="color-4" name="color"
+                value="Green">
+              <label class="custom-control-label" for="color-4">Green</label>
+            </div>
+          </div>
+          <!-- Color End -->
 
-    // Update lowest and highest price if necessary
-    if (priceLow < lowestPrice|| !priceLow) {
-      lowestPrice = priceLow;
-    }
-    if (priceHigh > highestPrice || !priceHigh) {
-      highestPrice = priceHigh;
-    }
-  });
+          <!-- Size Start -->
+          <div class="mb-5">
+            <h5 class="font-weight-semi-bold mb-4">Filter by size</h5>
+            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+              <input type="checkbox" class="custom-control-input size-checkbox" id="size-1" name="size" value="xs">
+              <label class="custom-control-label" for="size-1">XS</label>
+            </div>
+            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+              <input type="checkbox" class="custom-control-input size-checkbox" id="size-3" name="size" value="s">
+              <label class="custom-control-label" for="size-3">S</label>
+            </div>
+            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+              <input type="checkbox" class="custom-control-input size-checkbox" id="size-3" name="size" value="m">
+              <label class="custom-control-label" for="size-3">M</label>
+            </div>
+            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+              <input type="checkbox" class="custom-control-input size-checkbox" id="size-4" name="size" value="l">
+              <label class="custom-control-label" for="size-4">L</label>
+            </div>
+            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+              <input type="checkbox" class="custom-control-input size-checkbox" id="size-5" name="size" value="xl">
+              <label class="custom-control-label" for="size-5">XL</label>
+            </div>
 
-  var selectedColors = $('input[name="color"]:checked').map(function() {
-    return $(this).val();
-  }).get();
+          </div>
+          <!-- Size End -->
+          <button type="submit" class="btn btn-primary">Apply Filters</button>
+        </form>
+        <!-- filter end -->
+      </div>
+      <!-- Shop Sidebar End -->
+
+      <!-- Shop Product Start -->
+      <div class="col-lg-9 col-md-12">
+        <div class="row pb-3  ml-2">
+          <div class="col-12 pb-1">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+            </div>
+          </div>
+
+          <%items.forEach(item=>{%>
+            <div class="col-lg-3 col-md-3 col-sm-4 pb-1 ">
+              <div class="card product-item border-0 h-100">
+                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                  <img class="img-fluid w-100" src="<%=item.productImages[0]%>" alt="">
+                </div>
+
+                <div class="card-body border-left border-right text-center p-0 pt-3">
+                  <p class="text-dark" style="font-size: 1.2 vw;">
+                    <%=item.productName%>
+                  </p>
+
+                  <p class="text-dark" style="font-size: 1.2vw;">&#x20B9;<%=item.price%>
+                      </h6>
+                      <h6 class="text-muted ml-2">
+                  </p>
+                </div>
+                <div class="card-footer d-flex justify-content-center bg-light border">
+                  <a href="/product?id=<%=item._id%>" class="btn btn-sm text-dark p-0"><i
+                      class="fas fa-eye text-primary mr-1"></i>View details</a>
+                </div>
+              </div>
+            </div>
+            <%})%>
+            <!-- Shop Product Start -->
+
+              
+        </div>
+
+        <!-- Pagination Start -->
+        <div class="col-12 pb-1">
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+              <% if (page> 1) { %>
+                <li class="page-item">
+                  <a class="page-link" href="/shop?page=<%= page - 1 %>">&laquo; Previous</a>
+                </li>
+                <% } %>
+
+                  <% for (let i=1; i <=totalPages; i++) { %>
+                    <% if (i===page) { %>
+                      <li class="page-item active">
+                        <a class="page-link" href="/shop?page=<%= i %>">
+                          <%= i %>
+                        </a>
+                      </li>
+                      <% } else { %>
+                        <li class="page-item">
+                          <a class="page-link" href="/shop?page=<%= i %>">
+                            <%= i %>
+                          </a>
+                        </li>
+                        <% } %>
+                          <% } %>
+
+                            <% if (page < totalPages) { %>
+                              <li class="page-item">
+                                <a class="page-link" href="/shop?page=<%= page + 1 %>">Next &raquo;</a>
+                              </li>
+                              <% } %>
+            </ul>
+          </nav>
+          </nav>
+        </div>
+        <!-- Pagination end -->
+
+      </div>
+      <!-- Shop Product End -->
+    </div>
+  </div>
+  <!-- Shop End -->
+  </div>
+  <script>
+    const priceRangeInput = document.getElementById("priceRange");
+    const selectedRange = document.getElementById("selectedRange");
   
-  var selectedSizes = $('input[name="size"]:checked').map(function() {
-    return $(this).val();
-  }).get();
-
-  var url = '/shop?pricelow=' + lowestPrice + '&pricehigh=' + highestPrice + '&color=' + selectedColors.join(',') + '&size=' + selectedSizes.join(',');
-  window.url=url
-  $.ajax({
-  url: url,
-  type: 'GET',
-});
-});
-    })
-</script>
-
-
-<%- include ('../layouts/userfooter.ejs') %>
-
+    $(priceRangeInput).ionRangeSlider({
+      type: "double",
+      min: 100,
+      max: 5000,
+      from: 100,
+      to: 5000,
+      step: 100,
+      skin:"square",
+      hide_min_max: true,
+      hide_from_to: false,
+      onStart: updatePriceRange,
+      onChange: updatePriceRange,
+      onFinish: updatePriceRange,
+    });
+  
+    function updatePriceRange(data) {
+      const minPrice = data.from;
+      const maxPrice = data.to;
+    }
+  </script>
+  <%- include ('../layouts/userfooter.ejs') %>

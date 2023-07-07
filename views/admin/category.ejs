@@ -1,0 +1,24 @@
+<%- include ('../layouts/adminheader.ejs') %>
+
+<div class="container p-3 mb-5 bg-secondary rounded col-lg-8 col-8 mt-5">
+  <form action="/admin/category/main/<% if (name) { %>edit?name=<%= encodeURIComponent(name) %><% } else { %>add<% } %>" method="post" id="form1">
+    <div class="container bg-white p-4 mb-4">
+      <div class="form-outline mb-4">
+        <label class="form-label" for="name">Category Name</label>
+        <div class="input-group form-outline mb-4">
+          <input type="text" id="name" name="name" class="form-control" <%if(name){%>value="<%=name%>"<%}%> required />
+        </div>
+      </div>
+    </div>
+    <% if (message) { %>
+    <p style="color:<%=color%>; text-align:center"><%= message %></p>
+    <% } %>
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary btn-block mb-4 col-lg-3">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+
+<%- include ('../layouts/adminfooter.ejs') %>

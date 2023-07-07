@@ -1,0 +1,105 @@
+<%- include("../layouts/profileheader.ejs") %>
+
+  <div class="col-lg-8">
+    <div class="card mt-4">
+      <div class="card-header bg-light py-4 ">
+        <h4 class="mb-0">My Orders</h4>
+        <p class="mb-0">Lets look at all my orders</p>
+      </div>
+      <div class="card-body ">
+
+        <div class="container" style="overflow: auto;">
+          <%for(i=0;i<order.length;i++){%>
+            <div class="card mb-3">
+              <div class="card-header bg-white">
+                <h5 class="mt-4">Order Summary</h5>
+                <p>
+                  <%=order[i]._id%>
+                </p>
+              </div>
+              <div class="card-body">
+                Order Placed on: <%=order[i].order_date.toLocaleDateString('en-US', { year: 'numeric' , month: 'numeric'
+                  , day: 'numeric' });%>
+                  <br>
+                  No. of items: <%=order[i].items.length%>
+                    <br>
+                    Order Total:<span>&#x20B9;</span>
+                    <%=order[i].total %>
+              </div>
+              <div class="card-footer bg-white">
+                <div class="d-flex justify-content-between align-items-center">
+                  <a class="btn btn-primary" href="/user/<%=user.username%>/orders/<%=order[i]._id%>">View Details</a>
+                  <%if(order[i].order_status==="pending"){%>
+                    <a onclick="cancel('<%=order[i]._id%>')" class="btn btn-small"
+                      style="background-color: rgb(222, 109, 109); color:rgb(102, 0, 0)">Cancel</a>
+                    <%}else if(order[i].order_status==="delivered" ){%><a class="btn px-4"
+                        style="background-color: rgb(109, 222, 128); color:rgb(7, 102, 0)">Rate Order</a>
+                        <%}else if(order[i].order_status=="pay"){%>
+                          <a class="btn px-4 btn-primary" onclick="cod('<%=order[i]._id%>')">Pay</a> 
+                          <%}%>
+                </div>
+
+              </div>
+            </div>
+            <%}%>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  </section>
+
+  <!-- axios cdn -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
+
+  <!-- sweet alert cdn -->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    function cancel(id) {
+      Swal.fire({
+        icon: "warning",
+        title: "Are you sure?",
+        text: "Do you want to cancel order",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "remove",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let result = axios({
+            url: "/user/order/cancel",
+            method: "POST",
+            data: {
+              id,
+            },
+          }).then((response) => {
+            if (response.data.status == true) {
+              Swal.fire({
+                icon: "success",
+                title: "Order Cancelled",
+                text: "We are sorry to see you go",
+                showConfirmButton: false,
+                timer: 3000,
+              });
+            }else{
+              Swal.fire({
+                icon: "error",
+                title: "Something went wrong",
+                text: "Please try again later",
+                showConfirmButton: false,
+                timer: 3000,
+              });
+            }
+            location.reload();
+          })
+        }
+      })
+    }
+  </script>
+
+
+
+  <%- include("../layouts/userfooter.ejs") %>

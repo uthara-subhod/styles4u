@@ -7,10 +7,11 @@
 
 
     <!-- Favicon -->
-    <link href="images/fashion-heart-like-svgrepo-com.svg" rel="icon">
+    <link href="/images/fashion-heart-like-svgrepo-com.svg" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <script src="https://kit.fontawesome.com/a19edc713a.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
 
     <!-- Font Awesome -->
@@ -18,63 +19,142 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+<style>
+    body {
+  background-color: #fbfbfb;
+}
+@media (min-width: 991.98px) {
+  main {
+    padding-left: 240px;
+  }
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding: 58px 0 0; /* Height of navbar */
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+  width: 240px;
+  z-index: 600;
+}
+
+@media (max-width: 991.98px) {
+  .sidebar {
+    width: 100%;
+  }
+}
+.sidebar .active {
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+</style>
 </head>
 
 <body>
-    <div class="d-flex" id="wrapper">
-        <!-- Sidebar -->
-        <div class="bg-light border-right " id="sidebar-wrapper">
-          <div class="sidebar-heading">
-            <div class="col-lg-3 d-lg-block my-4">
-                <a href="" class="text-decoration-none">
-                    <h2 class="m-0 px-4">Styles<span class="text-primary px-1 mr-1">4U</span></h2>
-                </a>
-            </div>
-          </div>
-          <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item list-group-item-action">Dashboard</a>
-            <div class="dropdown">
-              <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#collapseExample2">
-                Category
-              </a>
-              <div class="collapse" id="collapseExample2">
-                <a class="dropdown-item" href="/admin/categories?page=1">Categories</a>
-                <a class="dropdown-item" href="/admin/add-category">Add category</a>
-              </div>
-            </div>
-            <div class="dropdown">
-                <a class="list-group-item list-group-item-action " data-toggle="collapse" href="#collapseExample">
-                  Product
-                </a>
-                <div class="collapse"  id="collapseExample">
-                  <a class="dropdown-item" href="/admin/products">Products</a>
-                  <a class="dropdown-item" href="/admin/add-product">Add Product</a>
-                </div>
-              </div>
-            <a href="#" class="list-group-item list-group-item-action">Orders</a>
-            <a href="/admin/customer" class="list-group-item list-group-item-action">Customers</a>
-            <div class="dropdown">
-              <a class="list-group-item list-group-item-action" data-toggle="collapse"  href="#collapseExample3">
-                Coupon
-              </a>
-              <div class="collapse" id="collapseExample3">
-                <a class="dropdown-item" href="#">Coupons</a>
-                <a class="dropdown-item" href="#">Create Coupons</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /#sidebar-wrapper -->
-    
-        <!-- Page Content -->
-        <div class="container px-0">
-          <!-- Top Navigation Bar -->
-          <nav class="navbar navbar-expand-lg navbar-light border-bottom" style="background-color: #AF6868;">
-            <span class="navbar-text ml-auto text-light">
-              Utharas
-            </span>
-          </nav>
-
-
-
-    
+<header>
+    <!-- Sidebar -->
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+      <div class="position-sticky">
+        <div class="list-group list-group-flush mx-3 mt-4">
+          <a href="/admin" class="list-group-item list-group-item-action py-2 ripple  <% if(url=="dashboard"){%> active<%}%>" aria-current="true">
+            <i class="fas fa-solid fa-table-columns fa-fw me-3"></i><span>Dashboard</span>
+          </a>
+          <a class="list-group-item list-group-item-action py-2 ripple <% if(url=="category"){%> active<%}%>" data-toggle="collapse"
+          href="#collapseExample1"
+          aria-expanded="true"
+          aria-controls="collapseExample1">
+            <i class="fas fa-solid fa-rectangle-list fa-fw me-3"></i><span>Category</span>
+          </a>
+          <ul id="collapseExample1" class="collapse show list-group list-group-flush">
+            <li class="list-group-item py-1">
+              <a href="/admin/category" class="text-reset">Categories</a>
+            </li>
+            <li class="list-group-item py-1">
+              <a href="/admin/category/main/add" class="text-reset">Add Category</a>
+            </li>
+            <li class="list-group-item py-1">
+              <a href="/admin/category/sub/add" class="text-reset">Add Subcategory</a>
+            </li>
+          </ul>
+          <a class="list-group-item list-group-item-action py-2 ripple <% if(url=="product"){%> active<%}%>" data-toggle="collapse"
+          href="#collapseExample2"
+          aria-expanded="true"
+          aria-controls="collapseExample2">
+            <i class="fas fa-solid fa-bag-shopping fa-fw me-3"></i><span>Product</span>
+          </a>
+          <ul id="collapseExample2" class="collapse show list-group list-group-flush">
+            <li class="list-group-item py-1">
+              <a href="/admin/product" class="text-reset">Products</a>
+            </li>
+            <li class="list-group-item py-1">
+              <a href="/admin/product/add" class="text-reset">Add Product</a>
+            </li>
+          </ul>
+          <a href="/admin/order" class="list-group-item list-group-item-action py-2 ripple <% if(url=="order"){%> active<%}%>"><i
+              class="fas fa-cart-shopping fa-fw me-3"></i><span>Orders</span></a>
+          <a href="/admin/customer" class="list-group-item list-group-item-action py-2 ripple <% if(url=="user"){%> active<%}%>">
+            <i class="fas fa-solid fa-user fa-fw me-3"></i><span>Customers</span>
+          </a>
+          <a class="list-group-item list-group-item-action py-2 ripple <% if(url=="coupon"){%> active<%}%>" data-toggle="collapse"
+          href="#collapseExample3"
+          aria-expanded="true"
+          aria-controls="collapseExample3">
+            <i class="fas fa-solid fa-ticket fa-fw me-3"></i><span>Coupon</span>
+          </a>
+          <ul id="collapseExample3" class="collapse show list-group list-group-flush">
+            <li class="list-group-item py-1">
+              <a href="/admin/coupon" class="text-reset">Coupons</a>
+            </li>
+            <li class="list-group-item py-1">
+              <a href="/admin/coupon/add" class="text-reset">Add Coupon</a>
+            </li>
+          </ul>         
+      </div>
+    </nav>
+    <!-- Sidebar -->
+  
+    <!-- Navbar -->
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
+      <!-- Container wrapper -->
+      <div class="container-fluid">
+        <!-- Toggle button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarMenu"
+          aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+  
+        <!-- Brand -->
+        <a class="navbar-brand" href="#">
+                <h2 >Styles4U<span class="text-white px-1 mr-1"><small>admin</small></span></h2>
+        </a>
+        <!-- Right links -->
+        <ul class="navbar-nav ms-auto d-flex flex-row text-white">
+            <li class="px-2 text-white">utharas</li> /
+            <li class="px-2"><a href="/logout" class="text-white">Logout</a></li>
+        </ul>
+      </div>
+      <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+  </header>
+  <!--Main Navigation-->
+  
+  <!--Main layout-->
+  <main style="margin-top: 58px;">
+    <div class="container pt-4">

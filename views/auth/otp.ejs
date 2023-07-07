@@ -8,7 +8,7 @@
 
 
     <!-- Favicon -->
-    <link href="images/fashion-heart-like-svgrepo-com.svg" rel="icon">
+    <link href="/images/fashion-heart-like-svgrepo-com.svg" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -56,7 +56,7 @@
             <p class="text-center" style="font-size: 15px;">Enter the verification code we have sent to </p>
           </div>
           <div class="ml-auto mr-auto col-12 col-lg-11">
-      <form action="/login/otp-login" method="post"  id="form2">
+      <form action="/signup/otp?username=<%=username%>" method="post"  id="form2">
           <!-- Username input -->
           <div class="form-outline mb-2">
             <label for="otp">Type your 4-digit verification code</label>
@@ -64,14 +64,10 @@
                 <input type="text" class="form-control" id="otp" name="otp" maxlength="4" pattern="[0-9]+" ```required>
             </div>
           </div>
-          <div class="form-check mb-4">
-            <input class="form-check-input" type="checkbox" value="remember" id="remember"  name="remember"/>
-            <label class="form-check-label text-lg-sm" for="remember"> Remember me next time </label>
-          </div>
           <div class="d-flex justify-content-center align-items-center mb-2">
             <button type="submit" class="btn btn-primary btn-block col-6 " >Send</button>
           </div>
-          <p class="text-center"><a href="/login/otp-login/resend?username=<%=username%>" class="mr-3" id="restricted">Resend otp</a></p>
+          <p class="text-center"><a href="/signup/otp/resend?username=<%=username%>" class="mr-3" id="restricted">Resend otp</a></p>
           <%if(resend){%>
                 <p>
                 <%=resend%>

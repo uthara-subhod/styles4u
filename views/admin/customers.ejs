@@ -1,67 +1,100 @@
 <%- include ('../layouts/adminheader.ejs') %>
-
-<div style="padding: 20px 20px 20px 20px;">
-    <div class="container">
-        <form action="" >
-            <span class="input-group mb-3 justify-content-end" >
-            <input type="search" name="search" placeholder="search name,username" >
-            <button type="submit" class="search " >&#128269</button>
+<div class="container">
+  <div class="d-flex align-items-center justify-content-end mb-3">
+    <form action="">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search by name,email" name="search">
+            <div class="input-group-append">
+                <button type="submit" class="input-group-text bg-white text-primary">
+                    <i class="fa fa-search"></i>
+                </span>
+            </div>
+        </div>
         </form>
-    </div>
-         
-    <table class="table table-bordered" >
-        <thead>
-      <tr>
-        <th>sl.no</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Total Orders</th>
-        <th>Status</th>
-        <th>Joining date</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
+</div>
+</div>
+  <div  class=" col-lg-12">
+    <div style="overflow:auto">
+    <table class="table table-bordered bg-white">
+      <thead>
+        <tr>
+          <th width="5%">sl.no</th>
+          <th width="20%">Username</th>
+          <th width="30%">Email</th>
+          <th width="10%">Total Orders</th>
+          <th width="10%">Status</th>
+          <th width="10%">Joining date</th>
+          <th width="10%">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
       <%for(i=0;i<user.length;i++){%>
         <tr>
-            <td><%= i+1 %></td>
-            <td><%=user[i].username %></td>
-            <td><%=user[i].email %></td>
-            <td><%=user[i].totalOrders %></td>
-            <%if(user[i].access===true){%>
-            <td><a class="btn rounded-pill" style="background-color: rgb(109, 222, 188); color:rgb(0, 102, 43)">Active</td>
+          <td>
+            <%= i+1+(page*5)-5 %>
+          </td>
+          <td>
+            <%=user[i].username %>
+          </td>
+          <td>
+            <%=user[i].email %>
+          </td>
+          <td>
+            <%=user[i].totalOrders %>
+          </td>
+          <%if(user[i].access){%>
+            <td><a class="btn rounded-pill px-4" style="background-color: rgb(109, 222, 188); color:rgb(0, 102, 43)">Active
+            </td>
             <%}else{%>
-                <td><a class="btn rounded-pill" style="background-color: rgb(255, 99, 99); color:rgb(102, 0, 0)">Blocked</a></td>
-                <%}%>
-            <td><%=user[i].createdDate.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'numeric', 
-                day: 'numeric' 
-              });%></td>
-            <td><a href="/admin/view-user?id=<%=user[i]._id%>" class="btn btn-primary" style="color:white"style="background-color:rgb(53, 238, 84); color:white">View User</a>
-              <a href="/admin/edit-user?id=<%=user[i]._id%>" class="btn" style="background-color:rgb(152, 209, 216); color:white">Edit User</a></td>
+              <td><a class="btn rounded-pill px-3"
+                  style="background-color: rgb(255, 99, 99); color:rgb(102, 0, 0)">Blocked</a>
+                </td>
+              <%}%>
+                <td><%=user[i].createdDate.toLocaleDateString('en-US', { year: 'numeric' , month: 'numeric' ,
+                    day: 'numeric' });%>
+                    </td>
+                <td><button type="button" data-user-id="<%= user[i]._id %>" class="block-user btn<% if(user[i].access===false) { %>
+                btn-danger <% }else{%> btn-light<%}%>"><%if(user[i].access){%>Unblocked<%}else{%>Blocked<%}%></button>
+              </td>
         </tr>
-        <%}%>  
-  </table>
+        <%}%>
+      </tbody>
+    </table>
+  </div>
   </div>
   <div class="col-12 pb-1">
-                    <nav aria-label="Page navigation">
-                      <ul class="pagination justify-content-center mb-3">
-                        <li class="page-item disabled">
-                          <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                          </a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="/admin/customer?">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <% if (page> 1) { %>
+          <li class="page-item">
+            <a class="page-link" href="/admin/customer?page=<%= page - 1 %>">&laquo; Previous</a>
+          </li>
+          <% } %>
+
+            <% for (let i=1; i <=totalPages; i++) { %>
+              <% if (i===page) { %>
+                <li class="page-item active">
+                  <a class="page-link" href="/admin/customer?page=<%= i %>">
+                    <%= i %>
+                  </a>
+                </li>
+                <% } else { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/admin/customer?page=<%= i %>">
+                      <%= i %>
+                    </a>
+                  </li>
+                  <% } %>
+                    <% } %>
+
+                      <% if (page < totalPages) { %>
                         <li class="page-item">
-                          <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                          </a>
+                          <a class="page-link" href="/admin/customer?page=<%= page + 1 %>">Next &raquo;</a>
                         </li>
-                      </ul>
-                    </nav>
-                </div>
+                        <% } %>
+      </ul>
+    </nav>
+  </div>
+  
+
   <%- include ('../layouts/adminfooter.ejs') %>

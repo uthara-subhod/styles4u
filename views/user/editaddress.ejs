@@ -1,0 +1,99 @@
+<%- include("../layouts/profileheader.ejs") %>
+
+            <!-- end left panel -->
+
+            <!-- right panel -->
+            <div class="col-lg-8">
+                <div class="card mt-4">
+                <div class="card-header bg-light py-4 ">
+                    <h4 class="mb-0">Address</h4>
+                    <p class="mb-0"><%=type%></p>
+                </div>
+                <div class="card-body ">
+
+                    <%if(address){%>
+                    <form action="/user/<%=user.username%>/address/edit" method="post">
+                            <div class="form-group">
+                              <label for="building">Building Name</label>
+                              <input type="text" class="form-control" id="building" name="building" value="<%=address.buildingName%>">
+                            </div>
+                            <div class="form-group">
+                              <label for="state">Street</label>
+                              <input type="text" class="form-control" id="state" name="street" value="<%=address.street%>">
+                            </div>
+                          <div class="form-row">
+                            <div class="form-group col-md-6">
+                              <label for="inputCity">City</label>
+                              <input type="text" class="form-control" id="inputCity" name="city" value="<%=address.city%>">
+                            </div>
+                            <div class="form-group col-md-4">
+                              <label for="inputState">State</label>
+                              <input type="text" class="form-control" id="inputState" name="state" value="<%=address.state%>">
+                            </div>
+                            <div class="form-group col-md-2">
+                              <label for="inputZip">Zip</label>
+                              <input type="text" class="form-control" id="inputZip" name="zip" value="<%=address.zipCode%>">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" class="form-control" id="country" name="country" value="<%=address.country%>">
+                          </div>
+                          <div class="form-group">
+                            <label for="country">Phone Number</label>
+                            <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]+" value="<%=address.phoneNumber%>">
+                          </div>
+                          <input type="hidden" value="<%=address.type%>" name="type">
+                          <input type="hidden" value="<%=address._id%>" name="id">
+                          <button type="submit" class="btn btn-primary">Edit</button>
+                    </form>
+                    <%}else{%>
+                        <form action="/user/<%=user.username%>/address/add" method="post">
+                            <div class="form-group">
+                              <label for="building">Building Name</label>
+                              <input type="text" class="form-control" id="building" name="building" >
+                            </div>
+                            <div class="form-group">
+                              <label for="state">Street</label>
+                              <input type="text" class="form-control" id="state" name="street" >
+                            </div>
+                          <div class="form-row">
+                            <div class="form-group col-md-6">
+                              <label for="inputCity">City</label>
+                              <input type="text" class="form-control" id="inputCity" name="city">
+                            </div>
+                            <div class="form-group col-md-4">
+                              <label for="inputState">State</label>
+                              <input type="text" class="form-control" id="inputState" name="state" >
+                            </div>
+                            <div class="form-group col-md-2">
+                              <label for="inputZip">Zip</label>
+                              <input type="text" class="form-control" id="inputZip" name="zip">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" class="form-control" id="country" name="country" >
+                          </div>
+                          <div class="form-group">
+                            <label for="country">Phone Number</label>
+                            <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]+" >
+                          </div>
+                          <input type="hidden" value="<%=type%>" name="type">
+                          <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+                    <%}%>
+                  </div>
+                </div>
+                    </form>
+
+                  </div>
+                </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+<!-- FOOTER
+================================================== -->
+<%- include("../layouts/userfooter.ejs") %>

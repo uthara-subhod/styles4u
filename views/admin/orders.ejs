@@ -1,0 +1,43 @@
+<%- include ('../layouts/adminheader.ejs') %>
+
+  <div style="padding: 20px 20px 20px 20px;">
+<div class="container" style="overflow: auto;">
+    <table class="table table-bordered bg-white">
+        <thead>
+            <tr>
+                <th class="text-center" width="8%">Order</th>
+                <th class="text-center" width="15%">User</th>
+                <th class="text-center" width="15%">Date</th>
+                <th class="text-center" width="13%">Status</th>
+                <th class="text-center" width="15%">Total</th>
+                <th class="text-center" width="15%">Actions</th>
+            </tr>
+            </thead>
+        <%for(i=0;i<order.length;i++){%>
+          <tr class="text-center">
+            <td>
+              <%= i+1 %>
+            </td>
+            <td><%=order[i].user.username%></td>
+            <td>
+                <%=order[i].order_date.toLocaleDateString('en-US', { year: 'numeric' , month: 'numeric' ,
+                day: 'numeric' });%>
+            </td>
+            <td><a class="btn rounded-pill<%if(order.order_status=="delivered"){%>btn-success<%}%>" 
+              style="background-color:<%if(order[i].order_status=="pending"){%>rgb(255, 238, 88)<%}else if(order[i].order_status=="rejected"||order[i].order_status=="cancelled"){%>rgb(245, 106, 106) <%}else if(order[i].order_status=="shipped"){%>rgb(161, 189, 253)<%}else if(order[i].order_status=="pay"){%>orange<%}%>">
+              <%=order[i].order_status %>
+            </a>
+            </td>
+            <td>
+                <span>&#x20B9;</span><%=order[i].total %>
+            </td>
+            <td class="px-4"><a class="btn btn-primary btn-block" href="/admin/order/<%=order[i]._id%>">View</a>
+            </td>
+          </tr>
+          <%}%>
+      </table>
+</div>
+
+</div>
+
+<%- include ('../layouts/adminfooter.ejs') %>

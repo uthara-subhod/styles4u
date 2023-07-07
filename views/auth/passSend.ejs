@@ -1,0 +1,12 @@
+<%- include ('../layouts/userheader.ejs') %>
+<div class="container shadow p-3 mb-5 bg-white rounded col-lg-5 col-8 mt-5">
+    <br>
+    <h5 class="text-center">The email to recover ur password has been sent Please proceed</h5>
+   <%if(user){%>
+    <p class="text-center">Go to profile<a href="/user/<%=user%>" class="text-primary">Profile</a></p>
+    <%}else{%>
+    <p class="text-center">Go to login<a href="/login" class="text-primary">Login</a></p>
+    <%}%>
+</div>
+
+<%- include ('../layouts/userfooter.ejs') %>

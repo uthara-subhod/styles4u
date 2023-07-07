@@ -1,0 +1,185 @@
+<%- include ('../layouts/adminheader.ejs') %>
+<div class="page-inner">
+    <!-- PAGE MAIN WRAPPER
+================================================== -->
+    <div id="main-wrapper">
+        <!-- row -->
+        <div class="row align-items-center grid-margin">
+            <div class="col-12">
+                <div class="card card-white">
+                    <div class="card-body row align-items-center">
+                        <div class="col-12 col-md-4">
+                            <h4 class="mb-4 mb-md-0">Coupons</h4>
+                        </div>
+
+                        <div class="ml-auto col-5">
+                            <form action="">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search by name" name="search">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="input-group-text bg-white text-primary">
+                                            <i class="fa fa-search"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+
+        <!-- row -->
+        <div class="row">
+            <div class="col-12 grid-margin">
+                <div class="card card-white">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-order">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Campaigns Name</th>
+                                        <th scope="col">Code</th>
+                                        <th scope="col">Remaining coupon</th>
+                                        <th scope="col">Expiration Date</th>
+                                        <th scope="col">Creation Date</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for( let i = 0; i < coupon.length; i++ ) { %>
+                                    <tr>
+                                        <td><%=i+1%></td>
+                                        <td><%=coupon[i].couponName%></td>
+                                        <td><%=coupon[i].couponCode%></td>
+                                        <td>
+                                            <div class="custom-progress bg-blue progress mb-2">
+                                                <div
+                                                    class="animated custom-bar progress-bar slideInLeft"
+                                                    style="width: <%=(coupon[i].quantity / 30) * 100%>%"
+                                                    aria-valuemax="100"
+                                                    aria-valuemin="0"
+                                                    aria-valuenow="10"
+                                                    role="progressbar"
+                                                ></div>
+                                            </div>
+                                            <div class="progress-text">
+                                                <div><%=coupon[i].quantity%> of 100 coupon remaining</div>
+                                            </div>
+                                        </td>
+                                        <td><%=coupon[i].startDate.toLocaleDateString()%></td>
+                                        <td><%=coupon[i].endDate.toLocaleDateString()%></td>
+                                        <%if(coupon[i].status==true){%>
+                                        <td>
+                                            <a onclick="active('<%=coupon[i]._id%>')"
+                                                ><i class="fas fa-circle text-success me-2 f-s-10"></i
+                                                >Active</a
+                                            >
+                                        </td>
+                                        <% } else { %>
+                                        <td>
+                                            <a onclick="revoke('<%=coupon[i]._id%>')"
+                                                ><i class="fas fa-circle text-danger me-2 f-s-10"></i
+                                                >Revoked</a
+                                            >
+                                        </td>
+                                        <%}%>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 pb-1 mt-4">
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center">
+                <% if (page> 1) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/admin/coupon?page=<%= page - 1 %>">&laquo; Previous</a>
+                  </li>
+                  <% } %>
+        
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                      <% if (i===page) { %>
+                        <li class="page-item active">
+                          <a class="page-link" href="/admin/coupon?page=<%= i %>">
+                            <%= i %>
+                          </a>
+                        </li>
+                        <% } else { %>
+                          <li class="page-item">
+                            <a class="page-link" href="/admin/coupon?page=<%= i %>">
+                              <%= i %>
+                            </a>
+                          </li>
+                          <% } %>
+                            <% } %>
+        
+                              <% if (page < totalPages) { %>
+                                <li class="page-item">
+                                  <a class="page-link" href="/admin/coupon?page=<%= page + 1 %>">Next &raquo;</a>
+                                </li>
+                                <% } %>
+              </ul>
+            </nav>
+          </div>
+        <!-- end row -->
+    </div>
+</div>
+</div>
+</div>
+
+<!-- SCROLL TO TOP
+================================================== -->
+<a href="#" class="scroll-to-top"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
+
+<!-- ALL JS INCLUDE
+================================================== -->
+<!-- axios cdn -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
+
+<!-- sweet alert cdn -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+const Toast = Swal.mixin({
+toast: true,
+position: "top-end",
+showConfirmButton: false,
+timer: 1000,
+timerProgressBar: true,
+didOpen: (toast) => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
+},
+});
+async function active(id) {
+event.preventDefault();
+await axios.post("/admin/active_coupon/" + id).then(() => {
+    // if (response.data.statu)
+    Toast.fire({
+        icon: "success",
+        title: "Coupen status updated successfully",
+    });
+    location.reload();
+});
+}
+async function revoke(id) {
+event.preventDefault();
+await axios.post("/admin/revoke_coupon/" + id).then(() => {
+    // if (response.data.satu == false)
+    Toast.fire({
+        icon: "success",
+        title: "Coupon status updated successfully",
+    });
+    location.reload();
+});
+}
+</script>
+
+<%- include ('../layouts/adminfooter.ejs') %>

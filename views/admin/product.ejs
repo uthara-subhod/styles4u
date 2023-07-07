@@ -1,0 +1,154 @@
+<%- include('../layouts/adminheader.ejs') %>
+<div class="container p-3 mb-5 bg-secondary rounded col-lg-8 col-8 mt-5">
+  <form action="/admin/product/<% if (item) { %>edit<% } else { %>add<% } %>" method="post" enctype="multipart/form-data">
+    <div class="container bg-white p-4 mb-4">
+      <div class="form-outline mb-3">
+        <label for="MultipleFile" class="form-label">Product Images</label>
+        <div class="file-upload col-12">
+          <button class="file-upload-btn btn-primary btn-block" type="button" onclick="$('.file-upload-input').trigger('click')">Add Images</button>
+        
+          <div class="image-upload-wrap">
+            <input class="file-upload-input" type="file" onchange="readURL(this);" name="images" multiple />
+            <div class="drag-text">
+              <% if (item) { %>
+                <% for (var i = 0; i < item.productImages.length; i++) { %>
+                  <img class="file-upload-image" src="<%= item.productImages[i] %>">
+                <% } %>
+              <% } %>
+            </div>
+          </div>
+          <div class="file-upload-content">
+            <div class="image-preview">
+              <!-- Preview images will be shown here dynamically -->
+            </div>
+            <div class="image-title-wrap">
+              <button type="button" onclick="removeUpload()" class="btn btn-danger">Remove <span class="image-title">Uploaded Images</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container bg-white p-4 mb-4">
+      <div class="form-outline mb-4">
+        <label class="form-label" for="name">Product Name</label>
+        <div class="input-group form-outline mb-4">
+          <input type="text" id="name" name="name" class="form-control" placeholder="Enter a name for your product..." <% if (item) { %>value="<%= item.productName %>" <% } %> required/>
+        </div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-4">
+          <label class="form-label" for="price">Price</label>
+          <input type="text" class="form-control" id="price" name="price" placeholder="0.00" pattern="[0-9]+" <% if (item) { %>value="<%= item.price %>" <% } %> required>
+        </div>
+        <div class="col-4">
+          <label class="form-label" for="brand">Brand</label>
+          <input type="text" class="form-control" id="brand" name="brand" placeholder="Brand Name..." <% if (item) { %>value="<%= item.brand %>" <% } %> required>
+        </div>
+        <div class="col-4">
+          <label class="form-label" for="color">Color</label>
+          <select class="form-control border-secondary col-12 text-lg" name="color">
+            <option value="Red" <% if (item && item.color === "Red") { %>selected<% } %>>Red</option>
+            <option value="Blue" <% if (item && item.color === "Blue") { %>selected<% } %>>Blue</option>
+            <option value="White" <% if (item && item.color === "White") { %>selected<% } %>>White</option>
+            <option value="Black" <% if (item && item.color === "Black") { %>selected<% } %>>Black</option>
+            <option value="Yellow" <% if (item && item.color === "Yellow") { %>selected<% } %>>Yellow</option>
+            <option value="Green" <% if (item && item.color === "Green") { %>selected<% } %>>Green</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-outline mb-4">
+        <label class="form-label">Category</label>
+        <br>
+        <select class="form-control border-secondary col-12 text-lg" name="category">
+          <% if (item) { %>
+            <option value="<%= item.category %>,<%= item.subcategory %>" selected><%= item.category %>,<%= item.subcategory %></option>
+            <% for (var i = 0; i < cat.length; i++) { %>
+              <% if (item.subcategory !== item.category) { %>
+                <option value="<%= cat[i].name %>,<%= cat[i].name %>"><%= cat[i].name %> </option>
+              <% } %>
+              <% if (cat[i].sub.length) { %>
+                <% for (var j = 0; j < cat[i].sub.length; j++) { %>
+                  <option value="<%= cat[i].name %>,<%= cat[i].sub[j] %>"><%= cat[i].name %>,<%= cat[i].sub[j] %> </option>
+                <% } %>
+              <% } %>
+            <% } %>
+          <% } else { %>
+            <% for (var i = 0; i < cat.length; i++) { %>
+              <option value="<%= cat[i].name %>,<%= cat[i].name %>"><%= cat[i].name %> </option>
+              <% if (cat[i].sub.length) { %>
+                <% for (var j = 0; j < cat[i].sub.length; j++) { %>
+                  <option value="<%= cat[i].name %>,<%= cat[i].sub[j] %>"><%= cat[i].name %>,<%= cat[i].sub[j] %> </option>
+                <% } %>
+              <% } %>
+            <% } %>
+          <% } %>
+        </select>
+      </div>
+      <p class="form-label"><u>Quantity Per Size</u></p>
+      <div class="row mb-4">
+        <div class="col-4 px-0">
+          <div class="row mb-3 ml-2">
+            <label for="xs" class="col-lg-3 col-md-4 col-sm-6 col-form-label">XS</label>
+            <div class="col-lg-5 col-sm-5 px-0">
+              <input type="number" class="form-control" id="xs" name="xs" min="0" <% if (item) { %>value="<%= item.size.xs %>" <% } %> required>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 px-0">
+          <div class="row mb-3">
+            <label for="s" class="col-lg-3 col-md-4 col-sm-6 col-form-label">S</label>
+            <div class="col-lg-5 col-sm-5 px-0">
+              <input type="number" class="form-control" id="s" name="s" min="0" <% if (item) { %>value="<%= item.size.s %>" <% } %> required>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 px-0">
+          <div class="row mb-3">
+            <label for="m" class="col-lg-3 col-md-4 col-sm-6 col-form-label">M</label>
+            <div class="col-lg-5 col-sm-5 px-0">
+              <input type="number" class="form-control" id="m" name="m" min="0" <% if (item) { %>value="<%= item.size.m %>" <% } %> required>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 px-0">
+          <div class="row mb-3 ml-2">
+            <label for="l" class="col-lg-3 col-md-4 col-sm-6 col-form-label">L</label>
+            <div class="col-lg-5 col-sm-5 px-0">
+              <input type="number" class="form-control" id="l" name="l" min="0" <% if (item) { %>value="<%= item.size.l %>" <% } %> required>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 px-0">
+          <div class="row mb-3">
+            <label for="xl" class="col-lg-3 col-md-4 col-sm-6 col-form-label">XL</label>
+            <div class="col-lg-5 col-sm-5 px-0">
+              <input type="number" class="form-control" id="xl" name="xl" min="0" <% if (item) { %>value="<%= item.size.xl %>" <% } %> required>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-outline mb-4">
+        <label class="form-label" for="blurb">A Short Description About the Product</label>
+        <textarea class="form-control" id="textAreaExample" rows="4" name="blurb" required><%= item ? item.blurb : "" %></textarea>
+      </div>
+      <div class="form-outline mb-4">
+        <label class="form-label" for="details">Details</label>
+        <textarea class="form-control" id="textAreaExample" rows="8" name="details" required><%= item ? item.details : "" %></textarea>
+      </div>
+    </div>
+  </div>
+  <input type="hidden" name="id" <%if(item){%>value="<%=item._id%>"<%}%>>
+  <% if (message) { %>
+    <p style="color: red; text-align: center"><%= message %></p>
+  <% } %>
+  <!-- Submit button -->
+  <div class="d-flex justify-content-center">
+    <button type="submit" class="btn btn-primary btn-block mb-4 col-lg-3">
+      Create
+    </button>
+  </div>
+</form>
+</div>
+
+
+<%- include('../layouts/adminfooter.ejs') %>

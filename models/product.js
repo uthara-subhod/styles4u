@@ -58,10 +58,17 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
+    type: String,
     required:true,
   },
+  subcategory:{
+    type:String,
+    require:true
+  },
+  deleted:{
+    type:Boolean,
+    default:false,
+  }
 });
 
 module.exports = mongoose.model("products", productSchema);

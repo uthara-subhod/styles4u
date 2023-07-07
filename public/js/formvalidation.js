@@ -1,5 +1,5 @@
 let form=document.querySelector('#form1');
-
+let form2=document.querySelector('#form2');
 const email= document.querySelector('#email');
 const username=document.querySelector('#username');
 const password=document.querySelector('#password');
@@ -59,3 +59,28 @@ form.addEventListener('submit', function (e) {
     }
 
   });
+
+  form2.addEventListener('submit', function (e) {
+    let error=false
+    e.preventDefault();
+    if(!passwordRegex.test(password.value)){
+      document.getElementById("password_error").style.display="block"
+      error=true
+    }else{
+      document.getElementById("password_error").style.display="none"
+      if(confirm){
+          if(password.value!=confirm.value){
+              document.getElementById("re_password_error").style.display="block"
+              error=true
+            }
+            else{
+              document.getElementById("re_password_error").style.display="none"
+            }
+      }
+    }
+      if(!error){
+        form.submit()
+      }
+  
+    });
+  

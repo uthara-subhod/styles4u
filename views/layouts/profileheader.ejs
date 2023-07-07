@@ -7,7 +7,7 @@
 
 
     <!-- Favicon -->
-    <link href="images/fashion-heart-like-svgrepo-com.svg" rel="icon">
+    <link href="/images/fashion-heart-like-svgrepo-com.svg" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -17,7 +17,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -39,31 +39,79 @@
         </div>
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
-                <a href="" class="text-decoration-none">
+                <a href="/" class="text-decoration-none">
                     <h1 class="m-0 px-4 display-5">Styles<span class="text-primary px-1 mr-1">4U</span></h1>
                 </a>
             </div>
-            <div class="col-lg-6 col-6 text-left">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-3 col-6 text-right">
-                <a href="" class="btn border">
+            <div class="col-lg-3 col-6 text-right ml-auto">
+                <a href="/wishlist" class="btn border">
                     <i class="fas fa-heart text-primary"></i>
-                    <span class="badge">0</span>
+                    <span class="badge"><%=wishCount%></span>
                 </a>
-                <a href="" class="btn border">
+                <a href="/cart" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
+                    <span class="badge"><%=cartCount%></span>
                 </a>
             </div>
         </div>
     </div>
+    <div class="container-fluid  bg-img mb-5" style="background-image: url('https://img.freepik.com/premium-photo/fashion-model-outdoor-portrait-tourist-woman-enjoying-sightseeing-lviv-girl-looking-ancient-atchitecture_106029-855.jpg'); background-repeat: no-repeat; background-size: cover; background-position-y:30%;  height:35vh">
+        <div class="container d-flex align-items-center ">
+    
+            <div class="pt-5">
+              <p class="text-light text-normal" style="font-size: 3.5vw;">My Profile</p>
+              <ul class="list-inline">
+                <li class="list-inline-item"><a href="/" class=" text-light">Home</a></li>
+                <li class="list-inline-item text-light">&gt;</li>
+                <li class="list-inline-item"><a href="#" class=" text-light">My Profile</a></li>
+              </ul>
+            </div>
+          </div>
+      </div>
+    <!-- ACCOUNT
+    ================================================== -->
+    <section class="md">
+        
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- left panel -->
+                <div class="col-lg-4 col-sm-9 mb-2-3 mb-lg-0">
+                    <div class="sticky-top">
+                        <div class="p-4">
+                            <div class="text-center">
+                                <div class="pb-3">
+                                    <img
+                                        class="img-fluid rounded-circle img-thumbnail"
+                                        src="https://media.istockphoto.com/id/1316947194/vector/messenger-profile-icon-on-white-isolated-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=1iQ926GXQTJkopoZAdYXgU17NCDJIRUzx6bhzgLm9ps="
+                                        alt="..."
+                                        width="150px", height="150px"
+                                    />
+                                </div>
+                                <h5 class="mb-0"><%=user.username%></h5>
+                                <p>Joined <%=user.createdDate.toLocaleDateString('en-US', { 
+                                    month: 'long', 
+                                    day: 'numeric' ,
+                                    year: 'numeric', 
+                                  });%></p>
+                            </div>
+                        </div>
+    
+                        <div class="list-group">
+                            <%if(url=='profile'){%>
+                            <a class="list-group-item text-dark bg-primary" href="/user/<%=user.username%>">Profile</a>
+                            <a class="list-group-item text-dark" href="/user/<%=user.username%>/orders">Orders</a>
+                            <a class="list-group-item text-dark" href="/user/<%=user.username%>/address">Addresses</a>
+                            <%}else if(url=='orders'){%>
+                            <a class="list-group-item text-dark" href="/user/<%=user.username%>">Profile</a>
+                            <a class="list-group-item text-dark bg-primary" href="/user/<%=user.username%>/orders">Orders</a>
+                            <a class="list-group-item text-dark" href="/user/<%=user.username%>/address">Addresses</a>
+                            <%}else{%>
+                            <a class="list-group-item text-dark" href="/user/<%=user.username%>">Profile</a>
+                            <a class="list-group-item text-dark" href="/user/<%=user.username%>/orders">Orders</a>
+                            <a class="list-group-item text-dark bg-primary" href="/user/<%=user.username%>/address">Addresses</a>
+                            <%}%>
+                          </div>
+
+                          <a href="/logout" class="btn btn-primary mt-3 btn-block">Log Out</a>
+                    </div>
+                </div>

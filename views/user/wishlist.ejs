@@ -1,0 +1,111 @@
+<%- include ('../layouts/homeheader.ejs') %>
+
+
+            <!-- PAGE TITLE
+        ================================================== -->
+            </div>
+        </div>
+    </div>
+        <div class="container-fluid  bg-secondary mb-5" style="height:35vh">
+            <div class="container d-flex align-items-center justify-content-center">
+        
+                <div class="pt-5">
+                  <p class="text-dark text-normal text-center" style="font-size: 3.5vw;">My Wishlist</p>
+                  <ul class="list-inline text-center">
+                    <li class="list-inline-item"><a href="/">Home</a></li>
+                    <li class="list-inline-item ">&gt;</li>
+                    <li class="list-inline-item"><a href="">Wishlist</a></li>
+                  </ul>
+                </div>
+              </div>
+          </div>
+
+            <!-- CART TABLE
+        ================================================== -->
+            <section class="md">
+                <div class="container">
+                    <div class="table-responsive">
+                        <% if (wishlist==null || wishlist.items.length == 0) { %>
+                        <div>
+                            <div>
+                                <h3>wishlist is empty</h3>
+                                <br /><br />
+                                <div>
+                                    <a class="butn-style2" href="/shop">Continue Shopping</a>
+                                </div>
+                            </div>
+                        </div>
+                        <% } else { %>
+                        <table class="table v-align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Brand</th>
+                                    <th>Delete</th>
+                                    <!-- <th>Add To Cart</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%for(wishlist of wishlist.items){%>
+                                <tr>
+                                    <td>
+                                        <img
+                                            style="width: 70px;"
+                                            src="<%=wishlist.product.productImages[0]%>"
+                                            alt="..."
+                                        />
+                                    </td>
+                                    <td><a><%=wishlist.product.productName%></a></td>
+                                    <td class="product-price"><span>$</span><%=wishlist.product.price%></td>
+                                    <td class="product-brand"><%=wishlist.product.brand%></td>
+                                    <td>
+                                        <a onclick="deleteItem('<%=wishlist.product._id%>')"
+                                            ><i class="fas fa-trash"></i
+                                        ></a>
+                                    </td>
+
+                                </tr>
+                                <%}%> <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+            <!-- SCROLL TO TOP
+    ================================================== -->
+            <!-- all js include start -->
+
+            <!-- axios cdn -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
+
+            <!-- sweet alert cdn -->
+            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+            function deleteItem(productId) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Are you sure?",
+                    text: "Product remove form wishlist!",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "remove",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.delete(`/wishlist/delete?productId=${productId}`).then((result) => {
+                            Swal.fire("removed!", "item has been removed.", "success").then((response) => {
+                                location.reload();
+                            });
+                        });
+                    }
+                });
+            }
+        </script>
+
+            <%- include('../layouts/userfooter.ejs') %>

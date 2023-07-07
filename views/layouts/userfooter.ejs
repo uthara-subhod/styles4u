@@ -61,10 +61,180 @@
   </div>
 </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+<!-- axios cdn -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
+
+<!-- sweet alert cdn -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('.zoom').elevateZoom({
+        zoomWindowWidth: 250, 
+      zoomWindowHeight: 200
+    });
+  });
+</script>
+
+<script>
+    async function addtocartShop(id) {
+        try {
+            const selectedSize = document.querySelector('input[name="size"]:checked').value;
+            let result = await axios({
+                method: "post",
+                url: "/cart/add",
+                data: {
+                    id,
+                    size: selectedSize,
+                },
+            });
+
+            if (result.data.response == "productExist") {
+                await Swal.fire({
+                    icon: "error",
+                    title: "Product already exist",
+                    showConfirmButton: false,
+                    timer: 1000,
+                });
+            } else if (result.data.response == "outofstock") {
+                await Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Product Out of Stock",
+                    showConfirmButton: false,
+                    timer: 1000,
+                });
+            } else {
+                if (result.data.response == true) {
+                    await Swal.fire({
+                        icon: "success",
+                        title: "done",
+                        text: "Product added to cart",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    location.reload()
+                } else {
+                    if (result.data.status == true) {
+                        await Toast.fire({
+                            icon: "success",
+                            title: "New product added successfully",
+                        });
+                        location.reload()
+                    } else {
+                        await Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            text: "You have to login first",
+                        });
+                        location.href = "/login";
+                    }
+                }
+            }
+        } catch (error) {
+            console.log("eroor");
+        }
+    }
+
+    async function addtowishlist(id) {
+        try {
+            let result = await axios({
+                method: "post",
+                url: "/wishlist/add",
+                data: {
+                    id,
+                },
+            });
+            if (result.data.response == "productExist") {
+                await Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Product already exist in wishlist",
+                    showConfirmButton: false,
+                    timer: 1000,
+                });
+            } else {
+                if (result.data.response == true) {
+                    await Swal.fire({
+                        icon: "success",
+                        title: "done",
+                        text: "Product added to wishlist",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    location.reload()
+                } else {
+                    if (result.data.status == true) {
+                        await Swal.fire({
+                            icon: "success",
+                            title: "done",
+                            text: "New product added",
+                            showConfirmButton: false,
+                            timer: 1000,
+                        });
+                        location.reload()
+                    } else {
+                        await Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            text: "You have to login first",
+                        });
+                        location.href = "/login";
+                    }
+                }
+            }
+        } catch (error) {
+            console.log("eroor");
+        }
+    }
+    
+    async function cod(id){
+        try{
+            let result = await axios({
+                method: "post",
+                url: "/user/order/cod",
+                data: {
+                    id,
+                },
+            });
+            if(result.data.status){
+                await Swal.fire({
+                    icon: "success",
+                    title: "Payment Done",
+                    text: "Hope to see you again!",
+                    showConfirmButton: false,
+                    timer: 1000,
+                });
+                location.reload();
+            }else{
+                await Swal.fire({
+                    icon: "error",
+                    title: "Payment failed",
+                    text: "Please try again :(",
+                    showConfirmButton: false,
+                    timer: 1000,
+                });
+                location.reload();
+            }
+        }catch(err){
+        }
+    }
+    </script>
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 <script src="lib/easing/easing.min.js"></script>
 <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
 
 <!-- Contact Javascript File -->
 <script src="mail/jqBootstrapValidation.min.js"></script>
