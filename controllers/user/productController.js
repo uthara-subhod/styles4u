@@ -1,10 +1,12 @@
 const Product = require("../../models/product");
 const Category = require("../../models/category");
+const Banner =require("../../models/banner")
 
 
 //home -get
 const loadHome = async (req, res) => {
   try {
+    const banner= await Banner.find()
     const categories = await Category.find()
     const name = categories.map(category => category.name)
     const products = await Product.find({ category: { $in: name } })
@@ -17,9 +19,9 @@ const loadHome = async (req, res) => {
     }
 
     if (!req.session.user) {
-      res.render("home", { user: null, cat: categories, url: '/', productValue, products });
+      res.render("home", { user: null, cat: categories, url: '/', productValue, products , banner});
     } else {
-      res.render("home", { user: req.session.user, cat: categories, url: '/', cartCount: res.locals.count, wishCount: res.locals.wishlist, products, productValue });
+      res.render("home", { user: req.session.user, cat: categories, url: '/', cartCount: res.locals.count, wishCount: res.locals.wishlist, products, productValue, banner });
     }
   } catch (err) {
     res.send(err)

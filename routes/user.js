@@ -75,6 +75,10 @@ router.post('/checkout/address',orderController.shippingAddress)
 
 router.post('/checkout/couponCheck',orderController.couponCheck)
 
+router.post('/checkout/pay', orderController.checkoutPayment)
+
+router.post('/checkout/placeOrder',orderController.placeOrder)
+
 
 //login
 router.get('/login',session.isLogOut, userController.loadlogin)

@@ -1,13 +1,15 @@
 <%- include ('./layouts/homeheader.ejs') %>
+</div>
+</div>
 <div id="header-carousel" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active" style="height: 410px;">
-            <img class="img-fluid" src="https://images.unsplash.com/photo-1574334794377-2758ccbc3b0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=385&q=80" alt="Image">
+            <img class="img-fluid" src="<%=banner[0].bannerImage%>" alt="Image">
             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                 <div class="p-3" style="max-width: 700px;">
-                    <h4 class="text-light text-uppercase font-weight-light mb-3">10% Off Your First Order</h4>
-                    <h3 class="display-4 text-white mb-4">Women's Fashion</h3>
-                    <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
+                    <h4 class="text-light text-uppercase font-weight-light mb-3"><%=banner[0].description%></h4>
+                    <h3 class="display-4 text-white mb-4"><%=banner[0].title%></h3>
+                    <a href="<%=banner[0].url%>" class="btn btn-light py-2 px-3">Shop Now</a>
                 </div>
             </div>
         </div>
@@ -17,7 +19,7 @@
                 <div class="p-3" style="max-width: 700px;">
                     <h4 class="text-light text-uppercase font-weight-light mb-3">10% Off Your First Order</h4>
                     <h3 class="display-4 text-white mb-4">Cosmetics</h3>
-                    <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
+                    <a href="/shop" class="btn btn-light py-2 px-3">Shop Now</a>
                 </div>
             </div>
         </div>
@@ -34,8 +36,7 @@
     </a>
 </div>
 </div>
-</div>
-</div>
+x
 <div class="container">
 <div class="container-fluid pt-5">
         <div class="row px-xl-5 pb-3">

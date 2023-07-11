@@ -20,8 +20,13 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
+  
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.4/css/buttons.dataTables.min.css" />
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
 
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 <style>
     body {
@@ -81,9 +86,9 @@
           aria-controls="collapseExample1">
             <i class="fas fa-solid fa-rectangle-list fa-fw me-3"></i><span>Category</span>
           </a>
-          <ul id="collapseExample1" class="collapse show list-group list-group-flush">
+          <ul id="collapseExample1" class="collapse list-group list-group-flush <% if(url=="category"){%> show<%}%>">
             <li class="list-group-item py-1">
-              <a href="/admin/category" class="text-reset">Categories</a>
+              <a href="/admin/category" class="text-reset" >Categories</a>
             </li>
             <li class="list-group-item py-1">
               <a href="/admin/category/main/add" class="text-reset">Add Category</a>
@@ -98,7 +103,7 @@
           aria-controls="collapseExample2">
             <i class="fas fa-solid fa-bag-shopping fa-fw me-3"></i><span>Product</span>
           </a>
-          <ul id="collapseExample2" class="collapse show list-group list-group-flush">
+          <ul id="collapseExample2" class="collapse list-group list-group-flush <% if(url=="product"){%> show<%}%>">
             <li class="list-group-item py-1">
               <a href="/admin/product" class="text-reset">Products</a>
             </li>
@@ -106,8 +111,8 @@
               <a href="/admin/product/add" class="text-reset">Add Product</a>
             </li>
           </ul>
-          <a href="/admin/order" class="list-group-item list-group-item-action py-2 ripple <% if(url=="order"){%> active<%}%>"><i
-              class="fas fa-cart-shopping fa-fw me-3"></i><span>Orders</span></a>
+          <a href="/admin/order" class="list-group-item list-group-item-action py-2 ripple <% if(url=="order"){%> active<%}%>">
+            <i class="fas fa-cart-shopping fa-fw me-3"></i><span>Orders</span></a>
           <a href="/admin/customer" class="list-group-item list-group-item-action py-2 ripple <% if(url=="user"){%> active<%}%>">
             <i class="fas fa-solid fa-user fa-fw me-3"></i><span>Customers</span>
           </a>
@@ -117,14 +122,28 @@
           aria-controls="collapseExample3">
             <i class="fas fa-solid fa-ticket fa-fw me-3"></i><span>Coupon</span>
           </a>
-          <ul id="collapseExample3" class="collapse show list-group list-group-flush">
+          <ul id="collapseExample3" class="collapse list-group list-group-flush <% if(url=="coupon"){%> show<%}%>">
             <li class="list-group-item py-1">
               <a href="/admin/coupon" class="text-reset">Coupons</a>
             </li>
             <li class="list-group-item py-1">
               <a href="/admin/coupon/add" class="text-reset">Add Coupon</a>
             </li>
-          </ul>         
+          </ul>
+          <a class="list-group-item list-group-item-action py-2 ripple <% if(url=="banner"){%> active<%}%>" data-toggle="collapse"
+            href="#collapseExample3"
+            aria-expanded="true"
+            aria-controls="collapseExample3">
+              <i class="fas fa-solid fa-ticket fa-fw me-3"></i><span>Banner</span>
+            </a>
+            <ul id="collapseExample3" class="collapse list-group list-group-flush <% if(url=="banner"){%> show<%}%>">
+              <li class="list-group-item py-1">
+                <a href="/admin/banner" class="text-reset">Banners</a>
+              </li>
+              <li class="list-group-item py-1">
+                <a href="/admin/banner/add" class="text-reset">Banner</a>
+              </li>
+            </ul>                  
       </div>
     </nav>
     <!-- Sidebar -->

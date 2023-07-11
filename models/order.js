@@ -59,6 +59,9 @@ const orderSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "coupon",
         },
+        razorpay_order_id:{
+            type:String,
+        }
     },
 );
 const orderModel = mongoose.model("order", orderSchema);

@@ -141,7 +141,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form method="post" action="/checkout">
+                                <form method="post" action="/checkout" id="checkoutPost">
                                     <div class="card mt-4">
                                         <div class="card-header pt-4">
                                             <h6>Address</h6>
@@ -347,8 +347,7 @@
                                             </div>
 
                                         </label>
-                                        <label class="col-12" style="padding: 0 !important;" data-toggle="collapse"
-                                            data-target="#card-details">
+                                        <label class="col-12" style="padding: 0 !important;" >
                                             <input type="radio" name="payment" class="card-input-element" value="online"
                                                 onclick="payment('online')" />
 
@@ -357,8 +356,8 @@
                                             </div>
                                         </label>
                                         <div class="collapse card" id="card-details">
-                                            <div class="my-4 mx-3">
-                                            </div>
+                                        //     <div class="my-4 mx-3">
+                                        //     </div>
                                         </div>
                                     </div>
 
@@ -410,6 +409,8 @@
     </div>
     <!-- Checkout End -->
 
+    
+    
     <script>
         function charge(id) {
             let change = axios({
@@ -550,11 +551,19 @@
                     document.getElementById("deductedAmt").innerHTML=`&#x20B9;${result.data.discount.amount}`
                 }else{
                     let total=parseInt(document.getElementById("deductedPrice").value)
-                    let deducted=parseInt(document.getElementById("deductedPrice").value)*(parseInt(result.data.discount.amount)/100)
+                    let deducted=Math.round(parseInt(document.getElementById("deductedPrice").value)*(parseInt(result.data.discount.amount)/100))
                     let diff=total-deducted
                     document.getElementById("deductedAmt").innerHTML=`&#x20B9;${deducted}`
                     document.getElementById("deductedPrice").value=`${diff}`
                     document.getElementById("couponId").value=`${result.data.id}`
+                    if(!document.getElementById("totalPrice").value){
+                        document.getElementById("total").innerHTML = `&#x20B9;${diff}.00`;
+                    } else{
+                       document.getElementById("totalPrice").value-=deducted
+                       let totalPrice=document.getElementById("totalPrice").value
+                       document.getElementById("total").innerHTML = `&#x20B9;${totalPrice}.00`;
+                    }
+                    
                 }
                 
                

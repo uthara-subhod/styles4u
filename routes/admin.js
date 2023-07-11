@@ -5,10 +5,21 @@ const user=require('../controllers/admin/userController')
 const category=require('../controllers/admin/categoryController')
 const order=require('../controllers/admin/orderController')
 const coupon=require('../controllers/admin/couponController')
+const banner = require('../controllers/admin/bannerController')
 const multer=require('../middlwares/multer')
 const session=require('../middlwares/session')
 
 router.use(session.admin)
+
+
+//dashboard
+router.get('/', order.loadDashboard)
+
+router.get('/report/yearly', order.report)
+
+router.post("/report/month", order.sales);
+
+router.post("/report/daily", order.daily);
 
 
 //user management
@@ -60,5 +71,12 @@ router.get('/coupon', coupon.loadCoupons)
 
 router.get('/coupon/add',coupon.loadCoupon)
 router.post('/coupon/add', coupon.addCoupon)
+
+router.post('/coupon/status',coupon.changeStatus)
+
+
+//banner management
+router.get('/banner/add',banner.loadBanner)
+router.post('/banner/add',multer.Upload,banner.addBanner)
 
 module.exports=router

@@ -1,12 +1,81 @@
 <%- include ('../layouts/homeheader.ejs') %>
 </div></div></div>
-<div class="container shadow p-3 mb-5 bg-white rounded col-lg-5 col-8 mt-5">
-    <br>
+        <div id="successful" class="container shadow p-3 mb-5 bg-white rounded col-lg-5 col-8 mt-5" <%if(order.payment_method!="cod"){%>style="display:none;"<%}%> >
+            <br>
+        <div class=" text-center pt-3" style="height:150px">
+            <i class="fa-solid fa-circle-check fa-beat text-success" style="font-size: 100px"></i>
+            </div> 
+        <h5 class="text-center">Your Order has been successfully placed</h5>
+        <p class="text-center"><a href="/shop" class="text-primary">Continue Shopping</a></p>
+    </div>
+    <div id="pendinG" class="container shadow p-3 mb-5 bg-white rounded col-lg-5 col-8 mt-5" <%if(order.payment_method=="cod"){%>style="display:none;"<%}%> >
+        <br>
     <div class=" text-center pt-3" style="height:150px">
-    <i class="fa-solid fa-circle-check fa-beat text-success" style="font-size: 100px"></i>
-    </div> 
-    <h5 class="text-center">Your Order has been successfully placed</h5>
-    <p class="text-center"><a href="/shop" class="text-primary">Continue Shopping</a></p>
-</div>
+        <i class="fa-solid fa-spinner fa-spin" style="font-size: 100px"></i>
+        </div> 
+    <h5 class="text-center">Just one more step..!</h5>
+    <p class="text-center"><a class="text-primary" onclick="razorpay('<%=order._id%>')">Please proceed to our payment gateway to comlepte your order</a></p>
+    </div>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    async function razorpay(id){
+        let change =await axios({
+                method: "post",
+                url: "/checkout/pay",
+                data: {
+                    id,
+                },
+            }).then((data) => {
+               if(data.data.status){
+                
+                var options = {
+                            "key": ""+data.data.key_id+"",
+                            "amount": ""+data.data.amount+"",
+                            "currency": "INR",
+                            "order_id": ""+data.data.order_id+"",
+                            "handler": function (response) {
+    // Payment succeeded
+    alert("Payment Succeeded");
 
+    // Get the payment ID from the response
+    var paymentId = response.razorpay_payment_id;
+
+    // Create the payload for the POST request
+    var payload = {
+      orderId: data.data.id,
+      paymentId: paymentId
+      // Include any other required data
+    };
+    console.log(payload)
+
+    // Make the POST request to your backend
+    axios.post('/checkout/placeOrder', payload)
+      .then(function (response) {
+        if(response.data.status){
+            document.getElementById('successful').style.display='block';
+        document.getElementById('pendinG').style.display='none'
+        console.log(response.data);
+        }else{
+        document.getElementById('pendinG').innerHTML='Error'
+        console.log(response.data);
+        }
+       
+      })
+      .catch(function (error) {
+        document.getElementById('pendinG').innerHTML='Error'
+        console.log(response.data);
+        console.log(error);
+      });
+  },
+                        };
+                        var razorpayObject = new Razorpay(options);
+                        razorpayObject.on('payment.failed', function (response){
+                                alert("Payment Failed");
+                        });
+                        razorpayObject.open();
+               }
+            });
+    }
+    
+    </script>
 <%- include ('../layouts/userfooter.ejs') %>

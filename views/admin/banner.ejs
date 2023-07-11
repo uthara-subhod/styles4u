@@ -1,0 +1,146 @@
+<%- include ('../layouts/adminheader.ejs') %>
+
+<div class="container p-3 mb-5 bg-secondary rounded col-lg-8 col-8 mt-5">
+                <form
+                    id="form"
+                    method="post"
+                    action="/admin/banner/add"
+                    enctype="multipart/form-data"
+                >
+
+                        <div class="form-outline mb-4 bg-white p-3">
+                            <label for="validationCustom01">Title</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="title"
+                                id="validationCustom01"
+                                required
+                            />
+                        </div>
+                        <div class="form-outline mb-4 bg-white p-3">
+                            <label class="form-label" for="blurb">A Short Description about banner</label>
+                            <textarea class="form-control" id="myTextarea" rows="2" name="description" required></textarea>
+                            <p style="color:rgb(191, 191, 191)">Characters remaining: <span id="charCount">30</span></p>
+                          </div>
+
+                        <div class="form-outline mb-4 bg-white p-3">
+                            <label for="validationCustom02">URL</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="url"
+                                id="validationCustom02"
+                                required
+                            />
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                        <div class="form-outline mb-3 bg-white p-3">
+                            <label for="MultipleFile" class="form-label">Banner Image</label>
+                              <button class="file-upload-btn btn btn-primary" type="button" onclick="$('.file-upload-input').trigger('click')">Add Image</button>
+                            <div class="file-upload col-12">
+                              <div class="image-upload-wrap d-none">
+                                <input class="file-upload-input" type="file" onchange="readURL(this);" name="image"/>
+                              </div>
+                              <div class="file-upload-content">
+                                <div class="image-preview">
+                                  <!-- Preview images will be shown here dynamically -->
+                                </div>
+                                <div class="image-title-wrap">
+                                  <button type="button" onclick="removeUpload()" class="btn btn-danger">Remove <span class="image-title">Uploaded Image</span></button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <div class="col-md-12">
+                            <div class="text-center m-3">
+                                <button type="submit" class="btn btn-primary">
+                                    SUBMIT
+                                </button>
+                            </div>
+                        </div>
+
+                </form>
+            </div>
+
+    </div>
+</main>
+<script>
+         const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 1000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+    });
+    const message=`<%=message%>`
+    if(message=="add") {
+        Toast.fire({
+            icon: "success",
+            title: "Banner added successfully",
+        })
+    }else if(message){
+        Toast.fire({
+            icon: "error",
+            title: "Banner already exists",
+        })
+    }
+</script>
+<script>
+    const textarea = document.getElementById('myTextarea');
+    const charCount = document.getElementById('charCount');
+    const maxLength = 30; // Maximum number of characters
+  
+    textarea.addEventListener('input', function () {
+      const remainingChars = maxLength - textarea.value.length;
+  
+      charCount.textContent = remainingChars;
+  
+      if (remainingChars <= 0) {
+        // Prevent further input
+        textarea.value = textarea.value.slice(0, maxLength);
+      }
+    });
+  </script>
+  <script>
+    function readURL(input) {
+      if (input.files && input.files.length > 0) {
+        $('.image-upload-wrap').hide();
+        $('.image-preview').empty();
+  
+        for (var i = 0; i < input.files.length; i++) {
+          var reader = new FileReader();
+  
+          reader.onload = function (e) {
+            var image = $('<img>').attr('src', e.target.result).addClass('file-upload-image');
+            $('.image-preview').append(image);
+          };
+  
+          reader.readAsDataURL(input.files[i]);
+        }
+  
+        $('.file-upload-content').show();
+      } else {
+        removeUpload();
+      }
+    }
+  
+    function removeUpload() {
+      $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+      $('.file-upload-content').hide();
+      $('.image-upload-wrap').show();
+    }
+  
+    $('.image-upload-wrap').bind('dragover', function () {
+      $('.image-upload-wrap').addClass('image-dropping');
+    });
+  
+    $('.image-upload-wrap').bind('dragleave', function () {
+      $('.image-upload-wrap').removeClass('image-dropping');
+    });
+  </script>
+<%- include ('../layouts/adminfooter.ejs') %>

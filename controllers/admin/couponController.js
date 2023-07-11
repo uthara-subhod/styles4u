@@ -14,10 +14,39 @@ const loadCoupons = async (req, res) => {
     if (req.query.search) {
         search = req.query.search;
     }
-    const coupon = await Coupon.find({ couponName: { $regex: new RegExp(search, "i") } },
-    ).skip((page - 1) * 5)
-    .limit(5);
-    res.render('admin/coupons', { url: "coupon", coupon,page,totalPages, })
+    const coupon = await Coupon.find(
+        { couponName: { $regex: new RegExp(search, "i") } }
+      )
+        .skip((page - 1) * 5)
+        .limit(5);
+        
+      const totalUses = [];
+      
+      for (const c of coupon) {
+        const uses = await Coupon.aggregate([
+          {
+            $match: {
+              _id: c._id
+            }
+          },
+          {
+            $unwind: "$owner"
+          },
+          {
+            $group: {
+              _id: null,
+              totalUses: { $sum: "$owner.uses" }
+            }
+          }
+        ]);
+        
+        if (uses.length > 0) {
+          totalUses.push(c.quantity+(uses[0].totalUses));
+        }else{
+            totalUses.push(c.quantity);
+        }
+      }
+    res.render('admin/coupons', { url: "coupon", coupon,page,totalPages, totalUses})
 }
 
 
@@ -55,9 +84,20 @@ const addCoupon = async (req, res) => {
     }
 }
 
+const changeStatus = async (req,res) => {
+    try{
+     const coupon= await Coupon.findOneAndUpdate({ _id: req.query.id }, [{ $set: { status: { $eq: [false, "$status"] } } }]);
+    res.json({status:true})
+    }catch(err){
+        res.send(err)
+    }
+    
+}
+
 
 module.exports = {
     loadCoupon,
     loadCoupons,
-    addCoupon
+    addCoupon,
+    changeStatus
 }

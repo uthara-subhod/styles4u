@@ -24,7 +24,7 @@
                 day: 'numeric' });%>
             </td>
             <td><a class="btn rounded-pill<%if(order.order_status=="delivered"){%>btn-success<%}%>" 
-              style="background-color:<%if(order[i].order_status=="pending"){%>rgb(255, 238, 88)<%}else if(order[i].order_status=="rejected"||order[i].order_status=="cancelled"){%>rgb(245, 106, 106) <%}else if(order[i].order_status=="shipped"){%>rgb(161, 189, 253)<%}else if(order[i].order_status=="pay"){%>orange<%}%>">
+              style="background-color:<%if(order[i].order_status=="pending"){%>rgb(255, 238, 88)<%}else if(order[i].order_status=="rejected"||order[i].order_status=="cancelled"){%>rgb(245, 106, 106); color:white;<%}else if(order[i].order_status=="shipped"){%>rgb(161, 189, 253)<%}else if(order[i].order_status=="pay"){%>orange<%}else{%>green; color:white;<%}%>">
               <%=order[i].order_status %>
             </a>
             </td>
@@ -38,6 +38,39 @@
       </table>
 </div>
 
+</div>
+<div class="col-12 pb-1">
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      <% if (page> 1) { %>
+        <li class="page-item">
+          <a class="page-link" href="/admin/order?page=<%= page - 1 %>">&laquo; Previous</a>
+        </li>
+        <% } %>
+
+          <% for (let i=1; i <=totalPages; i++) { %>
+            <% if (i===page) { %>
+              <li class="page-item active">
+                <a class="page-link" href="/admin/order?page=<%= i %>">
+                  <%= i %>
+                </a>
+              </li>
+              <% } else { %>
+                <li class="page-item">
+                  <a class="page-link" href="/admin/order?page=<%= i %>">
+                    <%= i %>
+                  </a>
+                </li>
+                <% } %>
+                  <% } %>
+
+                    <% if (page < totalPages) { %>
+                      <li class="page-item">
+                        <a class="page-link" href="/admin/order?page=<%= page + 1 %>">Next &raquo;</a>
+                      </li>
+                      <% } %>
+    </ul>
+  </nav>
 </div>
 
 <%- include ('../layouts/adminfooter.ejs') %>

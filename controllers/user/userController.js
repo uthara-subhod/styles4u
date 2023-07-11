@@ -83,7 +83,12 @@ const insertUser = async (req, res) => {
 const loadOtp = async (req, res) => {
   try {
     if (req.cookies.otp && req.query.username) {
-      res.render("auth/otp", { resend: null, username: req.query.username });
+      if(!req.query.message){
+        res.render("auth/otp", { resend: null, username: req.query.username });
+      }else{
+        res.render("auth/otp", { resend: "please verify your email", username: req.query.username });
+      }
+      
     } else {
       res.redirect("/signup");
     }
@@ -166,10 +171,8 @@ const autheticateUser = async (req, res) => {
             url: "/login",
           });
         } else if (!userData.isVerified) {
-          res.render("auth/login", {
-            message: "Please verify your email",
-            url: "/login",
-          });
+          await sendOTP(userData, req, res);
+          res.redirect(`/signup/otp?username=${userData.username}&message=verify`);
         } else {
           req.session.user = userData.username;
           req.session.user_id = userData._id;
@@ -180,7 +183,7 @@ const autheticateUser = async (req, res) => {
             req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
           }
           if(userData.isAdmin){
-            res.redirect('/admin/customer')
+            res.redirect('/admin')
           }
           else{
             res.redirect("/");
