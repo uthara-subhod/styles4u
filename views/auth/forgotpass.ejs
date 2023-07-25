@@ -50,15 +50,15 @@
   <div class="mb-5 col-12">
     <br>
       <h4  class="text-center text-normal">Lost your password?</h4>
-      <p class="text-center" style="font-size: 15px;">Type your username and we will sent<br>you instructions on how to reset it.</p>
+      <p class="text-center" style="font-size: 15px;">Type your email and we will sent<br>you instructions on how to reset it.</p>
     </div>
     <div class="ml-auto mr-auto col-12 col-lg-11">
-<form action="/forgotPassword" method="post"  id="form">
+<form action="/forgotPassword" method="post"  id="form" pattern =[/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/]>
     <!-- Username input -->
     <div class="form-outline mb-4">
-      <label class="form-label" for="user">Username</label>
+      <label class="form-label" for="user">Email</label>
       <div class="input-group form-outline mb-4">
-      <input type="text" id="user" name="user" class="form-control">
+      <input type="text" id="user" name="email" class="form-control">
             </div>
   
     </div>

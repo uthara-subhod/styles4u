@@ -27,7 +27,7 @@ const sendOTP = async (userdata, req, res) => {
   try {
     const otp = otpGenerator();
     const hashedOtp = await securePassword(otp);
-    const user = userdata.username;
+    const user = userdata.email;
     const cookie_otp = {
       otp: hashedOtp,
       user: user,
@@ -48,7 +48,7 @@ const loadSignup = async (req, res) => {
   try {
     res.render("auth/signup", { message: null, url: "/signup" });
   } catch (err) {
-    console.log(err);
+    res.send(err);
   }
 };
 
@@ -56,11 +56,11 @@ const loadSignup = async (req, res) => {
 //signup-post
 const insertUser = async (req, res) => {
   try {
-    const userdata = await User.findOne({ username: req.body.username });
+    const userdata = await User.findOne({ email: req.body.email});
     if (userdata) {
       res.render("auth/signup", {
         message: "User already exists",
-        email: req.body.email,
+        url: "/signup"
       });
     } else {
       const spass = await securePassword(req.body.password);
@@ -71,7 +71,7 @@ const insertUser = async (req, res) => {
       });
       const userData = await user.save();
       await sendOTP(userData, req, res);
-      res.redirect(`/signup/otp?username=${req.body.username}`);
+      res.redirect(`/signup/otp?email=${req.body.email}`);
     }
   } catch (error) {
     res.send(error);
@@ -82,18 +82,18 @@ const insertUser = async (req, res) => {
 //otp-get
 const loadOtp = async (req, res) => {
   try {
-    if (req.cookies.otp && req.query.username) {
+    if (req.cookies.otp && req.query.email) {
       if(!req.query.message){
-        res.render("auth/otp", { resend: null, username: req.query.username });
+        res.render("auth/otp", { resend: null, email: req.query.email });
       }else{
-        res.render("auth/otp", { resend: "please verify your email", username: req.query.username });
+        res.render("auth/otp", { resend: "please verify your email", email: req.query.email });
       }
       
     } else {
       res.redirect("/signup");
     }
   } catch (err) {
-    console.log(err);
+    res.send(err);
   }
 };
 
@@ -107,18 +107,18 @@ const otp = async (req, res) => {
     let userotp = req.body.otp;
     const otpMatch = await bcrypt.compare(userotp, hotp);
     if (otpMatch) {
-      await User.findOneAndUpdate({ username: otp.user }, { $set: { isVerified: true } });
+      await User.findOneAndUpdate({ email: otp.user }, { $set: { isVerified: true } });
       res.render("auth/gotologin");
     } else {
       res.render("auth/otp", {
         resend: "Invalid otp",
-        username: req.cookies.otp.user,
+        email: req.cookies.otp.user,
       });
     }
     }else{
       res.render("auth/otp", {
         resend: "Otp expired!",
-        username: req.query.username
+        email: req.query.email
       });
     }
     
@@ -131,12 +131,12 @@ const otp = async (req, res) => {
 //otp-resend -get
 const resendOTP = async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.query.username });
+    const user = await User.findOne({ email: req.query.email });
     if (!req.cookies.otp) {
       await sendOTP(user, req, res);
-      res.redirect(`/signup/otp?username=${user.username}`);
+      res.redirect(`/signup/otp?email=${user.email}`);
     } else {
-      res.redirect(`/signup/otp?username=${user.username}`);
+      res.redirect(`/signup/otp?email=${user.email}`);
     }
   } catch (error) {
     res.send(error);
@@ -147,9 +147,13 @@ const resendOTP = async (req, res) => {
 //login-get
 const loadlogin = async (req, res) => {
   try {
-    res.render("auth/login", { message: null, url: "/login" });
+    let URL=null
+    if(req.query.url){
+      URL=req.query.url
+    }
+    res.render("auth/login", { message: null, url: "/login" ,URL});
   } catch (err) {
-    console.log(err);
+    res.send(err);
   }
 };
 
@@ -157,9 +161,12 @@ const loadlogin = async (req, res) => {
 //login-post
 const autheticateUser = async (req, res) => {
   try {
-    const userData = await User.findOne({ username: req.body.username });
+    const userData = await User.findOne({ email: req.body.email });
 
     if (userData) {
+      if(req.session.admin_id==userData._id){
+        res.redirect('/admin')
+      }else{
       const passMatch = await bcrypt.compare(
         req.body.password,
         userData.passwordHash
@@ -172,11 +179,16 @@ const autheticateUser = async (req, res) => {
           });
         } else if (!userData.isVerified) {
           await sendOTP(userData, req, res);
-          res.redirect(`/signup/otp?username=${userData.username}&message=verify`);
+          res.redirect(`/signup/otp?email=${userData.email}&message=verify`);
         } else {
-          req.session.user = userData.username;
+          if(userData.isAdmin){
+            req.session.admin = userData.username;
+          req.session.admin_id = userData._id;
+          }else{
+            req.session.user = userData.username;
           req.session.user_id = userData._id;
-          req.session.isAdmin = userData.isAdmin;
+          }
+          
           if (req.body.remember) {
             req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
           } else {
@@ -185,20 +197,33 @@ const autheticateUser = async (req, res) => {
           if(userData.isAdmin){
             res.redirect('/admin')
           }
+          else if(req.query.url){
+            res.redirect(`${req.query.url}`)
+          }
           else{
             res.redirect("/");
           }
           
         }
       } else {
-        res.render("auth/login", { message: "Wrong password", url: "/login" });
+        let URL=null
+        if(req.query.url){
+          URL=req.query.url
+        }
+        res.render("auth/login", { message: "Wrong password", url: "/login" , URL});
       }
+    }
     } else {
+      let URL=null
+        if(req.query.url){
+          URL=req.query.url
+        }
       res.render("auth/login", {
         message: "user does not exist",
         url: "/login",
       });
     }
+    
   } catch (error) {
     res.send(error);
   }
@@ -209,8 +234,13 @@ const autheticateUser = async (req, res) => {
 const loadLogout = async (req, res) => {
   try {
     req.session.user = null;
+    req.session.user_id = null;
     res.clearCookie("user");
-    res.redirect("/");
+    if(req.query.url){
+      res.redirect(`${req.query.url}`)
+    }else{
+      res.redirect('/')
+    }
   } catch (error) {
     console.log(error.message);
   }
@@ -374,7 +404,7 @@ const EditProfile = async (req, res) => {
   try {
     const username = req.body.username;
     if (username === req.session.user) {
-      res.redirect(`/user/${username}`);
+      res.redirect(`/user`);
     } else {
       const exist = await User.findOne({ user: username });
       if (exist) {
@@ -391,7 +421,7 @@ const EditProfile = async (req, res) => {
           { $set: { username: username } }
         );
         req.session.user=username;
-        res.redirect(`/user/${username}`);
+        res.redirect(`/user`);
       }
     }
   } catch (error) {

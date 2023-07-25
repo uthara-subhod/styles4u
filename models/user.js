@@ -37,14 +37,18 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  wallet:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "wallet",
+  }
 });
 
-// userSchema.virtual('id').get(function () {
-//     return this._id.toHexString();
-// });
+userSchema.virtual('id').get(function () {
+    return this._id.toHexString();
+});
 
-// userSchema.set('toJSON', {
-//     virtuals: true,
-// });
+userSchema.set('toJSON', {
+    virtuals: true,
+});
 
 module.exports = mongoose.model("users", userSchema);

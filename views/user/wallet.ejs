@@ -1,0 +1,154 @@
+<%- include("../layouts/profileheader.ejs") %>
+          <div class="col-lg-8">
+            <!-- Balance & Rewards -->
+            <%if(wallet){%>
+              <!-- Balance Info -->
+              <div class="row mt-4">
+                <div class="col-12">
+                  <div class="card rounded border-primary" style="background-color: rgb(245, 222, 222) !important;">
+                    
+                    <div class="card-body d-flex justify-content-between py-0 pr-0">
+                      <span class="text-dark py-3">Available Balance</span>
+                      <div class="col-lg-2 col-4 bg-white py-3 border-left text-center" style="border-color: rgb(231, 171, 171) !important;">
+                      <span class="text-dark">&#x20B9;<%=wallet.balance%></span>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Wallet Info -->
+          
+              <!-- Add Balance Button -->
+              <div class="mt-4 d-flex justify-content-end align-items-center">
+                <div class="input-group mt-4 px-0 border col-6">
+                    <input type="number" id="amount" class="form-control" placeholder="Enter amount in INR">
+                    <button class="btn btn-primary" onclick="addWallet()">
+                        <i class="align-middle mr-2"></i>
+                        Add Balance
+                      </button>
+                  </div>
+                  
+              </div>
+              <!-- End Add Balance Button -->
+          
+              <!-- Payment History -->
+              <div class="row mt-4 ml-2">
+                <div class="col-12">
+                  <h3 class="h5 mb-3"><i class="fa-solid fa-wallet"></i> Wallet History</h3>
+                  <% wallet.history.reverse().forEach((historyItem) => { %>
+                    <div class="row">
+                        <div class="card col-2 mb-3">
+                            <% if (historyItem.type === "add") { %>
+                            <img width="150" src="https://img.icons8.com/bubbles/200/plus.png" alt="plus"/>
+                            <% } else { %>
+                                <img width="150" src="https://img.icons8.com/bubbles/150/minus.png" alt="minus"/>
+                                <% } %>
+                        </div>
+                    <div class="card mb-3 col-10 p-0">
+                      <div class="card-body">
+                        <h5 class="card-title">&#x20B9;<%= historyItem.amount %> <% if (historyItem.type === "add") { %>Credited to wallet<% } else { %>Debited From Wallet<% } %></h5>
+                        
+                      </div>
+                      <div class="card-footer bg-white d-flex justify-content-between pb-0">
+                        <p>Updated Balance: &#x20B9;<%= historyItem.newBalance %></p>
+                        <p>Updated Date: <%= historyItem.updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                      </div>
+                    </div>
+                </div>
+                  <% }) %>
+                </div>
+              </div>
+              <!-- End Payment History -->
+          <%}else{%>
+            <div class="row mt-4">
+                <div class="col-12">
+                  <div class="card rounded border-primary" style="background-color: rgb(245, 222, 222) !important;">
+                    
+                    <div class="card-body d-flex justify-content-between py-0 pr-0">
+                      <span class="text-dark py-3">Available Balance</span>
+                      <div class="col-lg-2 col-4 bg-white py-3 border-left text-center" style="border-color: rgb(231, 171, 171) !important;">
+                      <span class="text-dark">&#x20B9;0</span>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4 d-flex justify-content-end align-items-center">
+                <div class="input-group mt-4 px-0 border col-6">
+                    <input type="number" id="amount" class="form-control" placeholder="Enter amount in INR">
+                    <button class="btn btn-primary" onclick="addWallet()">
+                        <i class="align-middle mr-2"></i>
+                        Add Balance
+                      </button>
+                  </div>
+                  
+              </div>
+            <%}%>
+            </div>
+            <!-- End Balance & Rewards -->
+          </div>
+          <!-- End Wallet -->
+          </div>
+          </div>
+          </section>
+          <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+          <script>
+            async function addWallet(){
+                const amountInput = document.getElementById('amount');
+                const total = parseInt(amountInput.value);
+                let result = await axios({
+                method: "post",
+                url: "/user/wallet/addWallet",
+                data: {
+                  total,
+                },
+              }).then((data) => {
+                if (data.data.status) {
+                  console.log(data.data.wallet_amount)
+                  var options = {
+                    "key": "" + data.data.key_id + "",
+                    "amount": "" + data.data.wallet_amount * 100 + "",
+                    "order_id": "" + data.data.order_id + "",
+                    "currency": "INR",
+                    "handler": function(response) {
+                      // Payment succeeded
+                      alert("Payment Succeeded");
+
+                      // Get the payment ID from the response
+                      var paymentId = response.razorpay_payment_id;
+
+                      // Create the payload for the POST request
+                      var payload = {
+                        total: data.data.wallet_amount,
+                        paymentId: paymentId
+                        // Include any other required data
+                      };
+
+                      // Make the POST request to your backend
+                      axios.post('/user/wallet/addToWallet', payload)
+                        .then(function(response) {
+                          if (response.data.status) {
+
+                          } else {
+                            console.log(err)
+                          }
+
+                        })
+                        .catch(function(error) {
+                          console.log(error);
+                        });
+                        location.reload();
+                    },
+                  };
+                  var razorpayObject = new Razorpay(options);
+                  razorpayObject.on('payment.failed', function(response) {
+                    alert("Payment Failed");
+                  });
+                  razorpayObject.open();
+                }
+            })
+        }
+          </script>
+          <%- include("../layouts/userfooter.ejs") %>
+          
+

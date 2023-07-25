@@ -1,7 +1,7 @@
 <%- include ('./layouts/homeheader.ejs') %>
 </div>
 </div>
-<div id="header-carousel" class="carousel slide" data-ride="carousel">
+<div id="header-carousel" class="carousel slide px-xl-5" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active" style="height: 410px;">
             <img class="img-fluid" src="<%=banner[0].bannerImage%>" alt="Image">
@@ -13,16 +13,18 @@
                 </div>
             </div>
         </div>
+        <%for(i=1;i<banner.length;i++){%>
         <div class="carousel-item" style="height: 410px;">
-            <img class="img-fluid" src="https://res.cloudinary.com/dec3koghx/image/upload/v1687177333/carousel-2_ilajub.jpg" alt="Image">
+            <img class="img-fluid" src="<%=banner[i].bannerImage%>" alt="Image">
             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                 <div class="p-3" style="max-width: 700px;">
-                    <h4 class="text-light text-uppercase font-weight-light mb-3">10% Off Your First Order</h4>
-                    <h3 class="display-4 text-white mb-4">Cosmetics</h3>
-                    <a href="/shop" class="btn btn-light py-2 px-3">Shop Now</a>
+                    <h4 class="text-light text-uppercase font-weight-light mb-3"><%=banner[i].description%></h4>
+                    <h3 class="display-4 text-white mb-4"><%=banner[i].title%></h3>
+                    <a href="<%=banner[i].url%>" class="btn btn-light py-2 px-3">Shop Now</a>
                 </div>
             </div>
         </div>
+        <%}%>
     </div>
     <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
         <div class="btn btn-dark" style="width: 45px; height: 45px;">
@@ -36,53 +38,40 @@
     </a>
 </div>
 </div>
-x
 <div class="container">
-<div class="container-fluid pt-5">
-        <div class="row px-xl-5 pb-3">
-            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
-                    <h1 class="fa fa-check text-primary m-0 mr-3"></h1>
-                    <h5 class="font-weight-semi-bold m-0">Quality Product</h5>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
-                    <h1 class="fa fa-shipping-fast text-primary m-0 mr-2"></h1>
-                    <h5 class="font-weight-semi-bold m-0">Free Shipping</h5>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
-                    <h1 class="fas fa-exchange-alt text-primary m-0 mr-3"></h1>
-                    <h5 class="font-weight-semi-bold m-0">14-Day Return</h5>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
-                    <h1 class="fa fa-phone-volume text-primary m-0 mr-3"></h1>
-                    <h5 class="font-weight-semi-bold m-0">24/7 Support</h5>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="container-fluid pt-5">
         <div class="row px-xl-5 pb-3">
+            <%k=0%>
             <%for(i=0;i<cat.length;i++){%>
-                <%if(productValue[i]){%>
-            <div class="col-lg-4 col-md-6 pb-1">
-                <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
-                    <a href="/shop?name=<%=cat[i].name%>" class="cat-img position-relative overflow-hidden mb-3">
-                        <%for(p of products){%>
-                            <%if(cat[i].name==p.category){%>
-                        <img class="img-fluid" src="<%=p.productImages[0]%>" >
-                        <%break}%>
-                        <%}%>
-                    </a>
-                    <h5 class="font-weight-semi-bold m-0 text-center"><%=cat[i].name%>'s</h5>
-                </div>
-            </div>
-            <%}%>
+                <a class="btn btn-block btn-primary rounded active fs-6 overflow-hidden mb-3" href="/shop?name=<%=cat[i].name%>"><%=cat[i].name%></a>
+                <%if(cat[i].sub.length){%>
+                    <%for(j=0;j<3;j++){%>
+                        <%if(productValue[k]){%>
+                            
+                                
+                                        <%for(p of products){%>
+                                            <%if(cat[i].name==p.category&&cat[i].sub[j]==p.subcategory){%>
+                                                <div class="col-4 pb-1 overflow-hidden">
+                                                <div class="cat-item d-flex flex-column border mb-4 overflow-hidden" >
+                                                <a href="/shop?name=<%=cat[i].name%>&sub=<%=cat[i].sub[j]%>" class="overflow-hidden position-relative p-xl-4 p-3">
+                                        <img class="img-fluid" src="<%=p.productImages[0]%>" >
+                                    </a>
+                                    <a href="/shop?name=<%=cat[i].name%>&sub=<%=cat[i].sub[j]%>" class="btn btn-block btn-tranparent p-0 m-0 mb-3 overflow-hidden">
+                                    <h6 class="font-weight-semi-bold m-0 text-center btn text-dark" style="font-size: 13px;"><%=cat[i].sub[j]%></h6>
+                                </a>
+
+                                </div>
+                            </div>
+                                        <%break}%>
+                                        <%}%>
+                                   
+                                   
+                                
+                            
+                            <%}%>
+                    <%}%>
+                    <%}%>
+                
             <%}%>
 
         </div>

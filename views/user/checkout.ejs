@@ -1,364 +1,423 @@
 <%- include ('../layouts/homeheader.ejs') %>
-    </div>
-    </div>
-    </div>
+</div>
+</div>
+</div>
 
 
-    <!-- Page Header Start -->
-    <div class="container-fluid bg-secondary mb-5">
-        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">Checkout</h1>
-            <div class="d-inline-flex">
-                <p class="m-0"><a href="">Home</a></p>
-                <p class="m-0 px-2">-</p>
-                <p class="m-0">Checkout</p>
-            </div>
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+  <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+    <h1 class="font-weight-semi-bold text-uppercase mb-3">Checkout</h1>
+    <div class="d-inline-flex">
+      <p class="m-0"><a href="">Home</a></p>
+      <p class="m-0 px-2">-</p>
+      <p class="m-0">Checkout</p>
+    </div>
+  </div>
+</div>
+<!-- Page Header End -->
+
+
+<!-- Checkout Start -->
+<div class="container-fluid pt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="checkout-accordion-wrap">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item col-4 px-0 bg-gray border-top border-left" style="border-color: rgb(195, 195, 195) !important;">
+              <a class="nav-link active text-center text-dark" id="billing-tab" data-toggle="tab" href="#shipping" role="tab" aria-controls="shipping" aria-selected="true">1. Choose
+                Your Address</a>
+            </li>
+            <li class="nav-item col-4 px-0 bg-gray border-top border-left" style="border-color: rgb(195, 195, 195) !important;">
+              <a class="nav-link text-center text-dark" id="shipping-tab" data-toggle="tab" href="#card" role="tab" aria-controls="card" aria-selected="false">2. Payment
+                Details</a>
+            </li>
+            <li class="nav-item col-4 px-0 bg-gray border border-bottom-0" style="border-color: rgb(195, 195, 195) !important;">
+              <a class="nav-link text-center text-dark" id="card-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing" aria-selected="false">3. Review
+                Your Order</a>
+            </li>
+          </ul>
         </div>
-    </div>
-    <!-- Page Header End -->
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade border border-top-0" id="billing" role="tabpanel" aria-labelledby="billing-tab" style="border-color: rgb(195, 195, 195) !important;">
+            <div class="col-lg-12 py-4 ">
+              <div class="card">
+                <div class="card-header pt-4">
+                  <h6>Review Your Order</h6>
+                </div>
+                <div class="card-body">
+                  <div class="col-12" style="overflow-y: auto;">
+                    <table class="table text-center table-primary  w-100">
+                      <colgroup>
+                        <col width="100" />
+                        <col />
+                        <col width="1" />
+                        <col />
+                        <col width="100" />
+                        <col />
+                      </colgroup>
+                      <thead class="bg-primary text-dark">
+                        <tr>
+                          <th>Image</th>
+                          <th class="text-start">
+                            Product
+                          </th>
+                          <th class="text-start">Size
+                          </th>
+                          <th class="text-start ">Price
+                          </th>
+                          <th class="text-center">Qty
+                          </th>
+                          <th class="text-start">Total
+                          </th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody class="table-bordered">
+                        <% for( let i=0; i < cartItems.items.length; i++ ) { %>
+                        <tr class="bg-light">
+                          <td class="text-start">
+                            <a href="#"><img src="<%=cartItems.items[i].productId.productImages[0]%>" alt="..." class="img-fluid" width="40px"></a>
+                          </td>
+                          <td class="text-start">
+                            <a href="/product?id=<%=cartItems.items[i].productId._id%>" class="text-dark " style="font-size: 1vw;">
+                              <%=cartItems.items[i].productId.productName%>
+                            </a>
+                          </td>
+                          <td class="text-start text-dark" style="font-size: 1vw;">
+                            <%=cartItems.items[i].size%>
+                          </td>
+                          <td class="text-center fs-3">
+                            <p style="font-size: 1vw;">&#x20B9;
+                              <%=cartItems.items[i].productId.price%>
+                            </p>
+                          </td>
+                          <td class="product-quantity">
+                            <button onclick="changeQuantity('<%=cartItems.items[i].productId._id%>','<%=cartItems._id%>',-1)" class="btn btn-primary btn-sm minusBtn p-0 px-1" id="minusBtn<%=cartItems.items[i].productId._id%>" <% if (cartItems.items[i].quantity>
+                                                                    1) { %> style="visibility: visible" <% } else { %> disabled <% } %>> -
+                            </button>
+                            <input type="text" class="text-center" id="<%=cartItems.items[i].productId._id%>" name="" value="<%=cartItems.items[i].quantity%>" style="width:20px; height:20px" />
+                            <button onclick="changeQuantity('<%=cartItems.items[i].productId._id%>','<%=cartItems._id%>', 1)" class="btn btn-primary plusBtn btn-sm p-0 px-1">
+                              +
+                            </button>
+                          </td>
+                          <td id="totalPrice<%=cartItems.items[i].productId._id%>" class="product-subtotal text-start">
+                            <p style="font-size: 1vw;">&#x20B9;
+                              <%=cartItems.items[i].totalPrice%>
+                            </p>
+                          </td>
+                          <td class="product-remove text-center">
+                            <a onclick="deleteCart('<%=cartItems.items[i].productId._id%>','<%=cartItems.items[i].size%>')"><i class="fas fa-times"></i></a>
+                          </td>
+                        </tr>
+                        <% } %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <form method="post" action="/checkout" id="checkoutPost">
+                <div class="card mt-4">
+                  <div class="card-header pt-4">
+                    <h6>Address</h6>
+                  </div>
+                  <div class="card-body">
+                    <p id="billing-review"></p>
+                    <input type="hidden" name="orderAddress" id="orderAddress" required>
+                  </div>
+                </div>
+                <div class="card mt-4">
+                  <div class="card-header pt-4">
+                    <h6>Payment</h6>
+                  </div>
+                  <div class="card-body">
+                    <p id="payment-review"></p>
+                    <input type="hidden" name="paymentMode" id="paymentMode" required>
 
-
-    <!-- Checkout Start -->
-    <div class="container-fluid pt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="checkout-accordion-wrap">
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item col-4 px-0 bg-gray border-top border-left"
-                                style="border-color: rgb(195, 195, 195) !important;">
-                                <a class="nav-link active text-center text-dark" id="billing-tab" data-toggle="tab"
-                                    href="#shipping" role="tab" aria-controls="shipping" aria-selected="true">1. Choose
-                                    Your Address</a>
-                            </li>
-                            <li class="nav-item col-4 px-0 bg-gray border-top border-left"
-                                style="border-color: rgb(195, 195, 195) !important;">
-                                <a class="nav-link text-center text-dark" id="shipping-tab" data-toggle="tab"
-                                    href="#card" role="tab" aria-controls="card" aria-selected="false">2. Payment
-                                    Details</a>
-                            </li>
-                            <li class="nav-item col-4 px-0 bg-gray border border-bottom-0"
-                                style="border-color: rgb(195, 195, 195) !important;">
-                                <a class="nav-link text-center text-dark" id="card-tab" data-toggle="tab"
-                                    href="#billing" role="tab" aria-controls="billing" aria-selected="false">3. Review
-                                    Your Order</a>
-                            </li>
-                        </ul>
+                  </div>
+                </div>
+                <div class="card mt-4">
+                  <div class="card-header pt-4">
+                    <h6>Choose your shipping Method</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-lg-4 col-md-4 col-sm-12">
+                        <label class="col-12" style="padding: 0 !important;">
+                          <input type="radio" class="card-input-element" onclick="charge(20)" value="20" name="shippingMethod" id="twenty" />
+                          <div class=" card pt-4 text-center card-default card-input">
+                            <i class="fa-sharp fa-solid fa-truck-fast" style="font-size: 70px; color: rgb(56, 6, 103);"></i>
+                            <h6 class="font-weight-bolder" style="color: rgb(56, 6, 103);">
+                              Express</h6>
+                            <h4 class="font-weight-bold mt-3 mb-0">4</h4>
+                            <p class="text-dark"><small>Working Days<br>For
+                                &#x20B9;20</small></p>
+                          </div>
+                        </label>
+                      </div>
+                      <div class="col-lg-4 col-md-4 col-12">
+                        <label class="col-12" style="padding: 0 !important;">
+                          <input type="radio" class="card-input-element" onclick="charge(10)" value="10" name="shippingMethod" id="ten" />
+                          <div class="card pt-4 text-center card-default card-input">
+                            <i class="fa-sharp fa-solid fa-truck-arrow-right" style="font-size: 70px; color: rgb(56, 6, 103);"></i>
+                            <h6 class="font-weight-bolder" style="color: rgb(56, 6, 103);">
+                              Normal</h6>
+                            <h4 class="font-weight-bold mt-3 mb-0">7</h4>
+                            <p class="text-dark"><small>Working Days<br>For
+                                &#x20B9;10</small></p>
+                          </div>
+                        </label>
+                      </div>
+                      <div class="col-lg-4 col-md-4 col-sm-12">
+                        <label class="col-12" style="padding: 0 !important;">
+                          <input type="radio" class="card-input-element" onclick="charge(0)" value="0" name="shippingMethod" id="zero" />
+                          <div class="card pt-4 text-center card-default card-input">
+                            <i class="fa-sharp fa-solid fa-truck" style="font-size: 70px; color: rgb(56, 6, 103);"></i>
+                            <h6 class="font-weight-bolder" style="color: rgb(56, 6, 103);">
+                              Free</h6>
+                            <h4 class="font-weight-bold mt-3 mb-0">12</h4>
+                            <p class="text-dark"><small>Working Days<br>Free</small></p>
+                          </div>
+                        </label>
+                      </div>
                     </div>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade border border-top-0" id="billing" role="tabpanel"
-                            aria-labelledby="billing-tab" style="border-color: rgb(195, 195, 195) !important;">
-                            <div class="col-lg-12 py-4 ">
-                                <div class="card">
-                                    <div class="card-header pt-4">
-                                        <h6>Review Your Order</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="col-12" style="overflow-y: auto;">
-                                            <table class="table text-center table-primary  w-100">
-                                                <colgroup>
-                                                    <col width="100" />
-                                                    <col />
-                                                    <col width="1" />
-                                                    <col />
-                                                    <col width="100" />
-                                                    <col />
-                                                </colgroup>
-                                                <thead class="bg-primary text-dark">
-                                                    <tr>
-                                                        <th>Image</th>
-                                                        <th class="text-start">
-                                                            Product
-                                                        </th>
-                                                        <th class="text-start">Size
-                                                        </th>
-                                                        <th class="text-start ">Price
-                                                        </th>
-                                                        <th class="text-center">Qty
-                                                        </th>
-                                                        <th class="text-start">Total
-                                                        </th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="table-bordered">
-                                                    <% for( let i=0; i < cartItems.items.length; i++ ) { %>
-                                                        <tr class="bg-light">
-                                                            <td class="text-start">
-                                                                <a href="#"><img
-                                                                        src="<%=cartItems.items[i].productId.productImages[0]%>"
-                                                                        alt="..." class="img-fluid" width="40px"></a>
-                                                            </td>
-                                                            <td class="text-start">
-                                                                <a href="/product?id=<%=cartItems.items[i].productId._id%>"
-                                                                    class="text-dark " style="font-size: 1vw;">
-                                                                    <%=cartItems.items[i].productId.productName%>
-                                                                </a>
-                                                            </td>
-                                                            <td class="text-start text-dark" style="font-size: 1vw;">
-                                                                <%=cartItems.items[i].size%>
-                                                            </td>
-                                                            <td class="text-center fs-3">
-                                                                <p style="font-size: 1vw;">&#x20B9;
-                                                                    <%=cartItems.items[i].productId.price%>
-                                                                </p>
-                                                            </td>
-                                                            <td class="product-quantity">
-                                                                <button
-                                                                    onclick="changeQuantity('<%=cartItems.items[i].productId._id%>','<%=cartItems._id%>',-1)"
-                                                                    class="btn btn-primary btn-sm minusBtn p-0 px-1"
-                                                                    id="minusBtn<%=cartItems.items[i].productId._id%>"
-                                                                    <% if (cartItems.items[i].quantity>
-                                                                    1) { %> style="visibility: visible" <% } else { %>
-                                                                        disabled <% } %>
-                                                                            > -
-                                                                </button>
-                                                                <input type="text" class="text-center"
-                                                                    id="<%=cartItems.items[i].productId._id%>" name=""
-                                                                    value="<%=cartItems.items[i].quantity%>"
-                                                                    style="width:20px; height:20px" />
-                                                                <button
-                                                                    onclick="changeQuantity('<%=cartItems.items[i].productId._id%>','<%=cartItems._id%>', 1)"
-                                                                    class="btn btn-primary plusBtn btn-sm p-0 px-1">
-                                                                    +
-                                                                </button>
-                                                            </td>
-                                                            <td id="totalPrice<%=cartItems.items[i].productId._id%>"
-                                                                class="product-subtotal text-start">
-                                                                <p style="font-size: 1vw;">&#x20B9;
-                                                                    <%=cartItems.items[i].totalPrice%>
-                                                                </p>
-                                                            </td>
-                                                            <td class="product-remove text-center">
-                                                                <a
-                                                                    onclick="deleteCart('<%=cartItems.items[i].productId._id%>','<%=cartItems.items[i].size%>')"><i
-                                                                        class="fas fa-times"></i></a>
-                                                            </td>
-                                                        </tr>
-                                                        <% } %>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <form method="post" action="/checkout" id="checkoutPost">
-                                    <div class="card mt-4">
-                                        <div class="card-header pt-4">
-                                            <h6>Address</h6>
-                                        </div>
-                                        <div class="card-body">
-                                            <p id="billing-review"></p>
-                                            <input type="hidden" name="orderAddress" id="orderAddress" required>
-                                        </div>
-                                    </div>
-                                    <div class="card mt-4">
-                                        <div class="card-header pt-4">
-                                            <h6>Payment</h6>
-                                        </div>
-                                        <div class="card-body">
-                                            <p id="payment-review"></p>
-                                            <input type="hidden" name="paymentMode" id="paymentMode" required>
-                                        </div>
-                                    </div>
-                                    <div class="card mt-4">
-                                        <div class="card-header pt-4">
-                                            <h6>Choose your shipping Method</h6>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-lg-4 col-md-4 col-sm-12">
-                                                    <label class="col-12" style="padding: 0 !important;">
-                                                        <input type="radio" class="card-input-element"
-                                                            onclick="charge(20)" value="20" name="shippingMethod"
-                                                            id="twenty" />
-                                                        <div class=" card pt-4 text-center card-default card-input">
-                                                            <i class="fa-sharp fa-solid fa-truck-fast"
-                                                                style="font-size: 70px; color: rgb(56, 6, 103);"></i>
-                                                            <h6 class="font-weight-bolder"
-                                                                style="color: rgb(56, 6, 103);">
-                                                                Express</h6>
-                                                            <h4 class="font-weight-bold mt-3 mb-0">4</h4>
-                                                            <p class="text-dark"><small>Working Days<br>For
-                                                                    &#x20B9;20</small></p>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                                <div class="col-lg-4 col-md-4 col-12">
-                                                    <label class="col-12" style="padding: 0 !important;">
-                                                        <input type="radio" class="card-input-element"
-                                                            onclick="charge(10)" value="10" name="shippingMethod"
-                                                            id="ten" />
-                                                        <div class="card pt-4 text-center card-default card-input">
-                                                            <i class="fa-sharp fa-solid fa-truck-arrow-right"
-                                                                style="font-size: 70px; color: rgb(56, 6, 103);"></i>
-                                                            <h6 class="font-weight-bolder"
-                                                                style="color: rgb(56, 6, 103);">
-                                                                Normal</h6>
-                                                            <h4 class="font-weight-bold mt-3 mb-0">7</h4>
-                                                            <p class="text-dark"><small>Working Days<br>For
-                                                                    &#x20B9;10</small></p>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                                <div class="col-lg-4 col-md-4 col-sm-12">
-                                                    <label class="col-12" style="padding: 0 !important;">
-                                                        <input type="radio" class="card-input-element"
-                                                            onclick="charge(0)" value="0" name="shippingMethod"
-                                                            id="zero" />
-                                                        <div class="card pt-4 text-center card-default card-input">
-                                                            <i class="fa-sharp fa-solid fa-truck"
-                                                                style="font-size: 70px; color: rgb(56, 6, 103);"></i>
-                                                            <h6 class="font-weight-bolder"
-                                                                style="color: rgb(56, 6, 103);">
-                                                                Free</h6>
-                                                            <h4 class="font-weight-bold mt-3 mb-0">12</h4>
-                                                            <p class="text-dark"><small>Working Days<br>Free</small></p>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" id="totalPrice" name="total">
-                            <input type="hidden" id="couponId" name="couponId">
-                            <input type="hidden" id="deductedPrice" value="<%=cartItems.cartPrice%>">
-                                    <div class="d-flex justify-content-start align-items-center mt-3">
-                                        <button type="submit" class="btn btn-primary">Checkout Now</button>
-                                    </div>
-                                </form>
-                            </div>
+                  </div>
+                </div>
+                <input type="hidden" id="total-Price" name="total" value="<%=cartItems.cartPrice%>">
+                <input type="hidden" id="couponId" name="couponId">
+                <input type="hidden" id="deductedPrice" value="<%=cartItems.cartPrice%>">
+                <div class="d-flex justify-content-start align-items-center mt-3">
+                  <button type="submit" class="btn btn-primary">Checkout Now</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="tab-pane fade show active border border-top-0" id="shipping" role="tabpanel" aria-labelledby="shipping-tab" style="border-color: rgb(195, 195, 195) !important;">
+            <div class="col-lg-12 p-4">
+              <div class="card">
+                <div class="card-header bg-light py-4 ">
+                  <h4 class="mb-0">Shipping</h4>
+                  <p class="mb-0">Choose or add your own</p>
+                </div>
+                <%if(addresses){%>
+                <div class="row">
+                  <%i=0%>
+                  <%for(a of addresses){%>
+                  <div class="col-md-6 col-lg-6 col-sm-12">
+                    <label class="col-12" style="padding: 0 !important;">
+                      <input type="radio" name="address" class="card-input-element" onclick="address('<%= a._id %>', <%= JSON.stringify(a) %>)" value="<%=a._id%>" />
+
+                      <div class="card card-default card-input">
+                        <div class="card-header">
+                          <h6>Address<sup><small>(<%=a.type%>)</small></sup>
+                          </h6>
+                          <p></p>
                         </div>
-                        <div class="tab-pane fade show active border border-top-0" id="shipping" role="tabpanel"
-                            aria-labelledby="shipping-tab" style="border-color: rgb(195, 195, 195) !important;">
-                            <div class="col-lg-12 p-4">
-                                <div class="card">
-                                    <div class="card-header bg-light py-4 ">
-                                        <h4 class="mb-0">Shipping</h4>
-                                        <p class="mb-0">Choose or add your own</p>
-                                    </div>
-                                    <%if(addresses){%>
-                                        <div class="row">
-                                            <%for(a of addresses){%>
-                                                <div class="col-md-6 col-lg-6 col-sm-12">
-                                                    <label class="col-12" style="padding: 0 !important;">
-                                                        <input type="radio" name="address" class="card-input-element"
-                                                            onclick="address('<%= a._id %>', <%= JSON.stringify(a) %>)"
-                                                            value="<%=a._id%>" />
+                        <div class="card-body">
+                          <div id="noEdit<%=i%>">
+                            Phone: <%=a.phoneNumber%><br>
+                            <%=a.buildingName%>, <%=a.street%>, <%=a.city%>
+                            ,<br>
+                            <%=a.state%>, <%=a.country%>,<br>
+                            <%=a.zipCode%>
+                          </div>
+                          <div id="addEdit<%=i%>" class="d-none">
+                            <div class="my-4 mx-3">
+                              <form id="editAddress<%=i%>">
+                                <div class="form-group">
+                                  <label for="building">Building Name</label>
+                                  <input type="text" class="form-control" id="building<%=i%>" name="building" value="<%=a.buildingName%>" required>
+                                </div>
+                                <div class="form-group">
+                                  <label for="state">Street</label>
+                                  <input type="text" class="form-control" id="state<%=i%>" name="street" value="<%=a.street%>" required>
+                                </div>
+                                <div class="form-row">
+                                  <div class="form-group col-md-6">
+                                    <label for="inputCity">City</label>
+                                    <input type="text" class="form-control" id="inputCity<%=i%>" name="city" value="<%=a.city%>" required>
+                                  </div>
+                                  <div class="form-group col-md-6">
+                                    <label for="inputZip">Zip</label>
+                                    <input type="text" class="form-control" id="inputZip<%=i%>" name="zip" value="<%=a.zipCode%>" required>
+                                  </div>
+                                  <div class="form-group col-md-12">
+                                    <label for="inputState">State</label>
+                                    <input type="text" class="form-control" id="inputState<%=i%>" name="state" value="<%=a.state%>" required>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label for="country">Country</label>
+                                  <input type="text" class="form-control" id="country<%=i%>" name="country" value="<%=a.country%>" required>
+                                </div>
+                                <div class="form-group">
+                                  <label for="country">Phone Number</label>
+                                  <input type="text" class="form-control" id="phone<%=i%>" name="phone" pattern="[0-9]{10}" value="<%=a.phoneNumber%>" required>
+                                </div>
+                                <input type="hidden" value="<%=a._id%>" name="addressId">
+                                <input type="hidden" value="<%=a.type%>" name="type">
+                                <div class="col-md-12 form-group d-flex justify-content-between align-items-center px-0">
+                                  <button type="submit" class="btn btn-primary btn-sm px-3">Submit</button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center  bg-white" id="footer-add<%=i%>">
+                          <a class="btn border-success rounded-pill px-4 text-dark" style="background-color: rgb(161, 236, 166);" id="editButton<%=i%>">Edit</a>
+                          <a onclick="deleteAddress('<%=a._id%>')" class="btn border-danger rounded-pill text-dark" style="background-color: rgb(240, 177, 177);">Delete</a>
 
-                                                        <div class="card card-default card-input">
-                                                            <div class="card-header">
-                                                                <h6>Address<sup><small>(<%=a.type%>)</small></sup>
-                                                                </h6>
-                                                                <p></p>
-                                                            </div>
-                                                            <div class="card-body">
-                                                                Phone: <%=a.phoneNumber%><br>
-                                                                    <%=a.buildingName%>, <%=a.street%>, <%=a.city%>
-                                                                                ,<br>
-                                                                                <%=a.state%>, <%=a.country%>,<br>
-                                                                                        <%=a.zipCode%>
-                                                            </div>
-                                                        </div>
+                        </div>
+                      </div>
 
-                                                    </label>
-                                                </div>
-                                                <%}%>
+                    </label>
+                  </div>
+                  <%i++%>
+                  <%}%>
                                         </div>
                                         <%}%>
-                                            <label class="col-12" style="padding: 0 !important;" data-toggle="collapse"
-                                                data-target="#billing-address">
-                                                <input type="radio" name="address" class="card-input-element"
-                                                    value="add" />
-
-                                                <div class="card card-default card-input">
-                                                    <div class="card-header">Add new Address</div>
-                                                </div>
-                                            </label>
-                                            <div class="collapse mb-4" id="billing-address">
-                                                <div class="card">
-                                                    <div class="my-4 mx-3">
-                                                        <form id="newAddress">
-                                                            <div class="form-group">
-                                                                <label for="building">Building Name</label>
-                                                                <input type="text" class="form-control" id="building"
-                                                                    name="building">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="state">Street</label>
-                                                                <input type="text" class="form-control" id="state"
-                                                                    name="street">
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="inputCity">City</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="inputCity" name="city">
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputState">State</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="inputState" name="state">
-                                                                </div>
-                                                                <div class="form-group col-md-2">
-                                                                    <label for="inputZip">Zip</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="inputZip" name="zip">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="country">Country</label>
-                                                                <input type="text" class="form-control" id="country"
-                                                                    name="country">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="country">Phone Number</label>
-                                                                <input type="text" class="form-control" id="phone"
-                                                                    name="phone" pattern="[0-9]+">
-                                                            </div>
-                                                            <div
-                                                                class="col-md-12 form-group d-flex justify-content-between align-items-center px-0">
-                                                                <button type="button"
-                                                                    class="btn btn-primary btn-sm px-3"
-                                                                    onclick="newAddress()">Submit</button>
-                                                            </div>
-                                                            <div id="address-add"></div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                </div>
+                  <label class="col-12" style="padding: 0 !important;" data-toggle="collapse" data-target="#billing-address">
+                    <input type="radio" name="address" class="card-input-element" value="add" />
+                    <div class="card card-default card-input">
+                      <div class="card-header">Add new Address</div>
+                    </div>
+                  </label>
+                  <div class="collapse mb-4" id="billing-address">
+                    <div class="card">
+                      <div class="my-4 mx-3">
+                        <form id="newAddress">
+                          <div class="form-group">
+                            <label for="building">Building Name</label>
+                            <input type="text" class="form-control" id="building" name="building">
+                          </div>
+                          <div class="form-group">
+                            <label for="state">Street</label>
+                            <input type="text" class="form-control" id="state" name="street">
+                          </div>
+                          <div class="form-row">
+                            <div class="form-group col-md-6">
+                              <label for="inputCity">City</label>
+                              <input type="text" class="form-control" id="inputCity" name="city">
                             </div>
+                            <div class="form-group col-md-4">
+                              <label for="inputState">State</label>
+                              <input type="text" class="form-control" id="inputState" name="state">
+                            </div>
+                            <div class="form-group col-md-2">
+                              <label for="inputZip">Zip</label>
+                              <input type="text" class="form-control" id="inputZip" name="zip">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" class="form-control" id="country" name="country">
+                          </div>
+                          <div class="form-group">
+                            <label for="country">Phone Number</label>
+                            <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]+">
+                          </div>
+                          <div class="form-check mb-2 ml-0 pl-0">
+                            <input type="checkbox" name="saveAdd">
+                            <label>Do you want to save this address?</label>
+                          </div>
+
+                          <div class="col-md-12 form-group d-flex justify-content-between align-items-center px-0">
+                            <button type="button" class="btn btn-primary btn-sm px-3" onclick="newAddress()">Submit</button>
+                          </div>
+                          <div id="address-add"></div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade border border-top-0" id="card" role="tabpanel" aria-labelledby="card-tab" style="border-color: rgb(195, 195, 195) !important;">
+              <div class="col-lg-12 p-4">
+                <div class="card mt-4">
+                  <div class="card-header bg-light py-4 ">
+                    <h4 class="mb-0">Payment Methods</h4>
+                    <p class="mb-0">Choose your mode of payment</p>
+                  </div>
+                  <div class="card-body">
+                    <label class="col-12" style="padding: 0 !important;">
+                      <input type="radio" name="payment" class="card-input-element" value="cod" onclick="payment('cod')" />
+
+                      <div class="card card-default card-input">
+                        <div class="card-header">Cash On Delivery</div>
+                      </div>
+
+                    </label>
+                    <label class="col-12" style="padding: 0 !important;">
+                      <input type="radio" name="payment" class="card-input-element" value="online" onclick="payment('online')" />
+
+                      <div class="card card-default card-input">
+                        <div class="card-header">Pay Online</div>
+                      </div>
+                    </label>
+                    <label class="col-12" style="padding: 0 !important;">
+                      <input type="radio" name="payment" class="card-input-element" value="wallet" onclick="payment('wallet')" />
+
+                      <div class="card card-default card-input">
+                        <div class="card-header" id="wallet_balance">Pay with your wallet. Balance :<%if(wallet){%>
+                          <%=wallet.balance%>
+                          <%}else{%> 0<%}%>
+                                                </div>
+                                                <div class="card-body" id="wallet_warning"  style="display: none;">
+                                                  <div class="mb-4 ml-3">
+                      <div class="card border-warning ">
+                        <div class="card-header border-warning pt-4" style="background-color: rgb(254, 231, 140);">
+                          <p class="text-black text-center"><small><i class="fa-solid fa-circle-exclamation text-danger"></i>
+                              Your styles4u wallet do not have enough balance</small>
+                          </p>
                         </div>
-                        <div class="tab-pane fade border border-top-0" id="card" role="tabpanel"
-                            aria-labelledby="card-tab" style="border-color: rgb(195, 195, 195) !important;">
-                            <div class="col-lg-12 p-4">
-                                <div class="card mt-4">
-                                    <div class="card-header bg-light py-4 ">
-                                        <h4 class="mb-0">Payment Methods</h4>
-                                        <p class="mb-0">Choose your mode of payment</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <label class="col-12" style="padding: 0 !important;">
-                                            <input type="radio" name="payment" class="card-input-element" value="cod"
-                                                onclick="payment('cod')" />
+                        <div class="card-body">
+                          <div id="payWallet">
+                            <div class="form-check">
+                              <input type="radio" name="mode" value="add" onclick="payWallet(false)">
+                              <label class="form-check-label">Add to your wallet and
+                                pay</label>
+                            </div>
+                            <div class="form-check mb-3">
+                              <input type="radio" name="mode" <%if(wallet){%>value="subtract" <%}else{%> value="choose" <%}%> onclick ="payWallet(true)">
+                                                                        <label class="form-check-label" id="later">Use
+                                                                            your wallet balance
+                                                                            for now and pay the rest later</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-4 ml-3 d-none" id="new_payment_mode">
+                                                            <div class="card">
+                                                                <div class="card-header bg-success text-white">
+                                                                    Choose you new mode of payment
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <div class="form-check">
+                                                                        <input type="radio" name="paymentmodenew" value="cod" />
+                                                                        <label class="form-check-label">Cash On
+                                                                            Delivery</label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input type="radio" name="paymentmodenew" value="online"/>
+                                                                        <label class="form-check-label">Pay
+                                                                            Online</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-center">
+                                                            <button type="button"
+                                                                class="btn rounded-pill btn-primary btn-sm px-3"
+                                                                onclick="addWallet()">Choose</button>
+                                                        </div>
+                                                    </div>
 
-                                            <div class="card card-default card-input">
-                                                <div class="card-header">Cash On Delivery</div>
+                                                </div>
                                             </div>
-
-                                        </label>
-                                        <label class="col-12" style="padding: 0 !important;" >
-                                            <input type="radio" name="payment" class="card-input-element" value="online"
-                                                onclick="payment('online')" />
-
-                                            <div class="card card-default card-input">
-                                                <div class="card-header">Pay Online</div>
+                                                  </div>
                                             </div>
                                         </label>
-                                        <div class="collapse card" id="card-details">
-                                        //     <div class="my-4 mx-3">
-                                        //     </div>
-                                        </div>
+                                        
                                     </div>
 
                                 </div>
@@ -368,247 +427,516 @@
                 </div>
                 <div class="col-lg-4 col-12">
                     <div class=" sticky-top">
-                    <div class="card border-secondary mb-5">
-                        <div class="card-header bg-secondary border-0">
-                            <h4 class="font-weight-semi-bold m-0">Order Summary</h4>
+                        <div class="card border-secondary mb-5">
+                            <div class="card-header bg-secondary border-0">
+                                <h4 class="font-weight-semi-bold m-0"> Order Summary</h4>
+                            </div>
+                            <div class="card-body">
+                                <hr class="mt-0">
+                                <div class="d-flex justify-content-between mb-3 pt-1">
+                                    <h6 class="font-weight-medium">Cart Subtotal</h6>
+                                    <h6 class="font-weight-medium">&#x20B9;<%=cartItems.cartPrice%>.00</h6>
                         </div>
-                        <div class="card-body">
-                            <hr class="mt-0">
-                            <div class="d-flex justify-content-between mb-3 pt-1">
-                                <h6 class="font-weight-medium">Cart Subtotal</h6>
-                                <h6 class="font-weight-medium">&#x20B9;<%=cartItems.cartPrice%>.00</h6>
-                            </div>
-                            <hr class="mt-0">
-                            <div class="d-flex justify-content-between">
-                                <h6 class="font-weight-medium">Shipping</h6>
-                                <h6 class="font-weight-medium" id="ship">-</h6>
-                            </div>
-                            <div class="justify-content-between mb-3 pt-1 " id="deducted" style="display:none">
-                                <h6 class="font-weight-medium">Amount deducted</h6>
-                                <h6 class="font-weight-medium" id="deductedAmt"></h6>
-                            </div>
+                        <hr class="mt-0">
+                        <div class="d-flex justify-content-between">
+                          <h6 class="font-weight-medium">Shipping</h6>
+                          <h6 class="font-weight-medium" id="ship">-</h6>
                         </div>
-                        <div class="card-footer border-secondary bg-transparent">
-                            <div class="d-flex justify-content-between mt-2">
-                                <h5 class="font-weight-bold">Total</h5>
-                                <h5 class="font-weight-bold" id="total">&#x20B9;<%=cartItems.cartPrice%>.00</h5>
-                            </div>
-                            <button class="btn btn-light btn-block d-none" id="addedCoupon"></button>
+                        <div class="justify-content-between mb-3 pt-1 " id="deducted" style="display:none">
+                          <h6 class="font-weight-medium">Amount deducted with coupon</h6>
+                          <h6 class="font-weight-medium" id="deductedAmt"></h6>
                         </div>
+                        <div class="justify-content-between mb-3 pt-1 " id="deductedWallet" style="display:none">
+                          <h6 class="font-weight-medium">Amount paid with wallet</h6>
+                          <h6 class="font-weight-medium" id="deductedW"></h6>
+                        </div>
+                      </div>
+                      <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between mt-2">
+                          <h5 class="font-weight-bold">Total</h5>
+                          <h5 class="font-weight-bold" id="total">&#x20B9;<%=cartItems.cartPrice%>.00</h5>
+                        </div>
+                        <button class="btn btn-light btn-block d-none" id="addedCoupon"></button>
+                      </div>
+                  </div>
+                  <form id="couponForm" method="post" action="/checkout/couponCheck">
+                    <div class="input-group mt-4 px-0 border">
+                      <input type="text" class="form-control" placeholder="Enter coupon..." id="coupon" name="code">
+                      <button class="btn btn-primary" type="submit">Add Coupon</button>
                     </div>
-                    <form id="couponForm"  method="post" action="/checkout/couponCheck">
-                        <div class="input-group mt-4 px-0 border">
-                            <input type="text" class="form-control" placeholder="Enter coupon..." id="coupon" name="code">
-                            <button class="btn btn-primary" type="submit">Add Coupon</button>
-                        </div>
-                    </form>
-                </div>               
+                  </form>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-    <!-- Checkout End -->
-
-    
-    
-    <script>
-        function charge(id) {
+        <!-- Checkout End -->
+        <script>
+          function charge(id) {
             let change = axios({
-                method: "post",
-                url: "/checkout/shippingCharge",
-                data: {
-                    id,
-                },
+              method: "post",
+              url: "/checkout/shippingCharge",
+              data: {
+                id,
+              },
             }).then((data) => {
-                document.getElementById("ship").innerHTML = `&#x20B9;${data.data.charge}.00`;
-                let total=parseInt(document.getElementById("deductedPrice").value)+parseInt(data.data.charge)
-                document.getElementById("total").innerHTML = `&#x20B9;${total}.00`;
-                document.getElementById("totalPrice").value = `${data.data.adding}`
+              document.getElementById("ship").innerHTML = `&#x20B9;${data.data.charge}.00`;
+              let total = parseInt(document.getElementById("deductedPrice").value) + parseInt(data.data.charge)
+              document.getElementById("total").innerHTML = `&#x20B9;${total}.00`;
+              document.getElementById("total-Price").value = `${total}`
             });
-        }
+          }
 
-        function address(id, a) {
+          function address(id, a) {
             if (id !== "add" && a) {
-                // Display existing address information
-                document.getElementById("billing-review").innerHTML = `Phone: ${a.phoneNumber}<br>${a.buildingName}, ${a.street}, ${a.city}<br>${a.state}, ${a.country},<br>${a.zipCode}`;
-                document.getElementById("orderAddress").value = `${a._id}`;
+              // Display existing address information
+              document.getElementById("billing-review").innerHTML = `Phone: ${a.phoneNumber}<br>${a.buildingName}, ${a.street}, ${a.city}<br>${a.state}, ${a.country},<br>${a.zipCode}`;
+              document.getElementById("orderAddress").value = `${a._id}`;
             }
-        }
+          }
 
-        function newAddress() {
+          function newAddress() {
             const addressForm = document.getElementById('newAddress');
             let serializedData = $("#newAddress").serialize()
             const urlSearchParams = new URLSearchParams(serializedData);
             const info = Object.fromEntries(urlSearchParams.entries());
-            console.log(info)
             let response = axios({
-                url: "/checkout/address",
-                method: "post",
-                data: {
-                    info
-                },
+              url: "/checkout/address",
+              method: "post",
+              data: {
+                info
+              },
             }).then((data) => {
-                let a = data.data.add
-                document.getElementById("address-add").innerHTML = "Address Added!"
-                document.getElementById("address-add").style.color = "green"
-                document.getElementById("billing-review").innerHTML = `Phone: ${a.phoneNumber}<br>${a.buildingName}, ${a.street}, ${a.city}<br>${a.state}, ${a.country},<br>${a.zipCode}`;
-                document.getElementById("orderAddress").value = `${a._id}`;
+              let a = data.data.add
+              document.getElementById("address-add").innerHTML = "Address Added!"
+              document.getElementById("address-add").style.color = "green"
+              document.getElementById("billing-review").innerHTML = `Phone: ${a.phoneNumber}<br>${a.buildingName}, ${a.street}, ${a.city}<br>${a.state}, ${a.country},<br>${a.zipCode}`;
+              document.getElementById("orderAddress").value = `${a._id}`;
             });
 
-        }
+          }
 
-        function payment(id) {
+          function payment(id) {
             if (id == 'cod') {
-                document.getElementById("payment-review").innerHTML = "Cash On Delivery"
-            }
-            else {
-                document.getElementById("payment-review").innerHTML = "Online Payment"
+              document.getElementById("payment-review").innerHTML = "Cash On Delivery"
+            } else if (id == 'online') {
+              document.getElementById("payment-review").innerHTML = "Online Payment"
+            } else {
+              let total = parseInt(document.getElementById("total-Price").value);
+              console.log(total)
+              let wallet = 0
+              <%if(wallet){%>
+              wallet = parseInt('<%=wallet.balance%>')
+              <%}%>
+            if(wallet < total) {
+                if (wallet == 0) {
+                  document.getElementById("later").innerHTML = "Choose another mode of payment"
+                } else {
+                  document.getElementById("later").innerHTML = "Use your wallet balance for now and pay the rest later"
+                }
+                document.getElementById("wallet_warning").style.display = "block"
+              } else {
+                document.getElementById("wallet_warning").style.display = "none"
+                document.getElementById("payment-review").innerHTML = "Styles 4U Wallet"
+              }
+              
             }
             document.getElementById("paymentMode").value = id
-        }
+          }
 
-        function changeQuantity(prodctId, cartid, cnt) {
+          // function payment2(id) {
+          //   if (id == 'cod') {
+          //     document.getElementById("payment-review").innerHTML = "Cash On Delivery"
+          //   } else if (id == 'online') {
+          //     document.getElementById("payment-review").innerHTML = "Online Payment"
+          //   } 
+          //   document.getElementById("paymentMode").value = id
+          //   $('input[name="payment"]').val(id)
+          // }
+
+          function changeQuantity(prodctId, cartid, cnt) {
             let quant = document.getElementById(prodctId).value;
             let count = parseInt(cnt);
             let qty = document.getElementById(prodctId).value;
             qty = parseInt(qty);
 
             let result = axios({
-                url: "/cart/quantity",
-                method: "POST",
-                data: {
-                    productId: prodctId,
-                    count: count,
-                    cartId: cartid,
-                },
+              url: "/cart/quantity",
+              method: "POST",
+              data: {
+                productId: prodctId,
+                count: count,
+                cartId: cartid,
+              },
             }).then((response) => {
-                if (response.data.stock) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "product stock unavailable",
-                        text: "Sorry , Product unavailable",
-                        showConfirmButton: false,
-                    });
-                    location.reload();
-                }
-                document.getElementById(prodctId).value = response.data.qty;
-                document.getElementById("cartPrice").innerHTML = `$ ${response.data.cartPrice}.00`;
-                document.getElementById("SubcartPrice").innerHTML = `$ ${response.data.cartPrice}.00`;
-                document.getElementById("totalPrice" + prodctId).innerHTML = ` $ ${response.data.totalPrice}.00 `;
-                if (response.data.qty == 1) {
-                    document.getElementById("minusBtn" + prodctId).disabled = true;
-                } else {
-                    document.getElementById("minusBtn" + prodctId).style.visibility = "visible";
-                }
+              if (response.data.stock) {
+                Swal.fire({
+                  icon: "error",
+                  title: "product stock unavailable",
+                  text: "Sorry , Product unavailable",
+                  showConfirmButton: false,
+                });
+                location.reload();
+              }
+              document.getElementById(prodctId).value = response.data.qty;
+              document.getElementById("cartPrice").innerHTML = `$ ${response.data.cartPrice}.00`;
+              document.getElementById("SubcartPrice").innerHTML = `$ ${response.data.cartPrice}.00`;
+              document.getElementById("totalPrice" + prodctId).innerHTML = ` $ ${response.data.totalPrice}.00 `;
+              if (response.data.qty == 1) {
+                document.getElementById("minusBtn" + prodctId).disabled = true;
+              } else {
+                document.getElementById("minusBtn" + prodctId).style.visibility = "visible";
+              }
             });
-        }
+          }
 
-        function deleteCart(productId, size) {
+          function payWallet(flag) {
+            let block = document.getElementById("new_payment_mode")
+            if (flag == true) {
+              block.classList.remove("d-none");
+              block.classList.add("d-block");
+            } else {
+              block.classList.remove("d-block");
+              block.classList.add("d-none");
+            }
+          }
+
+
+
+          function deleteCart(productId, size) {
             Swal.fire({
-                icon: "warning",
-                title: "Are you sure?",
-                text: "Product remove form cart!",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "remove",
+              icon: "warning",
+              title: "Are you sure?",
+              text: "Product remove form cart!",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "remove",
             }).then((result) => {
-                if (result.isConfirmed) {
-                    axios.delete(`/cart/delete?productId=${productId}&size=${size}`).then((result) => {
-                        Swal.fire("removed!", "item has been deleted.", "success").then((response) => {
-                            location.reload();
-                        });
-                    });
-                }
+              if (result.isConfirmed) {
+                axios.delete(`/cart/delete?productId=${productId}&size=${size}`).then((result) => {
+                  Swal.fire("removed!", "item has been deleted.", "success").then((response) => {
+                    location.reload();
+                  });
+                });
+              }
             });
-        }
+          }
 
-        async function couponCheck(e) {
+          async function couponCheck(e) {
             e.preventDefault()
-            if(!document.getElementById("couponId").value){
-                let code = document.getElementById("coupon").value;
-            let spend=document.getElementById("deductedPrice").value
-            console.log(spend)
-            let result = await axios({
+            if (!document.getElementById("couponId").value) {
+              let code = document.getElementById("coupon").value;
+              let spend = document.getElementById("deductedPrice").value
+              console.log(spend)
+              let result = await axios({
                 url: "/checkout/couponCheck",
                 method: "POST",
                 data: {
-                   code,
-                   spend
+                  code,
+                  spend
                 },
-            });
-            if (result.data.status=="applied") {
+              });
+              if (result.data.status == "applied") {
                 await Swal.fire({
-                    icon: "success",
-                    title: "Coupon added successfully",
-                    text: "You have succesfully applied this coupon",
-                    showConfirmButton: false,
-                    timer: 3000,
-                });
-                document.getElementById("addedCoupon").style.display='flex'
-                document.getElementById("deducted").style.display='block'
-                if(result.data.discount.type=="flat"){
-                    document.getElementById("deductedAmt").innerHTML=`&#x20B9;${result.data.discount.amount}`
-                }else{
-                    let total=parseInt(document.getElementById("deductedPrice").value)
-                    let deducted=Math.round(parseInt(document.getElementById("deductedPrice").value)*(parseInt(result.data.discount.amount)/100))
-                    let diff=total-deducted
-                    document.getElementById("deductedAmt").innerHTML=`&#x20B9;${deducted}`
-                    document.getElementById("deductedPrice").value=`${diff}`
-                    document.getElementById("couponId").value=`${result.data.id}`
-                    if(!document.getElementById("totalPrice").value){
-                        document.getElementById("total").innerHTML = `&#x20B9;${diff}.00`;
-                    } else{
-                       document.getElementById("totalPrice").value-=deducted
-                       let totalPrice=document.getElementById("totalPrice").value
-                       document.getElementById("total").innerHTML = `&#x20B9;${totalPrice}.00`;
+                  icon: "success",
+                  title: "Coupon added successfully",
+                  text: "You have succesfully applied this coupon",
+                  showConfirmButton: false,
+                  timer: 3000,
+                }).then(()=>{
+                  document.getElementById("addedCoupon").style.display = 'flex'
+                document.getElementById("deducted").style.display = 'block'
+                let deducted = 0
+                let total = parseInt(document.getElementById("deductedPrice").value)
+                if (result.data.discount.type == "flat") {
+                  deducted= parseInt(result.data.discount.amount)
+                } else {
+                 
+                  let max = null
+                  if (result.data.max) {
+                    max = parseInt(result.data.max)
+                  }
+                  deducted = Math.round(parseInt(document.getElementById("deductedPrice").value) * (parseInt(result.data.discount.amount) / 100))
+                  if (max != null) {
+                    if (deducted > max) {
+                      deducted = max
                     }
-                    
+                  }
                 }
+                let diff
+                if(total>deducted){
+                  diff = total - deducted
+                }else{
+                  diff=0
+                  deducted = total
+                }
+                  
+                 
+                  document.getElementById("deductedAmt").innerHTML = `&#x20B9;${deducted}`
+                  document.getElementById("deductedPrice").value = `${diff}`
+                  document.getElementById("couponId").value = `${result.data.id}`
+                  if (!document.getElementById("total-Price").value) {
+                    document.getElementById("total").innerHTML = `&#x20B9;${diff}.00`;
+                  } else {
+                    document.getElementById("total-Price").value -= deducted
+                    let totalPrice = document.getElementById("total-Price").value
+                    document.getElementById("total").innerHTML = `&#x20B9;${totalPrice}.00`;
+                  }
+                })
                 
-               
+              } else if (result.data.status == "limit") {
+                await Swal.fire({
+                  icon: "error",
+                  title: "Usage Limit reached",
+                  text: "You have already used this coupon",
+                  showConfirmButton: false,
+                  timer: 3000,
+                });
+              } else if (result.data.status == "minspend") {
+                await Swal.fire({
+                  icon: "error",
+                  title: "Requiredment not met",
+                  text: "Your order does not qualify for this coupon",
+                  showConfirmButton: false,
+                  timer: 3000,
+                });
 
-            } else if(result.data.status=="limit"){
+              } else {
                 await Swal.fire({
-                    icon: "error",
-                    title: "Usage Limit reached",
-                    text: "You have already used this coupon",
-                    showConfirmButton: false,
-                    timer: 3000,
-                });
-            }else if(result.data.status=="minspend"){
-                await Swal.fire({
-                    icon: "error",
-                    title: "Requiredment not met",
-                    text: "Your order does not qualify for this coupon",
-                    showConfirmButton: false,
-                    timer: 3000,
-                });
-                
-            }else{
-                await Swal.fire({
-                    icon: "error",
-                    title: "Invalid Coupon",
-                    text: "This coupon is invalid",
-                    showConfirmButton: false,
-                    timer: 3000,
+                  icon: "error",
+                  title: "Invalid Coupon",
+                  text: "This coupon is invalid",
+                  showConfirmButton: false,
+                  timer: 3000,
                 });
                 console.log(result.data.status)
+              }
+            } else {
+              await Swal.fire({
+                icon: "error",
+                title: "Coupon already applied",
+                text: "You can only use one at a time",
+                showConfirmButton: false,
+                timer: 3000,
+              });
             }
-            }else{
-                await Swal.fire({
-                    icon: "error",
-                    title: "Coupon already applied",
-                    text: "You can only use one at a time",
-                    showConfirmButton: false,
-                    timer: 3000,
+
+          }
+
+          let couponForm = document.getElementById("couponForm")
+          couponForm.addEventListener('submit', couponCheck)
+
+          let orderPost = document.getElementById("checkoutPost")
+          orderPost.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let paymentMode = document.getElementById("paymentMode").value
+            let total = parseInt(document.getElementById("total-Price").value);
+            let wallet=0
+            <%if(wallet){%>
+              wallet = parseInt('<%=wallet.balance%>')
+              <%}%>
+            
+            if (paymentMode != "wallet") {
+              orderPost.submit();
+            } else {
+              if (wallet < total) {
+                if (wallet == 0) {
+                  document.getElementById("later").innerHTML = "Choose another mode of payment"
+                } else {
+                  document.getElementById("later").innerHTML = "Use your wallet balance for now and pay the rest later"
+                }
+                document.getElementById("wallet_warning").style.display = "block"
+              } else {
+                document.getElementById("wallet_warning").style.display = "none"
+                orderPost.submit()
+              }
+            }
+          })
+        </script>
+        <!-- axios cdn -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
+
+<!-- sweet alert cdn -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+
+          function handleEditSuccess(i, infor) {
+            Toast.fire({
+              icon: "success",
+              title: "Edited!",
+              text: "Address successfully edited.",
+            }).then(() => {
+              // Update the form fields with the edited address details
+              const noEdit = document.getElementById(`noEdit${i}`);
+              const footerAdd = document.getElementById(`footer-add${i}`);
+              const addEdit = document.getElementById(`addEdit${i}`);
+              noEdit.classList.remove("d-none");
+              footerAdd.classList.remove("d-none");
+              footerAdd.classList.add("d-flex");
+              addEdit.classList.remove("d-block");
+              addEdit.classList.add("d-none");
+              noEdit.innerHTML = `
+      Phone: ${infor.phoneNumber}<br>
+      ${infor.buildingName}, ${infor.street}, ${infor.city},<br>
+      ${infor.state}, ${infor.country},<br>
+      ${infor.zipCode}
+    `;
+              document.getElementById(`building${i}`).value = infor.buildingName;
+              document.getElementById(`state${i}`).value = infor.street;
+              document.getElementById(`inputCity${i}`).value = infor.city;
+              document.getElementById(`inputZip${i}`).value = infor.zipCode;
+              document.getElementById(`inputState${i}`).value = infor.state;
+              document.getElementById(`country${i}`).value = infor.country;
+              document.getElementById(`phone${i}`).value = infor.phoneNumber;
+            });
+          }
+
+
+          function deleteAddress(id) {
+            Swal.fire({
+              icon: "warning",
+              title: "Are you sure?",
+              text: "Delete Address?",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "remove",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                axios.delete(`/user/address/delete?id=${id}`).then((result) => {
+                  Swal.fire("removed!", "Address has been deleted.", "success").then((response) => {
+                    location.reload();
+                  });
                 });
+              }
+            });
+          }
+
+          function editAddress(i) {
+            const noEdit = document.getElementById(`noEdit${i}`);
+            const footerAdd = document.getElementById(`footer-add${i}`);
+            const addEdit = document.getElementById(`addEdit${i}`);
+            noEdit.classList.add("d-none");
+            footerAdd.classList.remove("d-flex");
+            footerAdd.classList.add("d-none");
+            addEdit.classList.remove("d-none");
+            addEdit.classList.add("d-block");
+          }
+          <% for (let i = 0; i < addresses.length; i++) { %>
+          document.getElementById("editButton<%= i %>").addEventListener("click", () => {
+            editAddress(<%= i %>);
+          });
+
+          document.getElementById(`editAddress<%= i %>`).addEventListener("submit", async (e) => {
+            e.preventDefault();
+            let serializedData = $("#editAddress<%= i %>").serialize();
+            const urlSearchParams = new URLSearchParams(serializedData);
+            const info = Object.fromEntries(urlSearchParams.entries());
+            let result = await axios({
+              url: '/checkout/editAddress',
+              method: 'POST',
+              data: {
+                info,
+              }
+            });
+            if (result.data.status) {
+              const infor = result.data.info;
+              handleEditSuccess(<%= i %>, infor);
             }
+          });
+          <% } %>
+        </script>
 
-        }
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+          async function addWallet() {
+            const selectedMode = $('input[name="mode"]:checked').val();
+            const newPaymentMode = $('input[name="paymentmodenew"]:checked').val()
+            if (newPaymentMode == 'cod') {
+              document.getElementById("payment-review").innerHTML = "Cash On Delivery"
+            } else if (newPaymentMode == 'online') {
+              document.getElementById("payment-review").innerHTML = "Online Payment"
+            }
+            $('input[name="payment"]').val(newPaymentMode)
+            let total = parseInt(document.getElementById("total-Price").value);
+            if (selectedMode == "add") {
+              let result = await axios({
+                method: "post",
+                url: "/checkout/addWallet",
+                data: {
+                  total,
+                },
+              }).then((data) => {
+                if (data.data.status) {
+                  var options = {
+                    "key": "" + data.data.key_id + "",
+                    "amount": "" + data.data.wallet_amount * 100 + "",
+                    "order_id": "" + data.data.order_id + "",
+                    "currency": "INR",
+                    "handler": function(response) {
+                      // Payment succeeded
+                      alert("Payment Succeeded");
 
-        let couponForm=document.getElementById("couponForm")
-        couponForm.addEventListener('submit',couponCheck)
-    </script>
+                      // Get the payment ID from the response
+                      var paymentId = response.razorpay_payment_id;
 
-    <%- include('../layouts/userfooter.ejs') %>
+                      // Create the payload for the POST request
+                      var payload = {
+                        total: data.data.wallet_amount,
+                        paymentId: paymentId
+                        // Include any other required data
+                      };
+                      console.log(payload)
+
+                      // Make the POST request to your backend
+                      axios.post('/checkout/addToWallet', payload)
+                        .then(function(response) {
+                          if (response.data.status) {
+                            document.getElementById("wallet_balance").innerHTML = `Pay with your wallet. Balance : ${response.data.wallet_amount}`
+                            document.getElementById("wallet_warning").style.display = "none"
+
+                          } else {
+                            console.log(err)
+                          }
+
+                        })
+                        .catch(function(error) {
+                          console.log(error);
+                        });
+                    },
+                  };
+                  var razorpayObject = new Razorpay(options);
+                  razorpayObject.on('payment.failed', function(response) {
+                    alert("Payment Failed");
+                  });
+                  razorpayObject.open();
+                }
+              });
+            } else if (selectedMode == "subtract") {
+              let wallet = parseInt('<%=wallet.balance%>')
+              total = total - wallet
+              let walletb = wallet - total
+              document.getElementById("total").innerHTML = `&#x20B9;${total}.00`
+              document.getElementById("deductedWallet").style.display = "block"
+              document.getElementById("deductedW").innerHTML = `&#x20B9;${wallet}.00`
+              document.getElementById("total-Price").value = `${total}`
+              document.getElementById("wallet_balance").innerHTML = `Pay with your wallet. Balance :${walletb}`
+              document.getElementById("wallet_warning").style.display = "none"
+            }
+          }
+        </script>
+
+
+        <%- include('../layouts/userfooter.ejs') %>

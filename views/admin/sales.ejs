@@ -1,28 +1,13 @@
 <%- include ('../layouts/adminheader.ejs') %>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
-    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script type="text/javascript" language="javascript"
-        src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" language="javascript"
-        src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" language="javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script type="text/javascript" language="javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script type="text/javascript" language="javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script type="text/javascript" language="javascript"
-        src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
-    <script type="text/javascript" language="javascript"
-        src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.print.min.js"></script>
+    
 
     <div class="row">
         <div class="col-4 half-gutter grid-margin mb-4">
             <div class="card card-white">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                            <a href="/admin/report/yearly" class="btn btn-tranparent">
+                            <a href="/admin/report" class="btn btn-tranparent">
                                 <h4 class="mb-0 text-blue">Yearly Report</h4>
                             </a>
                         <i class="fas fa-chart-pie"></i>
@@ -64,7 +49,7 @@
             </div>
         </div>
     </div>
-    <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <table id="dtBasicExample" class="table bg-white table-bordered" cellspacing="0" width="100%">
         <thead class="bg-light">
             <tr>
                 <!-- <th>Order ID</th> -->
@@ -95,15 +80,32 @@
                 </tr>
         </tbody>
     </table>
-</div>
-</main>
-
-    <script>
-
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.print.min.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script>
     <script>
         var table = $('#dtBasicExample').DataTable({
-            "searching": false // false to disable search (or any other option)
+            dom: 'Bfrtip',
+            "searching": false,// false to disable search (or any other option)
+            buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
         });
         $('.dataTables_length').addClass('bs-select');
         function month() {
@@ -176,3 +178,5 @@
         }
 
     </script>
+
+<%- include ('../layouts/adminfooter.ejs') %>  

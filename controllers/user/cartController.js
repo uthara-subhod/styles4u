@@ -11,6 +11,14 @@ const loadCart = async (req, res, next) => {
     const cartItems = await Cart.findOne({ owner: user }).populate(
       "items.productId"
     );
+    if(cartItems){
+    for (const item of cartItems.items) {
+      if (item.productId.size[item.size] < item.quantity) {
+        item.quantity = item.productId.size[item.size];
+        await cartItems.save();
+      }
+    }
+  }
     res.render("user/cart", {
       cat: categories,
       url: null,
@@ -24,6 +32,7 @@ const loadCart = async (req, res, next) => {
     next(error);
   }
 };
+
 
 
 //add product to cart

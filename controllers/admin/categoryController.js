@@ -5,18 +5,6 @@ const Product = require("../../models/product");
 //catgeory list -get
 const loadCategory = async (req, res) => {
   try {
-    const pageSize = 5;
-    const currentPage = parseInt(req.query.page) || 1;
-    const totalCategoriesCount = await Category.aggregate([
-      { $unwind: "$sub" },
-      { $count: "documentCount" },
-    ]);
-    const total = totalCategoriesCount[0].documentCount;
-    const totalPages = Math.ceil(total / pageSize);
-    let search = "";
-    if (req.query.search) {
-      search = req.query.search;
-    }
     const categories = await Category.aggregate([
       {
         $unwind: {
@@ -24,16 +12,6 @@ const loadCategory = async (req, res) => {
           preserveNullAndEmptyArrays: true,
         },
       },
-      {
-        $match: {
-          $or: [
-            { category: { $regex: new RegExp(search, "i") } },
-            { sub: { $regex: new RegExp(search, "i") } },
-          ],
-        },
-      },
-      { $skip: (currentPage - 1) * pageSize },
-      { $limit: pageSize },
     ]);
 
     const productValue = [];
@@ -54,8 +32,7 @@ const loadCategory = async (req, res) => {
       url: "category",
       cat: categories,
       items: productValue,
-      page: currentPage,
-      totalPages: totalPages,
+
     });
   } catch (error) {
     res.send(error);

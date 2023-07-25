@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
     {
+        order_id: {
+            type: String,
+            unique: true,
+          },
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "users",
@@ -28,6 +32,9 @@ const orderSchema = new mongoose.Schema(
                 },
                 totalPrice: {
                     type: Number,
+                },
+                returned:{
+                    type:Number,
                 },
             },
         ],
@@ -59,11 +66,26 @@ const orderSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "coupon",
         },
-        razorpay_order_id:{
+        razorpay_payment_id:{
             type:String,
         }
     },
 );
+
+orderSchema.pre("save", async function (next) {
+    let uniqueCode;
+    let isUnique = false;
+
+    while (!isUnique) {
+        const { nanoid } = await import("nanoid");
+        uniqueCode = nanoid();
+       const existingOrder= await mongoose.model("order").findOne({ order_id: uniqueCode })
+      isUnique = !existingOrder;
+    }
+      this.order_id = uniqueCode;
+    next();
+  });
+
 const orderModel = mongoose.model("order", orderSchema);
 
 module.exports = orderModel;

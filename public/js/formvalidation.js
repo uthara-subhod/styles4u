@@ -7,6 +7,7 @@ const confirm=document.querySelector('#re-password');
 const emailRegex =  /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+if(form){
 form.addEventListener('submit', function (e) {
   let error=false
     // prevent the form from submitting
@@ -20,14 +21,16 @@ form.addEventListener('submit', function (e) {
             document.getElementById("email_error").style.display="none"
           }
     }
-  
-  if(!usernameRegex.test(username.value)){
-    document.getElementById("username_error").style.display="block"
-    error=true
+  if(username){
+    if(!usernameRegex.test(username.value)){
+      document.getElementById("username_error").style.display="block"
+      error=true
+    }
+    else{
+      document.getElementById("username_error").style.display="none"
+    }
   }
-  else{
-    document.getElementById("username_error").style.display="none"
-  }
+ 
   if(!passwordRegex.test(password.value)){
     document.getElementById("password_error").style.display="block"
     error=true
@@ -43,13 +46,13 @@ form.addEventListener('submit', function (e) {
           }
     }
   }
-  if(email){
+  if(username){
     if(emailRegex.test(email.value)&&usernameRegex.test(username.value)&&passwordRegex.test(password.value)&&(password.value==confirm.value)){
       error=false
     }
   }
   else{
-    if(usernameRegex.test(username.value)&&passwordRegex.test(password.value)){
+    if(emailRegex.test(email.value)&&passwordRegex.test(password.value)){
       error=false
     }
   }
@@ -59,7 +62,8 @@ form.addEventListener('submit', function (e) {
     }
 
   });
-
+}
+if(form2){
   form2.addEventListener('submit', function (e) {
     let error=false
     e.preventDefault();
@@ -83,4 +87,4 @@ form.addEventListener('submit', function (e) {
       }
   
     });
-  
+}

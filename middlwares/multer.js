@@ -11,7 +11,10 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+  if (file.mimetype === "image/jpeg" ||
+  file.mimetype === "image/png" ||
+  file.mimetype === "image/webp" ||
+  file.mimetype === "image/avif") {
     return cb(null, true);
   } else {
     cb("Error: Images Only!");
@@ -32,7 +35,7 @@ const upload = multer({
 const Uploads=(req,res,next)=>{
   uploads(req,res,(err)=>{
   if(err){
-  res.send("NO")
+  res.send(err)
   }
   else{
    next()

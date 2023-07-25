@@ -10,7 +10,7 @@
                 <div class="col-lg-10 mx-auto col-12 grid-margin">
                     <div class="card bg-white">
                         <div class="card-body mx-3">
-                            <form action="/admin/coupon/add" method="post">
+                            <form action="/admin/coupon/<%if(coupon){%>edit?id=<%=coupon.coupon_id%><%}else{%>add<%}%>" method="post" class="needs-validation" novalidate>
                             <div class="form-group mt-3">
                                 <label for="exampleInput1">Coupon Title</label>
                                 <input
@@ -18,7 +18,12 @@
                                     name="couponName"
                                     class="form-control"
                                     id="exampleInput1"
+                                    required
+                                    <%if(coupon){%>value="<%=coupon.couponName%>"<%}%>
                                 />
+                                <div class="invalid-feedback">
+                                    Please enter a coupon name
+                                  </div>
                             </div>
                             <div class="form-group pt-3">
                                 <label for="exampleInput2">Coupon Code</label>
@@ -27,44 +32,69 @@
                                     name="couponCode"
                                     class="form-control"
                                     id="exampleInput2"
+                                    required
+                                    <%if(coupon){%>value="<%=coupon.couponCode%>"<%}%>
                                 />
+                                <div class="invalid-feedback">
+                                    Please enter a coupon code
+                                  </div>
                             </div>
                             <div class="row">
                                 <div class="form-group pt-3 col-6">
                                 <label>Start Date</label>
-                                <input type="date" name="startDate" class="form-control" />
+                                <input type="date" name="startDate" class="form-control" <%if(coupon){%>value="<%=coupon.startDate.toISOString().split('T')[0]%>%>" readonly<%}%> required/>
+                                <div class="invalid-feedback">
+                                    Please enter a start Date
+                                  </div>
                                 </div>
                                 <div class="form-group pt-3 col-6">
                                 <label>End Date</label>
-                                <input type="date" name="endDate" class="form-control" />
+                                <input type="date" name="endDate" class="form-control" id="endDateInput"<%if(coupon){%>value="<%=coupon.endDate.toISOString().split('T')[0]%>%>"<%}%>required />
+                                <div class="invalid-feedback">
+                                    Please enter a end date
+                                  </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group pt-3 col-4">
+                                <div class="form-group pt-3 col-3">
                                     <label for="exampleInput3">Quantity</label>
                                     <input
                                         type="number"
                                         name="quantity"
                                         class="form-control"
                                         id="exampleInput3"
+                                        <%if(coupon){%>value="<%=coupon.quantity%>"<%}else{%> value="0"<%}%>
+                                        required
                                     />
                                     </div>
-                                <div class="form-group pt-3 col-4">
+                                <div class="form-group pt-3 col-3">
                                 <label for="exampleInput4">Minimum Spend</label>
                                 <input
                                     type="number"
                                     name="minSpend"
                                     class="form-control"
                                     id="exampleInput4"
+                                    <%if(coupon){%>value="<%=coupon.minSpend%>"<%}else{%> value="0"<%}%>
                                 />
                                 </div>
-                                <div class="form-group pt-3 col-4">
+                                <div class="form-group pt-3 col-3">
+                                    <label for="exampleInput4">Maximum Amount</label>
+                                    <input
+                                        type="number"
+                                        name="maxAmount"
+                                        class="form-control"
+                                        id="exampleInput4"
+                                        <%if(coupon){%>value="<%=coupon.maxAmount%>"<%}else{%> value="0"<%}%>
+                                    />
+                                    </div>
+                                <div class="form-group pt-3 col-3">
                                 <label for="exampleInput5">Limit</label>
                                 <input
                                     type="number"
                                     name="limit"
                                     class="form-control"
                                     id="exampleInput5"
+                                    <%if(coupon){%>value="<%=coupon.limit%>"<%}else{%> value="0"<%}%>
                                 />
                                 </div>
                             </div>
@@ -75,8 +105,13 @@
                                 <div class="form-group pt-3 col-6">
                                     <label for="exampleInput7">Type of Discount</label>
                                     <select class="form-select" id="exampleInput7" name="type">
-                                        <option value="percent">Percentage off</option>
-                                        <option value="flat">Flat off</option>
+                                        <%if(coupon&&coupon.discount.type=="percent"){%>
+                                            <option value="percent" selected>Percentage off</option>
+                                            <option value="flat">Flat off</option>
+                                            <%}else{%>
+                                            <option value="percent" selected>Percentage off</option>
+                                            <option value="flat" selected>Flat off</option>
+                                            <%}%>
                                     </select>
                                 </div>
                                 <div class="form-group pt-3 col-6">
@@ -86,6 +121,7 @@
                                         name="amount"
                                         class="form-control"
                                         id="exampleInput6"
+                                        <%if(coupon){%>value="<%=coupon.discount.amount%>"<%}else{%> value="0"<%}%>
                                     />
                                 </div>
                             </div>
@@ -110,6 +146,33 @@
 <!-- sweet alert cdn -->
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
+<script>
+    const currentDate = new Date().toISOString().split('T')[0];
+    const endDateInput = document.getElementById('endDateInput');
+    endDateInput.setAttribute('min', currentDate);
+  </script>
+<script>
     const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -122,10 +185,10 @@
     },
     });
     const message=`<%=message%>`
-    if(message=="Coupon added!") {
+    if(message=="Coupon added!"||message=="Coupon edited!") {
         Toast.fire({
             icon: "success",
-            title: "Coupon added successfully",
+            title: "Coupon updated successfully",
         })
     }else if(message){
         Toast.fire({

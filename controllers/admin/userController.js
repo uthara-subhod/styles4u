@@ -4,27 +4,12 @@ const User = require("../../models/user");
 //userlist -get
 const loadCustomers = async (req, res) => {
     try {
-        const count =await User.countDocuments() ;
-        const totalPages = Math.round(count / 5);
-        if (req.query.page) {
-          var page = parseInt(req.query.page) || 1;
-        } else {
-          var page = 1;
-        }
-        let search = "";
-        if (req.query.search) {
-            search = req.query.search;
-        }
+      
         const userDetails = await User.find({
-            isAdmin: false,
-            $or: [
-                { email: { $regex: new RegExp(search, "i") } },
-                { username: { $regex: new RegExp(search, "i") } },
-            ],
-        }).skip((page - 1) * 5)
-        .limit(5);
+            isAdmin: false, 
+        })
 
-        res.render("admin/customers", { user: userDetails,page,totalPages, url:"user", });
+        res.render("admin/customers", { user: userDetails, url:"user", });
     } catch (error) {
         res.send(error)
 
@@ -42,8 +27,21 @@ const block = async (req, res) => {
     }
 };
 
+const loadLogout = async (req, res) => {
+    try {
+      req.session.admin = null;
+      req.session.admin_id=null
+      res.clearCookie("user");
+      res.redirect("/");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  
+
 
 module.exports = {
     loadCustomers,
     block,
+    loadLogout
 }

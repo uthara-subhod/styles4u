@@ -8,7 +8,7 @@
           <button class="file-upload-btn btn-primary btn-block" type="button" onclick="$('.file-upload-input').trigger('click')">Add Images</button>
         
           <div class="image-upload-wrap">
-            <input class="file-upload-input" type="file" onchange="readURL(this);" name="images" multiple />
+            <input class="file-upload-input" type="file" onchange="readURL(this);" name="images" accept="image/*" multiple />
             <div class="drag-text">
               <% if (item) { %>
                 <% for (var i = 0; i < item.productImages.length; i++) { %>
@@ -38,7 +38,7 @@
       <div class="row mb-4">
         <div class="col-4">
           <label class="form-label" for="price">Price</label>
-          <input type="text" class="form-control" id="price" name="price" placeholder="0.00" pattern="[0-9]+" <% if (item) { %>value="<%= item.price %>" <% } %> required>
+          <input type="text" class="form-control" id="price" name="price" placeholder="0.00" pattern="\b\d{3,}\b" <% if (item) { %>value="<%= item.price %>" <% } %> required>
         </div>
         <div class="col-4">
           <label class="form-label" for="brand">Brand</label>
@@ -137,7 +137,7 @@
       </div>
     </div>
   </div>
-  <input type="hidden" name="id" <%if(item){%>value="<%=item._id%>"<%}%>>
+  <input type="hidden" name="id" <%if(item){%>value="<%=item.product_id%>"<%}%>>
   <% if (message) { %>
     <p style="color: red; text-align: center"><%= message %></p>
   <% } %>

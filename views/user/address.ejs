@@ -1,15 +1,19 @@
 <%- include("../layouts/profileheader.ejs") %>
 
-<div class="col-lg-8">
+<div class="col-lg-8 mt-4">
+  <div class="row">
     <%if(contact){%>
-    <div class="card mt-4">
+    <div class="card col-lg-6 px-0">
     <div class="card-header bg-light py-4 ">
         <h4 class="mb-0">Contact Address</h4>
         <p class="mb-0">We can contact you here</p>
     </div>
     <div class="card-body ">
-        
-        <form>
+      Phone: <%=contact.phoneNumber%><br>
+      <%=contact.buildingName%>, <%=contact.street%>, <%=contact.city%>,<br>
+      <%=contact.state%>, <%=contact.country%>,<br>
+      <%=contact.zipCode%>
+        <!-- <form>
                 <div class="form-group">
                   <label for="building">Building Name</label>
                   <input type="text" class="form-control" id="building" name="building" value="<%=contact.buildingName%>" readonly>
@@ -40,32 +44,40 @@
                 <label for="country">Phone Number</label>
                 <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]" value="<%=contact.phoneNumber%>" readonly >
               </div>
-        </form>
-        <div class="d-flex justify-content-between align-items-center pt-2">
-        <a href="/user/<%=user.username%>/address/edit?type=contact" class="btn btn-primary ">Edit Address</a>
-        </div>
+        </form> -->
+        
       </div>
+      <div class="card-footer d-flex justify-content-between align-items-center bg-white">
+        <a href="/user/address/edit?type=contact" class="btn btn-primary ">Edit Address</a>
+        <a onclick="deleteAddress('<%=contact._id%>')" class="btn btn-primary ">Delete</a>
+        </div>
     </div>
     <%}else{%>
-        <div class="card mt-4">
+        <div class="card mt-4 col-lg-6">
             <div class="card-header bg-light py-4 ">
                 <h4 class="mb-0">Contact Address</h4>
                 <p class="mb-0">We can contact you here</p>
             </div>
             <div class="card-body ">
-                <a href="/user/<%=user.username%>/address/add?type=contact" class="btn btn-primary">Add new Address</a>
+              </div>
+              <div class="card-footer  bg-white">
+                <a href="/user/address/add?type=contact" class="btn btn-primary">Add new Address</a>
+              </div>
                 </div>
                 </div>
                 <%}%>
     <%if(main){%>
-    <div class="card mt-4">
+    <div class="card col-lg-6 px-0">
         <div class="card-header bg-light py-4 ">
             <h4 class="mb-0">Shipping Address</h4>
             <p class="mb-0">Main</p>
         </div>
         <div class="card-body ">
-            
-            <form>
+          Phone: <%=main.phoneNumber%><br>
+          <%=main.buildingName%>, <%=main.street%>, <%=main.city%>,<br>
+          <%=main.state%>, <%=main.country%>,<br>
+          <%=main.zipCode%>
+            <!-- <form>
                 <div class="form-group">
                   <label for="building">Building Name</label>
                   <input type="text" class="form-control" id="building" name="building" value="<%=main.buildingName%>" readonly>
@@ -96,86 +108,96 @@
                 <label for="country">Phone Number</label>
                 <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]" value="<%=main.phoneNumber%>" readonly >
               </div>
-        </form>
-            <div class="d-flex justify-content-between align-items-center pt-2">
-            <a href="/user/<%=user.username%>/address/edit?type=main" class="btn btn-primary ">Edit Address</a>
-            </div>
+        </form> -->
+            
           </div>
+          <div class="card-footer d-flex justify-content-between align-items-center  bg-white">
+            <a href="/user/address/edit?type=main" class="btn btn-primary ">Edit Address</a>
+            <a onclick="deleteAddress('<%=main._id%>')" class="btn btn-primary ">Delete</a>
+            </div>
         </div>
-        <%if(secondary){%>
-          <%for(s of secondary){%>
-            <div class="card mt-4">
-                <div class="card-header bg-light py-4 ">
-                    <h4 class="mb-0">Shipping Address</h4>
-                    <p class="mb-0">Secondary</p>
-                </div>
-                <div class="card-body ">
-                    
-                    <form>
-                        <div class="form-group">
-                            <label for="building">Building Name</label>
-                            <input type="text" class="form-control" id="building" name="building" value="<%=s.buildingName%>" readonly>
-                          </div>
-                          <div class="form-group">
-                            <label for="state">Street</label>
-                            <input type="text" class="form-control" id="state" name="street" value="<%=s.street%>" readonly>
-                          </div>
-                        <div class="form-row">
-                          <div class="form-group col-md-5">
-                            <label for="inputCity">City</label>
-                            <input type="text" class="form-control" id="inputCity" name="city"  value="<%=s.city%>" readonly>
-                          </div>
-                          <div class="form-group col-md-4">
-                            <label for="inputState">State</label>
-                            <input type="text" class="form-control" id="inputState" name="state" value="<%=s.state%>" readonly >
-                          </div>
-                          <div class="form-group col-md-3">
-                            <label for="inputZip">Zip</label>
-                            <input type="text" class="form-control" id="inputZip" name="zip" value="<%=s.zipCode%>" readonly >
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="country">Country</label>
-                          <input type="text" class="form-control" id="country" name="country" value="<%=s.country%>" readonly >
-                        </div>
-                        <div class="form-group">
-                          <label for="country">Phone Number</label>
-                          <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]" value="<%=s.phoneNumber%>" readonly >
-                        </div>
-                    </form>
-                    <div class="d-flex justify-content-between align-items-center pt-2">
-                    <a href="/user/<%=user.username%>/address/edit?type=secondary&id=<%=s._id%>" class="btn btn-primary ">Edit Address</a>
-                    <a onclick="deleteAddress('<%=s._id%>')" class="btn btn-primary ">Delete</a>
-      
-                    </div>
-                  </div>
-                </div>
-          <%}%>
-         <%}%>
-                <div class="card mt-4">
-                    <div class="card-header bg-light py-4 ">
-                        <h4 class="mb-0">Shipping Address</h4>
-                        <p class="mb-0">Secondary</p>
-                    </div>
-                    <div class="card-body ">
-                        <a href="/user/<%=user.username%>/address/add?type=secondary" class="btn btn-primary">Add new Address</a>
-                    </div>
-                </div>
     <%}else{%> 
-        <div class="card mt-4">
+        <div class="card col-lg-6 px-0 ">
             <div class="card-header bg-light py-4 ">
                 <h4 class="mb-0">Shipping Address</h4>
                 <p class="mb-0">Main</p>
             </div>
             <div class="card-body ">
-                <a href="/user/<%=user.username%>/address/add?type=main" class="btn btn-primary">Add new Address</a>
-
+              This will be you main shipping address please fill it!
+              </div>
+              <div class="card-footer  bg-white">
+                <a href="/user/address/add?type=main" class="btn btn-primary">Add new Address</a>
+              </div>
             </div>
-        </div>
+        
             <%}%>
-
+            <%if(secondary){%>
+              <%for(s of secondary){%>
+                <div class="card col-lg-6 px-0">
+                    <div class="card-header bg-light py-4 ">
+                        <h4 class="mb-0">Shipping Address</h4>
+                        <p class="mb-0">Secondary</p>
+                    </div>
+                    <div class="card-body ">
+                      Phone: <%=s.phoneNumber%><br>
+                      <%=s.buildingName%>, <%=s.street%>, <%=s.city%>,<br>
+                      <%=s.state%>, <%=s.country%>,<br>
+                      <%=s.zipCode%>
+                        <!-- <form>
+                            <div class="form-group">
+                                <label for="building">Building Name</label>
+                                <input type="text" class="form-control" id="building" name="building" value="<%=s.buildingName%>" readonly>
+                              </div>
+                              <div class="form-group">
+                                <label for="state">Street</label>
+                                <input type="text" class="form-control" id="state" name="street" value="<%=s.street%>" readonly>
+                              </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-5">
+                                <label for="inputCity">City</label>
+                                <input type="text" class="form-control" id="inputCity" name="city"  value="<%=s.city%>" readonly>
+                              </div>
+                              <div class="form-group col-md-4">
+                                <label for="inputState">State</label>
+                                <input type="text" class="form-control" id="inputState" name="state" value="<%=s.state%>" readonly >
+                              </div>
+                              <div class="form-group col-md-3">
+                                <label for="inputZip">Zip</label>
+                                <input type="text" class="form-control" id="inputZip" name="zip" value="<%=s.zipCode%>" readonly >
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="country">Country</label>
+                              <input type="text" class="form-control" id="country" name="country" value="<%=s.country%>" readonly >
+                            </div>
+                            <div class="form-group">
+                              <label for="country">Phone Number</label>
+                              <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]" value="<%=s.phoneNumber%>" readonly >
+                            </div>
+                        </form> -->
+                      </div>
+                      <div class="card-footer d-flex justify-content-between align-items-center  bg-white">
+                        <a href="/user/address/edit?type=secondary&id=<%=s._id%>" class="btn btn-primary ">Edit Address</a>
+                        <a onclick="deleteAddress('<%=s._id%>')" class="btn btn-primary ">Delete</a>
+          
+                        </div>
+                    </div>
+              <%}%>
+             <%}%>
+                    <div class="card col-lg-6 px-0">
+                        <div class="card-header bg-light py-4 ">
+                            <h4 class="mb-0">Shipping Address</h4>
+                            <p class="mb-0">Secondary</p>
+                        </div>
+                        <div class="card-body ">
+                            You can add additional addresses if need be!
+                        </div>
+                        <div class="card-footer bg-white">
+                          <a href="/user/address/add?type=secondary" class="btn btn-primary">Add new Address</a>
+                        </div>
+                    </div>
+          </div>
     </div>
-</div>
 </div>
 </section>
 <script>
@@ -190,7 +212,7 @@
                 confirmButtonText: "remove",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.delete(`/user/<%=user.username%>/address/delete?id=${id}`).then((result) => {
+                    axios.delete(`/user/address/delete?id=${id}`).then((result) => {
                         Swal.fire("removed!", "Address has been deleted.", "success").then((response) => {
                             location.reload();
                         });

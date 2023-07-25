@@ -1,0 +1,231 @@
+<%- include("../layouts/profileheader.ejs") %>
+<style>
+  .rating-stars {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    color: #888888;
+    font-size: 25px;
+  }
+
+  .rating-stars span {
+    cursor: pointer;
+  }
+
+  .rating-stars span::before {
+    content: '\2606';
+  }
+
+  .rating-stars span.checked::before,
+  .rating-stars span:hover::before {
+    content: '\2605';
+  }
+
+  .review-form {
+    margin-top: 20px;
+  }
+
+  .review-form textarea {
+    width: 100%;
+    height: 100px;
+    resize: vertical;
+  }
+
+  .submit-btn {
+    margin-top: 10px;
+  }
+</style>
+<div class="col-lg-8">
+  <div class="card mt-4">
+    <div class="card-header bg-light py-4 ">
+      <h4 class="mb-0">Review Order</h4>
+      <p class="mb-0">Rate our products</p>
+    </div>
+    <div class="card-body ">
+      <div class="card">
+        <div class="card-header">
+          Order details<br><small>Your order items</small>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <% for( let i=0; i < order.items.length; i++ ) { %>
+            <div class="col-12pb-1 ">
+              <div class="card product-card border-1 m-2">
+                <div class="d-flex justify-content-start">
+                  <div class="img-container col-4 h-100">
+                    <img class="img-fluid " src="<%=order.items[i].productId.productImages[0]%>" alt="Card image cap">
+                  </div>
+                  <div class="card-body">
+                    <h4 class="card-title"><%=order.items[i].productId.productName%> <sup><small>(review)</small></sup></h4>
+                    <div class="rating-stars">
+                      <span class="star"></span>
+                      <span class="star"></span>
+                      <span class="star"></span>
+                      <span class="star"></span>
+                      <span class="star"></span>
+                    </div>
+                    <form class="review-form" action="/user/orders/<%=order._id%>/rate/<%=order.items[i].productId._id%>" method="POST">
+                      <input type="hidden" name="product" value="<%=order.items[i].productId._id%>">
+                      <textarea name="review" placeholder="Write your review..."> <%if(reviews&&reviews[i]){%><%=reviews[i].review%><%}%></textarea>
+                      <input type="hidden" name="rating" <%if(reviews&&reviews[i]){%>value="<%=reviews[i].rating%>" <%}%>>
+                                          <div class="d-flex justify-content-between align-items-center">
+                                            <button class="submit-btn btn btn-primary" type="submit">Submit</button>
+                                            <%if(reviews&&reviews[i]){%> <a class="submit-btn btn btn-danger" onclick="deleteThis('/user/orders/<%=order._id%>/rate/<%=order.items[i].productId._id%>/delete')">Delete</a>
+                      <%}%>
+                                          </div>
+                                          
+                                      </form>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                              </div>
+                                </div>
+                              </div>
+                            <% } %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <!-- axios cdn -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
+
+    <!-- sweet alert cdn -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+      const productCards = document.querySelectorAll(".product-card");
+
+      productCards.forEach((card) => {
+        const stars = card.querySelectorAll(".star");
+        const reviewForm = card.querySelector(".review-form");
+        const reviewTextArea = reviewForm.querySelector("textarea");
+        const ratingInput = reviewForm.querySelector("input[name='rating']");
+        const productId = reviewForm.querySelector("input[name='product']")
+
+        let selectedRating = 0; // Variable to store the selected rating
+        if (ratingInput.value) {
+          const initialRating = parseInt(ratingInput.value);
+          setRating(initialRating);
+          highlightStars(initialRating - 1); // Subtract 1 to get the correct index for highlighting stars
+        }
+        stars.forEach((star, index) => {
+          star.addEventListener("click", () => {
+
+            setRating(index + 1); // Add 1 to index to get a 1-5 rating instead of 0-4
+          });
+
+          star.addEventListener("mouseover", () => {
+            highlightStars(index);
+            setRating(index + 1);
+          });
+
+
+        });
+
+        function setRating(rating) {
+
+          selectedRating = rating; // Store the selected rating in the variable
+
+          stars.forEach((star, i) => {
+            if (i < rating) { // Check if the index is less than the selected rating
+              star.classList.add("checked");
+            } else {
+              star.classList.remove("checked");
+            }
+          });
+        }
+
+        function highlightStars(index) {
+          stars.forEach((star, i) => {
+            if (i <= index) {
+              star.classList.add("checked");
+            } else {
+              star.classList.remove("checked");
+            }
+          });
+        }
+
+
+        reviewForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const review = reviewTextArea.value;
+          ratingInput.value = selectedRating
+          console.log(productId);
+          let serializedData = $(reviewForm).serialize()
+          const order = '<%=order._id%>'
+          const urlSearchParams = new URLSearchParams(serializedData);
+          const info = Object.fromEntries(urlSearchParams.entries());
+          console.log(info)
+          let result = await axios({
+            url: `/user/orders/${order}/rate/${productId.value}`,
+            method: "POST",
+            data: {
+              info
+            },
+          });
+          if (result.data.status == true) {
+            await Toast.fire({
+              icon: "success",
+              title: "Review added successfully",
+            }).then(() => {
+              location.reload();
+            })
+          } else {
+            Toast.fire({
+              icon: "error",
+              title: "Review not added",
+            })
+            console.log(result)
+          }
+        });
+      });
+
+      async function deleteThis(url) {
+        Swal.fire({
+          icon: "warning",
+          title: "Are you sure?",
+          text: "Do you want to delete this review",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "remove",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            let result = await axios.post(url)
+            if (result.data.status) {
+              Toast.fire({
+                icon: "success",
+                title: "Deleted!",
+                text: "Review successfully deleted.",
+              }).then(()=>{
+                location.reload()
+              })
+            } else {
+              Toast.fire({
+                icon: "error",
+                title: "Failed to delete!",
+                text: "Review deletion failed.",
+              });
+            }
+          }
+        })
+
+      }
+    </script>
+    <%- include("../layouts/userfooter.ejs") %>

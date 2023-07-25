@@ -1,0 +1,60 @@
+<%- include ('../layouts/homeheader.ejs') %>
+</div></div></div>
+<div id="successful" class="container shadow p-3 mb-5 bg-white rounded col-lg-5 col-8 mt-5" style="display:none;" >
+    <br>
+<div class=" text-center pt-3" style="height:150px">
+    <i class="fa-solid fa-circle-check fa-beat text-success" style="font-size: 100px"></i>
+    </div> 
+<h5 class="text-center">Your Order has been cancelled</h5>
+<p class="text-center"><a href="/shop" class="text-primary">Continue Shopping</a></p>
+</div>
+    <div id="pendinG" class="container shadow p-3 mb-5 bg-white rounded col-lg-5 col-8 mt-5">
+        <br>
+    <h5 class="text-center">Just one more step before cancellation</h5>
+    <p class="text-center mb-3">Please choose the mode of refund you prefer</a></p>
+    <form id="refund">
+        <div class="form-check">
+            <input type="radio" name="method" value="razorpay">
+            <label class="form-check-label">Back to your bank acc.</label>
+        </div>
+        <div class="form-check mb-3">
+            <input type="radio" name="method" value="wallet" data-toggle="collapse" data-target="#wallet_warning">
+            <label class="form-check-label" >To your wallet</label>
+        </div>
+        <div class="collapse mb-4 ml-3" id="wallet_warning">
+            <div class="card border-warning pt-3" style="background-color: rgb(254, 231, 140);">
+            <p class="text-black text-center"><small><i class="fa-solid fa-circle-exclamation text-danger"></i> Once you add to your wallet it cannot be refunded back to your bank</small></p>
+        </div>
+        </div>
+        <input type="hidden" name="order" value="<%=orderId%>">
+        <div class="d-flex align-items-center justify-content-center">
+        <button type="button" class="btn btn-primary btn-sm px-3"  onclick="refundNow()">Choose</button>
+    </div>
+    </form>
+    </div>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    async function refundNow(){
+        const refundForm = document.getElementById('refund');
+        let serializedData = $("#refund").serialize()
+            const urlSearchParams = new URLSearchParams(serializedData);
+            const info = Object.fromEntries(urlSearchParams.entries());
+        let order='<%=orderId%>'
+        let response = await axios({
+            url:`/user/orders/${order}/refund`,
+            method:'post',
+            data:{
+                info
+            }
+        }).then((data)=>{
+            if(data.data.status){
+                document.getElementById('successful').style.display='block';
+        document.getElementById('pendinG').style.display='none'
+        console.log(data.data);
+            }else{
+                console.log(data.data)
+            }
+        })
+    }
+</script>
+<%- include ('../layouts/userfooter.ejs') %>

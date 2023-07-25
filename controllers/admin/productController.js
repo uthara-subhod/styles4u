@@ -8,30 +8,12 @@ const fs = require("fs");
 //productlist -get
 const loadProducts = async (req, res) => {
   try {
-    const count = await Product.countDocuments();
-    let totalPages = Math.round(count / 5);
-    if (count % 5 < 5 && count % 5 != 0) {
-      totalPages++;
-    }
-    if (req.query.page) {
-      var page = req.query.page;
-    } else {
-      var page = 1;
-    }
-    let search = "";
-    if (req.query.search) {
-      search = req.query.search;
-    }
     const products = await Product.find({
-      productName: { $regex: new RegExp(search, "i") },
       deleted: { $ne: true },
     })
-      .skip((page - 1) * 5)
-      .limit(5);
+
     res.render("admin/products", {
       items: products,
-      page,
-      totalPages,
       url: "product",
     });
   } catch (err) {
@@ -46,7 +28,7 @@ const loadProduct = async (req, res) => {
     const categories = await Category.find();
     let item = null;
     if (req.query.id) {
-      item = await Product.findById(req.query.id);
+      item = await Product.findOne({product_id:req.query.id});
     }
     res.render("admin/product", {
       message: null,
@@ -113,10 +95,10 @@ const AddProduct = async (req, res) => {
       const l = parseInt(req.body.l);
       const xl = parseInt(req.body.xl);
       const quantity = xs + s + m + l + xl;
-      const product = await Product.findOneAndUpdate(
-        { productName: req.body.name, category: cat[0], subcategory: cat[1] },
-        {
-          $set: {
+      const product = await Product(
+        { productName: req.body.name, 
+          category: cat[0], 
+          subcategory: cat[1],
             price: req.body.price,
             details: req.body.details,
             blurb: req.body.blurb,
@@ -132,9 +114,7 @@ const AddProduct = async (req, res) => {
             },
             brand: req.body.brand,
           },
-        },
-        { upsert: true, new: true }
-      );
+      ).save();
 
       res.redirect("/admin/product");
     } else {
@@ -150,7 +130,7 @@ const AddProduct = async (req, res) => {
 //product edit-post
 const EditProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.body.id);
+    const product = await Product.findOne({product_id:reqbodyquery.id});
     const cat = req.body.category.split(",");
     if (cat[0] !== cat[1]) {
       var category = await Category.findOne({ name: cat[0], sub: cat[1] });
@@ -160,7 +140,6 @@ const EditProduct = async (req, res) => {
 
     if (category) {
       const files = req.files;
-      console.log(files)
       if (files.length) {
         for (image of product.productImages) {
           const imgPath = path.join(__dirname, "..", "..", "public", image);
@@ -169,7 +148,7 @@ const EditProduct = async (req, res) => {
               console.log("An error occurred while replacing " + err);
             }
           });
-          await Product.findByIdAndUpdate(req.body.id, {
+          await Product.findOneAndUpdate({product_id:req.body.id} ,{
             $pull: { productImages: image },
           });
         }
@@ -214,7 +193,7 @@ const EditProduct = async (req, res) => {
           });
         }
         const item = await Product.findOneAndUpdate(
-          { productName: req.body.name, category: cat[0], subcategory: cat[1] },
+          { product_id:req.body.id},
           {
             $set: {
               productImages: croppedImages,
@@ -232,9 +211,12 @@ const EditProduct = async (req, res) => {
       const quantity = xs + s + m + l + xl;
 
       const item = await Product.findOneAndUpdate(
-        { productName: req.body.name, category: cat[0], subcategory: cat[1] },
+        { product_id:req.body.id},
         {
           $set: {
+            productName:req.body.name,
+            category:cat[0],
+            subcategory:cat[1]==cat[0]?"":cat[1],
             price: req.body.price,
             details: req.body.details,
             blurb: req.body.blurb,
@@ -267,11 +249,9 @@ const EditProduct = async (req, res) => {
 //product soft delete
 const deleteProduct = async (req, res) => {
   try {
-    console.log(req.body.id);
-    const product = await Product.findByIdAndUpdate(req.body.id, {
+    const product = await Product.findOneAndUpdate({product_id:req.body.id}, {
       $set: { deleted: true },
     });
-    console.log(product);
     if (product) {
       res.json({ status: true });
     } else {

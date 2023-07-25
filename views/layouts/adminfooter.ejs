@@ -47,6 +47,11 @@
       $('.image-preview').empty();
 
       for (var i = 0; i < input.files.length; i++) {
+        if (!input.files[i].type.startsWith('image/')) {
+    alert('Only image files (JPEG, PNG, GIF) are allowed.');
+    removeUpload();
+    return;
+  }
         var reader = new FileReader();
 
         reader.onload = function (e) {

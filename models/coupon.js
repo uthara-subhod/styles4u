@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const couponSchema = new mongoose.Schema(
     {
+        coupon_id:{
+            type:String,
+        },
         owner: [
             {
                 user: {
@@ -48,6 +51,10 @@ const couponSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
+        maxAmount:{
+            type: Number,
+            default: 0
+        },
         status: {
             type: Boolean,
             default: true,
@@ -58,5 +65,19 @@ const couponSchema = new mongoose.Schema(
         }
     },
 );
+
+couponSchema.pre("save", async function (next) {
+    let uniqueCode;
+    let isUnique = false;
+  
+    while (!isUnique) {
+      const { nanoid } = await import("nanoid");
+        uniqueCode = nanoid();
+       const  existingCoupon= await mongoose.model("coupon").findOne({ coupon_id: uniqueCode })
+      isUnique = !existingCoupon
+    }
+      this.coupon_id = uniqueCode;
+    next();
+  });
 
 module.exports = mongoose.model("coupon", couponSchema);

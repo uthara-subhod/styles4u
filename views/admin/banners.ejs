@@ -1,0 +1,32 @@
+<%- include ('../layouts/adminheader.ejs') %>
+<div style="padding: 20px 20px 20px 20px;">
+    <div class="container" style="overflow: auto;">
+        <table class="table table-bordered bg-white">
+            <thead>
+                <tr>
+                    <th class="text-center" width="5%">SL. No.</th>
+                    <th class="text-center" width="10%">Image</th>
+                    <th class="text-center" width="15%">Title</th>
+                    <th class="text-center" width="5%">View Details</th>
+                </tr>
+                </thead>
+            <%for(i=0;i<banner.length;i++){%>
+              <tr class="text-center">
+                <td>
+                  <%= i+1 %>
+                </td>
+                <td><img src="<%=banner[i].bannerImage%>" alt="" class="ml-3 img-fluid" width="60%"> 
+                    </td>
+                <td>
+                    <%=banner[i].title%>
+                </td>
+                <td>
+                    <a class="btn btn-primary rounded px-3" href="/admin/banner/view?id=<%=banner[i]._id%>">View</a>
+                </td>
+              </tr>
+              <%}%>
+          </table>
+    </div>
+    
+    </div>
+<%- include ('../layouts/adminfooter.ejs') %>

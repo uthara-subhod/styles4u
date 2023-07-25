@@ -12,7 +12,7 @@
                 <div class="card-body ">
 
                     <%if(address){%>
-                    <form action="/user/<%=user.username%>/address/edit" method="post">
+                    <form action="/user/address/edit" method="post">
                             <div class="form-group">
                               <label for="building">Building Name</label>
                               <input type="text" class="form-control" id="building" name="building" value="<%=address.buildingName%>">
@@ -48,7 +48,7 @@
                           <button type="submit" class="btn btn-primary">Edit</button>
                     </form>
                     <%}else{%>
-                        <form action="/user/<%=user.username%>/address/add" method="post">
+                        <form action="/user/address/add" method="post">
                             <div class="form-group">
                               <label for="building">Building Name</label>
                               <input type="text" class="form-control" id="building" name="building" >

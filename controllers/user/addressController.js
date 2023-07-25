@@ -5,7 +5,7 @@ const User = require("../../models/user");
 //address -get
 const loadAddress = async (req, res) => {
   try {
-    const username = req.params.username;
+    const username = req.session.user;
     const userData = await User.findOne({ username: username });
     const addresses = await Address.find({ user: userData._id });
 
@@ -42,7 +42,7 @@ const loadAddress = async (req, res) => {
 const loadAddAddress = async (req, res) => {
   try {
     const type = req.query.type;
-    const username = req.params.username;
+    const username = req.session.user;
     const userData = await User.findOne({ username: username });
 
     if (req.query.id) {
@@ -119,7 +119,7 @@ const addAddress = async (req, res) => {
       }).save()
     }
 
-    res.redirect(`/user/${username}/address`);
+    res.redirect(`/user/address`);
   } catch (err) {
     res.send(err);
   }

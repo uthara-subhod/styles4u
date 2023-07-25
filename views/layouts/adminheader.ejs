@@ -9,24 +9,23 @@
     <!-- Favicon -->
     <link href="/images/fashion-heart-like-svgrepo-com.svg" rel="icon">
 
-    <!-- Google Web Fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <script src="https://kit.fontawesome.com/a19edc713a.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
-
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
+    
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap4.min.css" />
+
   
 <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.4/css/buttons.dataTables.min.css" />
-<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
 
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
 
 <style>
     body {
@@ -68,6 +67,7 @@
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
+
 </style>
 </head>
 
@@ -120,7 +120,7 @@
           href="#collapseExample3"
           aria-expanded="true"
           aria-controls="collapseExample3">
-            <i class="fas fa-solid fa-ticket fa-fw me-3"></i><span>Coupon</span>
+            <i class="fas fa-solid fa-ticket fa-fw me-3"></i><span>Coupons</span>
           </a>
           <ul id="collapseExample3" class="collapse list-group list-group-flush <% if(url=="coupon"){%> show<%}%>">
             <li class="list-group-item py-1">
@@ -131,17 +131,17 @@
             </li>
           </ul>
           <a class="list-group-item list-group-item-action py-2 ripple <% if(url=="banner"){%> active<%}%>" data-toggle="collapse"
-            href="#collapseExample3"
+            href="#collapseExample8"
             aria-expanded="true"
-            aria-controls="collapseExample3">
+            aria-controls="collapseExample8">
               <i class="fas fa-solid fa-ticket fa-fw me-3"></i><span>Banner</span>
             </a>
-            <ul id="collapseExample3" class="collapse list-group list-group-flush <% if(url=="banner"){%> show<%}%>">
+            <ul id="collapseExample8" class="collapse list-group list-group-flush <% if(url=="banner"){%> show<%}%>">
               <li class="list-group-item py-1">
                 <a href="/admin/banner" class="text-reset">Banners</a>
               </li>
               <li class="list-group-item py-1">
-                <a href="/admin/banner/add" class="text-reset">Banner</a>
+                <a href="/admin/banner/add" class="text-reset">Add Banner</a>
               </li>
             </ul>                  
       </div>
@@ -164,8 +164,8 @@
         </a>
         <!-- Right links -->
         <ul class="navbar-nav ms-auto d-flex flex-row text-white">
-            <li class="px-2 text-white">utharas</li> /
-            <li class="px-2"><a href="/logout" class="text-white">Logout</a></li>
+            <li class="px-2 text-white">admin</li> /
+            <li class="px-2"><a href="/admin/logout" class="text-white">Logout</a></li>
         </ul>
       </div>
       <!-- Container wrapper -->

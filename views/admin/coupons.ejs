@@ -1,174 +1,114 @@
 <%- include ('../layouts/adminheader.ejs') %>
-<div class="page-inner">
-    <!-- PAGE MAIN WRAPPER
+        <!-- PAGE MAIN WRAPPER
 ================================================== -->
-    <div id="main-wrapper">
-        <!-- row -->
-        <div class="row align-items-center grid-margin">
-            <div class="col-12">
-                <div class="card card-white">
-                    <div class="card-body row align-items-center">
-                        <div class="col-12 col-md-4">
-                            <h4 class="mb-4 mb-md-0">Coupons</h4>
-                        </div>
-
-                        <div class="ml-auto col-5">
-                            <form action="">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search by name" name="search">
-                                    <div class="input-group-append">
-                                        <button type="submit" class="input-group-text bg-white text-primary">
-                                            <i class="fa fa-search"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div style="padding: 20px 20px 20px 20px;">
         <!-- end row -->
 
-        <!-- row -->
-        <div class="row">
-            <div class="col-12 grid-margin">
-                <div class="card card-white">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-order">
+                            <table class="table table-bordered bg-white" id="dtBasicExample">
                                 <thead>
                                     <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">Campaigns Name</th>
-                                        <th scope="col">Code</th>
-                                        <th scope="col">Remaining coupon</th>
-                                        <th scope="col">Creation Date</th>
-                                        <th scope="col">Expiration Date</th>
-                                        <th scope="col">Status</th>
+                                        <th width="5%">ID</th>
+                                        <th>Name</th>
+                                        <th>Code</th>
+                                        <th>Remaining coupon</th>
+                                        <th >Creation</th>
+                                        <th>Expiration</th>
+                                        <th class="text-center">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% for( let i = 0; i < coupon.length; i++ ) { %>
-                                    <tr>
-                                        <td><%=i+1%></td>
-                                        <td><%=coupon[i].couponName%></td>
-                                        <td><%=coupon[i].couponCode%></td>
-                                        <td>
-                                            <div class="custom-progress bg-blue progress mb-2">
-                                                <div
-                                                    class="animated custom-bar progress-bar slideInLeft"
-                                                    style="width: <%=(totalUses[i] / 30) * 100%>%"
-                                                    aria-valuemax="100"
-                                                    aria-valuemin="0"
-                                                    aria-valuenow="10"
-                                                    role="progressbar"
-                                                ></div>
-                                            </div>
-                                            <div class="progress-text">
-                                                <div><%=coupon[i].quantity%> of <%=totalUses[i]%> coupon remaining</div>
-                                            </div>
-                                        </td>
-                                        <td><%=coupon[i].startDate.toLocaleDateString()%></td>
-                                        <td><%=coupon[i].endDate.toLocaleDateString()%></td>
-                                        <%if(coupon[i].status==true){%>
-                                        <td>
-                                            <a onclick="status('<%=coupon[i]._id%>')" class="btn btn-tranparent"
-                                                ><i class="fas fa-circle text-success me-2 f-s-10"></i
-                                                >Active</a
-                                            >
-                                        </td>
-                                        <% } else { %>
-                                        <td>
-                                            <a onclick="status('<%=coupon[i]._id%>')" class="btn btn-tranparent"
-                                                ><i class="fas fa-circle text-danger me-2 f-s-10"></i
-                                                >Revoked</a
-                                            >
-                                        </td>
-                                        <%}%>
-                                    </tr>
-                                    <% } %>
+                                    <% for( let i=0; i < coupon.length; i++ ) { %>
+                                        <tr>
+                                            <td>
+                                                <%=i+1%>
+                                            </td>
+                                            <td>
+                                                <%=coupon[i].couponName%> 
+                                                    <a href="/admin/coupon/edit?id=<%=coupon[i].coupon_id%>"
+                                                        class="btn border-1 border-primary btn-small p-0 px-2 rounded-pill" style="font-size: 12px !important;">Edit</a>
+                                            <td>
+                                                <%=coupon[i].couponCode%>
+                                            </td>
+                                            <td>
+                                                <div class="custom-progress bg-blue progress mb-2">
+                                                    <div class="animated custom-bar progress-bar slideInLeft fs-6"
+                                                        style="width: <%=(totalUses[i] / 30) * 100%>%"
+                                                        aria-valuemax="100" aria-valuemin="0" aria-valuenow="10"
+                                                        role="progressbar"></div>
+                                                </div>
+                                                <div class="progress-text fs-6">
+                                                    <div>
+                                                        <%=coupon[i].quantity%> of <%=totalUses[i]%> coupon remaining
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <%=coupon[i].startDate.toLocaleDateString()%>
+                                            </td>
+                                            <td>
+                                                <%=coupon[i].endDate.toLocaleDateString()%>
+                                            </td>
+                                            <%if(coupon[i].status==true){%>
+                                                <td>
+                                                    <a onclick="status('<%=coupon[i]._id%>')"
+                                                        class="btn btn-tranparent"><i
+                                                            class="fas fa-circle text-success me-2 f-s-10"></i> Active</a>
+                                                </td>
+                                                <% } else { %>
+                                                    <td>
+                                                        <a onclick="status('<%=coupon[i]._id%>')"
+                                                            class="btn btn-tranparent"><i
+                                                                class="fas fa-circle text-danger me-2 f-s-10"></i> Revoked</a>
+                                                    </td>
+                                                    <%}%>
+
+                                        </tr>
+                                        <% } %>
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 pb-1 mt-4">
-            <nav aria-label="Page navigation">
-              <ul class="pagination justify-content-center">
-                <% if (page> 1) { %>
-                  <li class="page-item">
-                    <a class="page-link" href="/admin/coupon?page=<%= page - 1 %>">&laquo; Previous</a>
-                  </li>
-                  <% } %>
-        
-                    <% for (let i=1; i <=totalPages; i++) { %>
-                      <% if (i===page) { %>
-                        <li class="page-item active">
-                          <a class="page-link" href="/admin/coupon?page=<%= i %>">
-                            <%= i %>
-                          </a>
-                        </li>
-                        <% } else { %>
-                          <li class="page-item">
-                            <a class="page-link" href="/admin/coupon?page=<%= i %>">
-                              <%= i %>
-                            </a>
-                          </li>
-                          <% } %>
-                            <% } %>
-        
-                              <% if (page < totalPages) { %>
-                                <li class="page-item">
-                                  <a class="page-link" href="/admin/coupon?page=<%= page + 1 %>">Next &raquo;</a>
-                                </li>
-                                <% } %>
-              </ul>
-            </nav>
-          </div>
-        <!-- end row -->
     </div>
-</div>
-</div>
-</div>
 
-<!-- SCROLL TO TOP
+
+    <!-- ALL JS INCLUDE
 ================================================== -->
-<a href="#" class="scroll-to-top"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
+    <!-- axios cdn -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
 
-<!-- ALL JS INCLUDE
-================================================== -->
-<!-- axios cdn -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
+    <!-- sweet alert cdn -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- sweet alert cdn -->
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+        });
+        async function status(id) {
+            await axios.post(`/admin/coupon/status?id=${id}`).then(() => {
+                Toast.fire({
+                    icon: "success",
+                    title: "Coupon status updated successfully",
+                }).then(() => {
+                    location.reload();
+                })
 
+            });
+        }
+    </script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script>
 <script>
-const Toast = Swal.mixin({
-toast: true,
-position: "top-end",
-showConfirmButton: false,
-timer: 1000,
-timerProgressBar: true,
-didOpen: (toast) => {
-    toast.addEventListener("mouseenter", Swal.stopTimer);
-    toast.addEventListener("mouseleave", Swal.resumeTimer);
-},
-});
-async function status(id) {
-await axios.post(`/admin/coupon/status?id=${id}`).then(() => {
-    Toast.fire({
-        icon: "success",
-        title: "Coupon status updated successfully",
-    }).then(()=>{
-        location.reload();
-    })
-    
-});
+new DataTable('#dtBasicExample',{
+"lengthMenu": [5, 10, 25, 50], // Change the options as per your requirement
+  "pageLength": 5, 
 }
+);
 </script>
-
-<%- include ('../layouts/adminfooter.ejs') %>
+    <%- include ('../layouts/adminfooter.ejs') %>

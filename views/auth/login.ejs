@@ -7,16 +7,16 @@
       <p class="text-center text-sm">Enter Login details to get access</p>
     </div>
     <div class="ml-auto mr-auto col-12 col-lg-11">
-<form action="/login" method="post"  id="form1">
+<form action="/login<%if(URL){%>?url=<%=URL%><%}%>" method="post"  id="form1">
     <!-- Username input -->
     <div class="form-outline mb-4">
-      <label class="form-label" for="username">Username</label>
+      <label class="form-label" for="username">Email</label>
       <div class="input-group form-outline mb-4">
 
-        <input type="text" id="username" name="username" class="form-control">
-        <div class="input-group-append" id="username_error" style="display: none;">
+        <input type="text" id="email" name="email" class="form-control">
+        <div class="input-group-append" id="email_error" style="display: none;">
             <span class="input-group-text bg-transparent text-primary py-0">
-              <button type="button" class="btn btn-light btn-sm py-0" data-toggle="tooltip" data-placement="right" title="Username must have 3-20 characters" style="height: 36px;">
+              <button type="button" class="btn btn-light btn-sm py-0" data-toggle="tooltip" data-placement="right" title="Please enter a valid email" style="height: 36px;">
                 <i class="fas fa-exclamation-circle" style="color: rgb(255, 162, 0); font-size: 15px; line-height: 0px; "></i>
               </button>
             </span>

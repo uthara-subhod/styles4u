@@ -2,36 +2,56 @@
 </div>
 </div>
 </div>
-  <div class="container-fluid bg-secondary mb-5">
-    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-      <h1 class="font-weight-semi-bold text-uppercase mb-3">Shop Detail</h1>
-      <div class="d-inline-flex">
-        <p class="m-0"><a href="">Home</a></p>
-        <p class="m-0 px-2">-</p>
-        <p class="m-0">Shop Detail</p>
-      </div>
-    </div>
-  </div>
 
 
   <div class="container-fluid pt-5">
     <div class="row px-xl-5">
+      
       <!-- Shop Sidebar Start -->
-      <div class="col-lg-3 col-md-12 py-4 border">
+      <div class="col-lg-3 col-md-12 pb-4 border px-0">
+        <a class="btn btn-block border mb-3"><h5 class="font-weight-normal mt-1" style="letter-spacing: 5px;">FILTERS</h5></a>
         <!-- filter start -->
-        <form action="">
+        <div class="px-3">
+        <form action="" id="filterForm">
+
+          <!-- Category Start-->
+          <div>
+            <a class="btn btn-block pl-1" data-toggle="collapse" href="#category-checkboxs"><h5 class="font-weight-normal text-left mt-1 text-dark">Filter by category</h5></a>
+            <div class="collapse pb-3 mt-3 ml-1" id="category-checkboxs">
+            <% cat.forEach((mainCategory) => { %>
+              <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                <input type="checkbox" class="custom-control-input category-checkbox" id="category-<%= mainCategory.name %>" name="name" value="<%= mainCategory.name %>" data-toggle="collapse" data-target="#<%= mainCategory.name %>-subcategories" aria-expanded="false">
+                <label class="custom-control-label" for="category-<%= mainCategory.name %>"><%= mainCategory.name %></label>
+              </div>
+              <% if (mainCategory.sub.length > 0) { %>
+                <div id="<%= mainCategory.name %>-subcategories" class="ml-4 collapse">
+                  <% mainCategory.sub.forEach((subcategory) => { %>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                      <input type="checkbox" class="custom-control-input category-checkbox" id="category-<%= mainCategory.name %>subcategory-<%= subcategory %>" name="sub" value="<%= subcategory %>">
+                      <label class="custom-control-label" for="category-<%= mainCategory.name %>subcategory-<%= subcategory %>"><%= subcategory %></label>
+                    </div>
+                  <% }); %>
+                </div>
+              <% } %>
+            <% }); %>
+          </div>
+          </div>
+
           <!-- Price Start-->
-          <div class="border-bottom mb-4 pb-4">
-            <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
+          <div>
+            <a class="btn btn-block border-top mb-0 pl-1" data-toggle="collapse" href="#price-inputs"><h5 class="font-weight-normal text-left mt-1 text-dark ">Filter by price</h5></a>
+            <div class="collapse pb-3 mt-3" id="price-inputs">
             <div class="price-range col-8">
               <input type="text" id="priceRange"  class="slider-custom" name="price" />
             </div>
           </div>
+          </div>
           <!-- Price End -->
 
           <!-- Color Start -->
-          <div class="border-bottom mb-4 pb-4">
-            <h5 class="font-weight-semi-bold mb-4">Filter by color</h5>
+          <div>
+            <a class="btn btn-block border-top pl-1" data-toggle="collapse" href="#color-checkboxs"><h5 class="font-weight-normal text-left mt-1 text-dark">Filter by color</h5></a>
+            <div class="collapse my-3 ml-1" id="color-checkboxs">
             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
               <input type="checkbox" class="custom-control-input color-checkbox" id="color-1" name="color"
                 value="Black">
@@ -51,28 +71,30 @@
               <label class="custom-control-label" for="color-4">Blue</label>
             </div>
             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-              <input type="checkbox" class="custom-control-input color-checkbox" id="color-4" name="color"
+              <input type="checkbox" class="custom-control-input color-checkbox" id="color-5" name="color"
                 value="Yellow">
-              <label class="custom-control-label" for="color-4">Yellow</label>
+              <label class="custom-control-label" for="color-5">Yellow</label>
             </div>
             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-              <input type="checkbox" class="custom-control-input color-checkbox" id="color-4" name="color"
+              <input type="checkbox" class="custom-control-input color-checkbox" id="color-6" name="color"
                 value="Green">
-              <label class="custom-control-label" for="color-4">Green</label>
+              <label class="custom-control-label" for="color-6">Green</label>
             </div>
+          </div>
           </div>
           <!-- Color End -->
 
           <!-- Size Start -->
           <div class="mb-5">
-            <h5 class="font-weight-semi-bold mb-4">Filter by size</h5>
+            <a class="btn btn-block border-top border-bottom pl-1" data-toggle="collapse" href="#size-checkboxs"><h5 class="font-weight-normal text-left mt-1 text-dark">Filter by size</h5></a>
+            <div class="collapse my-3 ml-1" id="size-checkboxs">
             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
               <input type="checkbox" class="custom-control-input size-checkbox" id="size-1" name="size" value="xs">
               <label class="custom-control-label" for="size-1">XS</label>
             </div>
             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-              <input type="checkbox" class="custom-control-input size-checkbox" id="size-3" name="size" value="s">
-              <label class="custom-control-label" for="size-3">S</label>
+              <input type="checkbox" class="custom-control-input size-checkbox" id="size-2" name="size" value="s">
+              <label class="custom-control-label" for="size-2">S</label>
             </div>
             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
               <input type="checkbox" class="custom-control-input size-checkbox" id="size-3" name="size" value="m">
@@ -86,11 +108,15 @@
               <input type="checkbox" class="custom-control-input size-checkbox" id="size-5" name="size" value="xl">
               <label class="custom-control-label" for="size-5">XL</label>
             </div>
+          </div>
 
           </div>
+          
+          
           <!-- Size End -->
-          <button type="submit" class="btn btn-primary">Apply Filters</button>
+          <button type="submit" class="btn btn-primary" >Apply Filters</button>
         </form>
+      </div>
         <!-- filter end -->
       </div>
       <!-- Shop Sidebar End -->
@@ -104,7 +130,7 @@
           </div>
 
           <%items.forEach(item=>{%>
-            <div class="col-lg-3 col-md-3 col-sm-4 pb-1 ">
+            <div class="col-lg-3 col-md-3 col-6 pb-1 ">
               <div class="card product-item border-0 h-100">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                   <img class="img-fluid w-100" src="<%=item.productImages[0]%>" alt="">
@@ -121,11 +147,115 @@
                   </p>
                 </div>
                 <div class="card-footer d-flex justify-content-center bg-light border">
-                  <a href="/product?id=<%=item._id%>" class="btn btn-sm text-dark p-0"><i
-                      class="fas fa-eye text-primary mr-1"></i>View details</a>
+                  <button class="btn btn-sm text-dark p-0" data-toggle="modal" data-target="#productModal<%= item._id %>">
+                    <i class="fas fa-eye text-primary mr-1"></i> View details
+                  </button>
                 </div>
               </div>
             </div>
+            <div class="modal fade" id="productModal<%= item._id %>" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                  
+                  <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div class="container py-5">
+                      <div class="row px-xl-5">
+                        <div class="col-lg-4 pb-2">
+                          <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner border">
+                              <div class="carousel-item active" id="image-container">
+                                <img class="w-100 h-100 zoom" src="<%=item.productImages[0]%>" alt="Image">
+                              </div>
+                              <%for(i=1;i<item.productImages.length;i++){%>
+                              <div class="carousel-item ">
+                                <img class="w-100 h-100 zoom" src="<%=item.productImages[i]%>" alt="Image">
+                              </div>
+                              <%}%>
+                                        </div>
+                                        <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                                            <i class="fa fa-2x fa-angle-left text-dark"></i>
+                                        </a>
+                                        <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                                            <i class="fa fa-2x fa-angle-right text-dark"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                    
+                                <div class="col-lg-8 pb-2">
+                                  <h5 class="font-weight-semi-bold mb-3">
+                                    <%=item.productName%>
+                          </h5>
+                              <p >
+                                <%=item.blurb%>
+                              </p>
+                              <div class="mb-4"><a href="/product?id=<%=item.product_id%>" class="btn text-dark px-3 py-1" style="background-color: rgb(244, 235, 155);">Full Details</a>
+                              </div>
+                              <div class="d-flex mb-3">
+                              <p class="text-dark font-weight-medium mb-0 mr-3">Color: </p><span><%=item.color%></span>
+                            </div>
+                            <div class="d-flex mb-3">
+                              <p class="text-dark font-weight-medium mb-0 mr-3">Brand: </p><span><%=item.brand%></span>
+                            </div>
+                            <div class="d-flex mb-3">
+                              <p class="text-dark font-weight-medium mb-0 mr-3">Price: </p><span>&#x20B9;<%=item.price%></span>
+                            </div>
+                            <div class="d-flex mb-3">
+                              <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
+                              <form>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                  <input type="radio" class="custom-control-input" id="size-<%=item._id%>-1" name="size" value="XS">
+                                  <label class="custom-control-label" for="size-<%=item._id%>-1">XS</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                  <input type="radio" class="custom-control-input" id="size-<%=item._id%>-2" name="size" value="S">
+                                  <label class="custom-control-label" for="size-<%=item._id%>-2">S</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                  <input type="radio" class="custom-control-input" id="size-<%=item._id%>-3" name="size" value="M">
+                                  <label class="custom-control-label" for="size-<%=item._id%>-3">M</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                  <input type="radio" class="custom-control-input" id="-size-<%=item._id%>-4" name="size" value="L">
+                                  <label class="custom-control-label" for="-size-<%=item._id%>-4">L</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                  <input type="radio" class="custom-control-input" id="size-<%=item._id%>-5" name="size" value="XL">
+                                  <label class="custom-control-label" for="size-<%=item._id%>-5">XL</label>
+                                </div>
+                              </form>
+                            </div>
+                              <div class="d-flex align-items-center mb-2 pt-4">
+                              
+                              <button class="btn btn-primary px-3 mb-2" id="addTo" onclick="addtocartShop('<%=item._id%>')"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                              <button class="btn btn-primary mb-2 ml-2" onclick="addtowishlist('<%=item._id%>')"><i class="fa-solid fa-heart-circle-plus fa-lg"></i></button>
+                            </div>
+                            </div>
+                    
+                          </div>
+                    
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <script>
+                // Function to initialize Elevate Zoom on images inside the modal
+                function initElevateZoom() {
+                  // Select the image elements inside the modal and call Elevate Zoom on them
+                  $(".zoom").elevateZoom({
+                    zoomWindowWidth: 250, 
+                     zoomWindowHeight: 200
+                  });
+                }
+              
+                // Event listener to trigger Elevate Zoom initialization when the modal is shown
+                $("#productModal<%= item._id %>").on("shown.bs.modal", function () {
+                  initElevateZoom();
+                });
+              </script>
             <%})%>
             <!-- Shop Product Start -->
 
@@ -175,16 +305,29 @@
   </div>
   <!-- Shop End -->
   </div>
+
   <script>
     const priceRangeInput = document.getElementById("priceRange");
     const selectedRange = document.getElementById("selectedRange");
+    let min=100;
+    let max=5000;
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if(urlParams.get("price")){
+      const priceContainer = document.getElementById("price-inputs");
+      priceContainer.classList.add("show")
+      const price = urlParams.get("price")
+      const [smin,smax]=price.split(";");
+      min = parseInt(smin)
+      max= parseInt(smax)
+    }
   
     $(priceRangeInput).ionRangeSlider({
       type: "double",
       min: 100,
       max: 5000,
-      from: 100,
-      to: 5000,
+      from: min,
+      to: max,
       step: 100,
       skin:"square",
       hide_min_max: true,
@@ -198,5 +341,94 @@
       const minPrice = data.from;
       const maxPrice = data.to;
     }
+  </script>
+ <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const colorCheckboxes = document.querySelectorAll(".color-checkbox");
+    colorCheckboxes.forEach((checkbox) => {
+      const colorValue = checkbox.value;
+      if (urlParams.getAll("color").includes(colorValue)) {
+        const colorContainer = document.getElementById("color-checkboxs");
+        colorContainer.classList.add("show")
+        checkbox.checked = true;
+      }
+    });
+    // Check size checkboxes
+    const sizeCheckboxes = document.querySelectorAll(".size-checkbox");
+    sizeCheckboxes.forEach((checkbox) => {
+      const sizeValue = checkbox.value;
+      if (urlParams.getAll("size").includes(sizeValue)) {
+        const sizeContainer = document.getElementById("size-checkboxs");
+        sizeContainer.classList.add("show")
+        checkbox.checked = true;
+      }
+    });
+
+    // Check category checkboxes
+    const categoryCheckboxes = document.querySelectorAll(".category-checkbox");
+    categoryCheckboxes.forEach((checkbox) => {
+      const categoryName = checkbox.value;
+      if (urlParams.getAll("name").includes(categoryName)) {
+        const categoryContainer = document.getElementById("category-checkboxs");
+        categoryContainer.classList.add("show")
+        checkbox.checked = true;
+        const subcategoriesContainer = document.getElementById(`${categoryName}-subcategories`);
+        if (subcategoriesContainer) {
+          subcategoriesContainer.classList.add("show");
+        }
+      }
+      const subcategoryName = checkbox.value;
+      if (urlParams.getAll("sub").includes(subcategoryName)) {
+        checkbox.checked = true;
+        const subcategoriesContainer = document.getElementById(`${categoryName}-subcategories`);
+        if (subcategoriesContainer) {
+          subcategoriesContainer.classList.add("show");
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script>
+    const filter = document.getElementById('filterForm'); // Replace 'yourForm' with the ID of your form
+    const search = document.getElementById('searchForm')
+filter.addEventListener('submit',(e)=>{
+  e.preventDefault();
+  const formData = new FormData(filter);
+const formParams = Array.from(formData.entries());
+const urlParams = new URLSearchParams(window.location.search);
+console.log(urlParams);
+for (const [key, value] of formData.entries()) {
+    // Append the key-value pair as a new URL parameter
+    if (key === 'price') {
+      // Replace the existing value for "price"
+      urlParams.set(key, value);
+    } else {
+      const values=urlParams.getAll(key)
+      if(!values.includes(value))
+        urlParams.append(key, value);
+      // Append the key-value pair as a new URL parameter
+     
+    }
+  }
+const newUrl = `/shop?${urlParams.toString()}`;
+window.location.href= newUrl
+
+})
+search.addEventListener('submit',(e)=>{
+  e.preventDefault();
+  const formData = new FormData(search);
+const formParams = Array.from(formData.entries());
+const urlParams = new URLSearchParams(window.location.search);
+for (const [key, value] of formData.entries()) {
+      urlParams.set(key, value);
+  }
+const newUrl = `/shop?${urlParams.toString()}`;
+window.location.href= newUrl
+
+})
   </script>
   <%- include ('../layouts/userfooter.ejs') %>

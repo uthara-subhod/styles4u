@@ -15,11 +15,13 @@ router.use(session.admin)
 //dashboard
 router.get('/', order.loadDashboard)
 
-router.get('/report/yearly', order.report)
+router.get('/report', order.report)
 
 router.post("/report/month", order.sales);
 
 router.post("/report/daily", order.daily);
+
+
 
 
 //user management
@@ -27,6 +29,7 @@ router.get('/customer',user.loadCustomers)
 
 router.get('/customer/block',user.block)
 
+router.get('/logout',user.loadLogout)
 
 //category management
 router.get('/category', category.loadCategory)
@@ -72,11 +75,20 @@ router.get('/coupon', coupon.loadCoupons)
 router.get('/coupon/add',coupon.loadCoupon)
 router.post('/coupon/add', coupon.addCoupon)
 
+router.get('/coupon/edit',coupon.loadCoupon)
+router.post('/coupon/edit',coupon.editCoupon)
 router.post('/coupon/status',coupon.changeStatus)
 
 
 //banner management
+router.get('/banner',banner.loadBanners)
+
 router.get('/banner/add',banner.loadBanner)
 router.post('/banner/add',multer.Upload,banner.addBanner)
+
+router.get('/banner/view',banner.viewBanner)
+router.post('/banner/view',multer.Upload, banner.editBanner)
+
+
 
 module.exports=router

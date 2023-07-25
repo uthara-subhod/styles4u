@@ -56,7 +56,7 @@
             <p class="text-center" style="font-size: 15px;">Enter the verification code we have sent to </p>
           </div>
           <div class="ml-auto mr-auto col-12 col-lg-11">
-      <form action="/signup/otp?username=<%=username%>" method="post"  id="form2">
+      <form action="/signup/otp?email=<%=email%>" method="post"  id="form2">
           <!-- Username input -->
           <div class="form-outline mb-2">
             <label for="otp">Type your 4-digit verification code</label>
@@ -67,7 +67,7 @@
           <div class="d-flex justify-content-center align-items-center mb-2">
             <button type="submit" class="btn btn-primary btn-block col-6 " >Send</button>
           </div>
-          <p class="text-center"><a href="/signup/otp/resend?username=<%=username%>" class="mr-3" id="restricted">Resend otp</a></p>
+          <p class="text-center"><a href="/signup/otp/resend?email=<%=email%>" class="mr-3" id="restricted">Resend otp</a></p>
           <%if(resend){%>
             <p style="color: red; text-align: center;"> <%=resend%>
             </p> 

@@ -76,10 +76,7 @@ const loadDashboard = async (req, res) => {
     }
   ])
 
-  const orders = await Order.find()
-  .populate({ path: 'user' })
-  .sort({ order_date: -1 })
-  .limit(5);
+  const orders = await Order.find().populate({ path: 'user' }).sort({ order_date: -1 }).limit(5);
 
   const userCount= await User.countDocuments()
   const orderCount = await Order.countDocuments()
@@ -105,16 +102,15 @@ const loadDashboard = async (req, res) => {
                 },
             },
         ]);
-        console.log(yearly)
         res.render("admin/sales", { yearly ,url:'dashboard'});
     } catch (error) {
         console.log(error);
-        error.admin = true;
         next(error);
     }
   };
 
 
+  //monthly
   const sales = async (req, res, next) => {
     try {
         let salesRe = await Order.aggregate([
@@ -155,11 +151,12 @@ const loadDashboard = async (req, res) => {
         res.json({ salesRep, error: false });
     } catch (error) {
         console.log(error);
-        error.admin = true;
         next(error);
     }
 };
 
+
+//daily
 const daily = async (req, res, next) => {
   try {
       let daily = await Order.aggregate([
@@ -178,15 +175,15 @@ const daily = async (req, res, next) => {
           },
           { $sort: { "_id.Year": -1, "_id.Month": 1, "_id.Day": 1 } },
       ]);
-      console.log(daily, 111);
       res.json({ error: false, daily });
   } catch (error) {
       console.log(error);
-      error.admin = true;
       next(error);
   }
 };
 
+
+//monthly
 const weekly = async (req, res, next) => {
   try {
       let weeksale = await Order.aggregate([
@@ -227,7 +224,6 @@ const weekly = async (req, res, next) => {
       res.json({ status: true, salesRep });
   } catch (error) {
       console.log(error);
-      error.admin = true;
       next(error);
   }
 };
@@ -237,17 +233,10 @@ const weekly = async (req, res, next) => {
 //orderlist -get
 const loadOrders = async (req, res) => {
   try {
-    const count =await Order.countDocuments() ;
-        const totalPages = Math.round(count / 7);
-        if (req.query.page) {
-          var page = parseInt(req.query.page) || 1;
-        } else {
-          var page = 1;
-        }
+
     const currentDate = new Date();
 
-    const orders = await Order.find().sort({ order_date: -1 }).populate({ path: "user" }).skip((page - 1) * 7)
-    .limit(7);
+    const orders = await Order.find().sort({ order_date: -1 }).populate({ path: "user" })
 
     for (const order of orders) {
       const deliveryDate = order.delivery_date;
@@ -265,7 +254,6 @@ const loadOrders = async (req, res) => {
     res.render("admin/orders", {
       url: "order",
       order: orders,
-      page,totalPages,
     });
   } catch (err) {
     res.send("Error");
@@ -275,7 +263,7 @@ const loadOrders = async (req, res) => {
 //order -get
 const loadOrder = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id).populate([
+    const order = await Order.findOne({order_id:req.params.id}).populate([
       { path: "user" },
       { path: "address" },
       { path: "items.productId" },
@@ -293,12 +281,11 @@ const loadOrder = async (req, res) => {
 const statusChange = async (req, res, next) => {
   try {
     const { id, status } = req.body;
-    const order = await Order.findByIdAndUpdate(id, {
+    const order = await Order.findOneAndUpdate({order_id:id}, {
       $set: { order_status: status },
     });
     if (status == "shipped") {
       const currentDate = new Date();
-      console.log(currentDate);
       if (order.delivery == 20) {
         var deliveryD = new Date(
           currentDate.getTime() + 4 * 24 * 60 * 60 * 1000
@@ -312,7 +299,6 @@ const statusChange = async (req, res, next) => {
           currentDate.getTime() + 12 * 24 * 60 * 60 * 1000
         );
       }
-      console.log(deliveryD);
       await Order.findByIdAndUpdate(id, { $set: { delivery_date: deliveryD } });
     }
     res.json(status);

@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema({
+  product_id:{
+    type:String,
+    unique:true,
+  },
   productName: {
     type: String,
     required: true,
@@ -69,6 +73,20 @@ const productSchema = new mongoose.Schema({
     type:Boolean,
     default:false,
   }
+});
+
+productSchema.pre("save", async function (next) {
+  let uniqueCode;
+  let isUnique = false;
+
+  while (!isUnique) {
+    const { nanoid } = await import("nanoid");
+      uniqueCode = nanoid();
+     const  existingProduct= await mongoose.model("products").findOne({ product_id: uniqueCode })
+    isUnique = !existingProduct;
+  }
+    this.product_id = uniqueCode;
+  next();
 });
 
 module.exports = mongoose.model("products", productSchema);
