@@ -231,7 +231,6 @@ const addWallet = async (req, res) => {
   try {
     const userId = req.session.user_id;
     const total = parseInt(req.body.total);
-    console.log(total);
     const { nanoid } = await import("nanoid");
     const receipt = nanoid();
     const options = {
@@ -504,7 +503,6 @@ const loadOrder = async (req, res) => {
         delivery.setDate(delivery.getDate() + 12);
       }
     }
-    console.log(order2)
     res.render("user/order", {
       user: order.user,
       order: order2,
@@ -887,7 +885,6 @@ const downloadInvoice = async (req, res) => {
 
       // Render the invoice template with dynamic data
       const invoiceHtml = ejs.render(data, { order });
-      console.log("Invoice HTML Content:", invoiceHtml);
 
       const browser = await puppeteer.launch();
       const page = await browser.newPage();

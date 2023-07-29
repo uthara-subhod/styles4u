@@ -112,7 +112,6 @@ if(!query.$or){
       cat[i]=''
     }
   }
-  console.log(cat)
   for(c of cat){
     if(c!=''){
       query.$or.push({
