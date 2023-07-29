@@ -1,150 +1,162 @@
 <%- include ('../layouts/homeheader.ejs') %>
-
+<style>
+    /* Target the input field */
+    input[type="number"] {
+      /* Hide the default arrows in webkit-based browsers */
+      -webkit-appearance: none;
+      /* Hide the arrows in other browsers */
+      appearance: none;
+      /* Set a custom background to indicate it's an input field */
+      background-color: white;
+      /* Add padding to align the text */
+      padding: 0.5rem;
+      /* Set a border to style the input field */
+    }
+  
+    /* Target the inner spin button in webkit-based browsers */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      /* Set the display property to none to hide the arrows */
+      display: none;
+    }
+  </style>
+  
 
     <!-- PAGE TITLE
         ================================================== -->
     </div>
     </div>
     </div>
-    <div class="container-fluid  bg-secondary mb-5" style="height:35vh">
-        <div class="container d-flex align-items-center justify-content-center">
-
-            <div class="pt-5">
-                <p class="text-dark text-normal text-center" style="font-size: 3.5vw;">My Cart</p>
-                <ul class="list-inline text-center">
-                    <li class="list-inline-item"><a href="/">Home</a></li>
-                    <li class="list-inline-item ">&gt;</li>
-                    <li class="list-inline-item"><a href="">Cart</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
     <!-- CART TABLE
         ================================================== -->
-    <section class="md">
-        <div class="container">
-            <% if (cartItems&&cartItems.items.length) { %>
-                <% if (cartItems.items.length) { %>
-                    <div class="row">
-
-
-                        <div class="col-9">
-                            <table class="table text-center table-primary">
-                                <colgroup>
-                                    <col width="100" />
-                                    <col />
-                                    <col width="1" />
-                                    <col />
-                                    <col width="100" />
-                                    <col />
-                                    <col width="1" />
-                                    <col />
-
-                                </colgroup>
-                                <thead class="bg-primary text-dark">
-                                    <tr>
-                                        <th class="first">Image</th>
-                                        <th class="text-center font-weight-500" >Product</th>
-                                        <th class="text-center font-weight-500" >Size</th>
-                                        <th class="text-center  font-weight-500" >Price</th>
-                                        <th class="text-center  font-weight-500">Qty</th>
-                                        <th class="text-start  font-weight-500">Sub Total</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table-bordered">
-                                    <% for( let i=0; i < cartItems.items.length; i++ ) { %>
-                                        <tr class="bg-light">
-                                            <td class="product-thumbnail text-start">
-                                                <a href="#"><img
-                                                        src="<%=cartItems.items[i].productId.productImages[0]%>"
-                                                        alt="..." class="img-fluid" width="60vw"></a>
-                                            </td>
-                                            <td class="text-center" style="font-size: 1.2vw;">
-                                                <a href="/product?id=<%=cartItems.items[i].productId._id%>" class="text-dark ">
-                                                    <%=cartItems.items[i].productId.productName%>
-                                                </a>
-                                            </td>
-                                            <td class="text-center text-dark" style="font-size: 1vw;">
-                                                <%=cartItems.items[i].size%>
-                                            </td>
-                                            <td class="text-center"><span>&#x20B9;</span>
-                                                <%=cartItems.items[i].productId.price%>
-                                            </td>
-                                            <td class="product-quantity"  style="font-size: 1vw;">
-                                                <button
-                                                    onclick="changeQuantity('<%=cartItems.items[i].productId._id%>','<%=cartItems._id%>','<%=cartItems.items[i].size%>',-1)"
-                                                    class="btn btn-primary btn-sm minusBtn p-0 px-1"
-                                                    id="minusBtn<%=cartItems.items[i].productId._id%>" <% if
-                                                    (cartItems.items[i].quantity>
-                                                    1) { %> style="visibility: visible" <% } else { %> disabled <% } %>
-                                                            > -
-                                                </button>
-                                                <input type="text" class="text-center"
-                                                    id="<%=cartItems.items[i].productId._id%>" name=""
-                                                    value="<%=cartItems.items[i].quantity%>" style="width:20px; height:20px; font-size: 1vw;" />
-                                                <button
-                                                    onclick="changeQuantity('<%=cartItems.items[i].productId._id%>','<%=cartItems._id%>', '<%=cartItems.items[i].size%>',1)"
-                                                    class="btn btn-primary plusBtn btn-sm p-0 px-1">
-                                                    +
-                                                </button>
-                                            </td>
-                                            <td id="totalPrice<%=cartItems.items[i].productId._id%>"
-                                                class="product-subtotal text-center" style="font-size: 1vw;">
-                                                <span>&#x20B9;</span>
-                                                <%=cartItems.items[i].totalPrice%>
-                                            </td>
-                                            <td class="product-remove text-center">
-                                                <a
-                                                    onclick="deleteCart('<%=cartItems.items[i].productId._id%>','<%=cartItems.items[i].size%>')"><i
-                                                        class="fas fa-times"></i></a>
-                                            </td>
-                                        </tr>
-                                        <% } %>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="col-lg-3 cart-total col-sm-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between mb-3 pt-1">
-                                        <h6 class="font-weight-medium">Cart Subtotal</h6>
-                                        <h6 class="font-weight-medium"><span>&#x20B9;</span>
-                                            <%=cartItems.cartPrice%>.00
-                                        </h6>
+        <section class="bg-light my-5">
+            <div class="container">
+              <div class="row">
+                <!-- cart -->
+               
+                     
+                      <% if (cartItems && cartItems.items.length) { %>
+                        <% if (cartItems.items.length) { %>
+                            <div class="col-lg-9 mb-2">
+                                <div class="card border-primary shadow-0">
+                                    <div class="card-header bg-primary pt-3 pb-2"><h4 class="card-title">Your shopping cart</h4></div>
+                                  <div class="m-4">
+                            <%for(let i=0;i<cartItems.items.length;i++){%>
+                                <div class="row gy-3 mb-2">
+                                    <div class="col-lg-5">
+                                      <div class="me-lg-5">
+                                        <div class="d-flex">
+                                          <img src="<%=cartItems.items[i].productId.productImages[0]%>" class="border rounded me-3  mb-3" style="width: 30%" />
+                                          <div class="ml-3">
+                                            <a href="/product?id=<%=cartItems.items[i].productId._id%>" class="text-dark ">
+                                                <%=cartItems.items[i].productId.productName%> </a>
+                                            <p class="text-muted"><%=cartItems.items[i].productId.color%>, <%=cartItems.items[i].size.toUpperCase()%></p>
+                                          </div>
+                                        </div>
+                                      </div>
                                     </div>
-                                    <hr>
-                                    <div class="d-flex justify-content-between mt-2">
-                                        <h5 class="font-weight-bold">Total</h5>
-                                        <h5 class="font-weight-bold"><span>&#x20B9;</span>
-                                            <%=cartItems.cartPrice%>.00
-                                        </h5>
+                                    <div class="col-lg-2 col-sm-6 col-6 d-flex flex-lg-column text-nowrap mb-2">
+                                        <div class="">
+                                            <div class="float-md-end d-flex align-items-center"> <!-- Add d-flex and align-items-center here -->
+                                              <!-- Minus button -->
+                                              <button
+                                                onclick="changeQuantity('<%=cartItems.items[i].itemId%>','<%=cartItems.items[i].productId._id%>','<%=cartItems._id%>','<%=cartItems.items[i].size%>',-1)"
+                                                class="btn btn-primary btn-sm minusBtn p-0 px-1 me-2"
+                                                id="minusBtn<%=cartItems.items[i].itemId%>" <% if (cartItems.items[i].quantity > 1) { %>
+                                                style="visibility: visible" <% } else { %> disabled <% } %>
+                                              >
+                                                <i class="fas fa-minus"></i>
+                                              </button>
+                                          
+                                              <!-- Quantity input field -->
+                                              <div class="input-group input-group-sm">
+                                                <input type="number" class="form-control text-center" id="<%=cartItems.items[i].itemId%>"
+                                                  value="<%=cartItems.items[i].quantity%>" style="width: 30px; height: 30px;" />
+                                              </div>
+                                          
+                                              <!-- Plus button -->
+                                              <button
+                                                onclick="changeQuantity('<%=cartItems.items[i].itemId%>','<%=cartItems.items[i].productId._id%>','<%=cartItems._id%>', '<%=cartItems.items[i].size%>',1)"
+                                                class="btn btn-primary btn-sm plusBtn p-0 px-1 mr-4" id="plusBtn<%=cartItems.items[i].itemId%>">
+                                                <i class="fas fa-plus"></i>
+                                              </button>
+                                            </div>
+                                          </div>
+                                      <div class="">
+                                        <text class="h6" id="totalPrice<%=cartItems.items[i].itemId%>"><span>&#x20B9;</span>
+                                            <%=cartItems.items[i].totalPrice%></text> <br />
+                                        <small class="text-muted text-nowrap"> <span>&#x20B9;</span><%=cartItems.items[i].productId.price%>/ per item </small>
+                                      </div>
                                     </div>
-                                </div>
-                                <div class="card-footer  text-center">
-                                    <a class="btn btn-primary"
-                                        href="/checkout"><span>Proceed to Checkout</span></a>
-                                </div>
-                            </div>
+                                    <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                                      <div class="float-md-right">
+                                        <a onclick="addtowishlist('<%=cartItems.items[i].productId._id%>')" class="btn btn-light border px-2 icon-hover-primary"><i class="fas fa-heart fa-lg px-1 text-primary"></i></a>
+                                        <a onclick="deleteCart('<%=cartItems.items[i].productId._id%>','<%=cartItems.items[i].size%>')" class="btn border text-dark icon-hover-danger"><i class="fas fa-trash text-center mr-2"></i
+                                            >Remove</a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                 
+                            <%}%>
+                            <div class="border-top pt-4 mx-4">
+                                <p><i class="fas fa-truck text-muted fa-lg"></i> Free Delivery within 12 days</p>
                         </div>
                     </div>
-        </div>
-
-        <% }} else { %>
-            <div class="row">
-                <div>
-                    <h1>Your cart is Empty</h1>
-                    <br /><br />
-                    <a class="butn-style2 p-2 m-3" href="/shop">Go to shop</a>
-                    <a class="butn-style2 p-2 m-3" href="/">Go to Home</a>
-                </div>
+                  </div>
+                  </div>
+                  <!-- cart -->
+                  <!-- summary -->
+                  <div class="col-lg-3">
+                    <div class="card mb-3 border shadow-0">
+                      <div class="card-body">
+                          Cart Summary
+                      </div>
+                    </div>
+                    <div class="card shadow-0 border">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                          <p class="mb-2">Cart Subtotal:</p>
+                          <p class="mb-2" id="cartsub"><span>&#x20B9;</span>
+                              <%=cartItems.cartPrice%>.00</p>
+                        </div>
+                        <hr />
+                        <div class="d-flex justify-content-between">
+                          <p class="mb-2">Total price:</p>
+                          <p class="mb-2 fw-bold" id="carttotal"><span>&#x20B9;</span>
+                              <%=cartItems.cartPrice%>.00</p>
+                        </div>
+            
+                        <div class="mt-3">
+                          <a class="btn btn-primary w-100 shadow-0 mb-2" href="/checkout"> Make Purchase </a>
+                          <a href="/shop" class="btn btn-light w-100 border mt-2"> Back to shop </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                      
+                      <%}}else{%>
+                        <div class="card border shadow-0 col-12 p-4">
+                        <div class="row">
+                            <div class="col-12">
+                              <h1 class="text-center">Your cart is Empty</h1>
+                              <div class="text-center my-3">
+                                <a class="butn-style2 p-2 m-3" href="/shop">Go to shop</a>
+                                <a class="butn-style2 p-2 m-3" href="/">Go to Home</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      <%}%>
+                    </div>
+          
+                   
+                <!-- summary -->
+              </div>
             </div>
+          </section>
+          <!-- cart + summary -->
 
-            <% } %>
-                </div>
-    </section>
 
 
     <!-- SCROLL TO TOP
@@ -160,10 +172,9 @@
     <script>
 
 
-        async function changeQuantity(prodctId, cartid, size, cnt) {
-            let quant = document.getElementById(prodctId).value;
+        async function changeQuantity(itemId,prodctId, cartid, size, cnt) {
             let count = parseInt(cnt);
-            let qty = document.getElementById(prodctId).value;
+            let qty = document.getElementById(itemId).value;
             qty = parseInt(qty);
 
             let result = await axios({
@@ -173,7 +184,8 @@
                     productId: prodctId,
                     count: count,
                     cartId: cartid,
-                    size:size
+                    size:size,
+                    itemId:itemId
                 },
             })
                 if (result.data.stock) {
@@ -184,19 +196,20 @@
                         showConfirmButton: false,
                         timer: 3000,
                     });
-                    location.reload();
-                    document.getElementById("plusBtn" + prodctId).disabled = true;
-                }
-                location.reload();
-                document.getElementById(prodctId).value = response.data.qty;
-                document.getElementById("cartPrice").innerHTML = `$ ${response.data.cartPrice}.00`;
-                document.getElementById("SubcartPrice").innerHTML = `$ ${response.data.cartPrice}.00`;
-                document.getElementById("totalPrice" + prodctId).innerHTML = ` $ ${response.data.totalPrice}.00 `;
-                if (response.data.qty == 1) {
-                    document.getElementById("minusBtn" + prodctId).disabled = true;
+                    document.getElementById("plusBtn" + itemId).disabled = true;
+                }else{
+                    document.getElementById("plusBtn"+itemId).disabled = false
+                    document.getElementById(itemId).value = result.data.qty;
+                    document.getElementById("totalPrice"+itemId).innerHTML = `$ ${result.data.totalPrice}`;
+                document.getElementById("carttotal").innerHTML = `$ ${result.data.cartPrice}.00`;
+                document.getElementById("cartsub").innerHTML = `$ ${result.data.cartPrice}.00`;
+                if (result.data.qty <= 1) {
+                    document.getElementById("minusBtn" + itemId).disabled = true;
                 } else {
-                    document.getElementById("minusBtn" + prodctId).style.visibility = "visible";
+                    document.getElementById("minusBtn" + itemId).disabled = false;
                 }
+                }
+                
         }
 
         function deleteCart(productId, size) {

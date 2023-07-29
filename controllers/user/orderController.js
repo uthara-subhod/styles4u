@@ -26,7 +26,8 @@ const loadCheckout = async (req, res) => {
     const cartItems = await Cart.findOne({ owner: user }).populate({
       path: "items.productId",
     });
-    const userwallet = await User.findById(user);
+    if(cartItems){
+      const userwallet = await User.findById(user);
     let wallet = 0;
     if (userwallet.wallet) {
       wallet = await Wallet.findById(userwallet.wallet);
@@ -43,8 +44,20 @@ const loadCheckout = async (req, res) => {
       cartCount: res.locals.count,
       wishCount: res.locals.wishlist,
     });
+    }else{
+      if (!req.session.user) {
+        res.render("error404", { user: null, url: null, req:null});
+      } else {
+        res.render("error404", { user: req.session.user, url: null, req:null});
+      }
+    }
+    
   } catch (err) {
-    res.send(err);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -186,22 +199,30 @@ const checkout = async (req, res, next) => {
             },
           });
         }
+        await User.findByIdAndUpdate(userId,{$inc:{totalOrders:1}})
 
         res.render("user/checkoutSuccess", {
           cat: categories,
           url: null,
           user: req.session.user,
-          cartCount: res.locals.count,
+          cartCount: 0,
           wishCount: res.locals.wishlist,
           order,
         });
       } else {
-        res.send("oops");
+        if (!req.session.user) {
+          res.render("error404", { user: null, url: null, req:null});
+        } else {
+          res.render("error404", { user: req.session.user, url: null, req:null});
+        }
       }
     }
   } catch (error) {
-    console.log(error);
-    next(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -270,7 +291,7 @@ const addToWallet = async (req, res) => {
 // online payment razorpay-checkout post
 const checkoutPayment = async (req, res) => {
   try {
-    const order = await Order.findById(req.body.id);
+    const order = req.body.info
     if (order) {
       const options = {
         amount: order.total * 100, // Amount in paise (Rupees * 100)
@@ -300,18 +321,90 @@ const checkoutPayment = async (req, res) => {
 };
 
 const placeOrder = async (req, res) => {
-  const order_id = req.body.orderId;
-  const paymentId = req.body.paymentId;
-  const order = await Order.findOneAndUpdate(
-    { order_id: order_id },
-    { $set: { razorpay_payment_id: paymentId, payment_status: "completed" } },
-    { new: true }
-  );
-  if (order) {
-    res.json({ status: true });
-  } else {
-    res.json({ status: false });
-  }
+    try {
+      const categories = await Category.find();
+      let userId = req.session.user_id;
+      let cartcount = res.locals.count;
+      let findCart = await Cart.findOne({ owner: userId });
+      let cartItem = findCart.items;
+      if (cartItem == 0) {
+        res.redirect("/cart");
+      } else {
+        let address_id,payment,totalPrice,delivery,couponid,paymentId
+        if(req.body.info){
+          const info=req.body.info
+          address_id = info.orderAddress;
+        payment = info.paymentMode;
+        totalPrice = parseInt(info.total);
+        delivery = parseInt(info.shippingMethod);
+        paymentId=req.body.paymentId
+        if(info.couponId){
+          couponid=info.couponId
+        }
+        }
+        if (couponid) {
+          var order = await new Order({
+            user: userId,
+            address: address_id,
+            items: cartItem,
+            total: totalPrice,
+            delivery: delivery,
+            payment_method: payment,
+            payment_status: "completed",
+            order_status: "pending",
+            coupon: couponid,
+            razorpay_payment_id:paymentId
+          }).save();
+          const coupon = await Coupon.findById(order.coupon);
+  
+          if (coupon) {
+            const ownerIndex = coupon.owner.findIndex(
+              (owner) => owner.user.toString() === userId
+            );
+            if (ownerIndex !== -1) {
+              if (coupon.owner[ownerIndex].uses <= coupon.limit) {
+                coupon.owner[ownerIndex].uses += 1;
+                await coupon.save();
+              }
+            } else {
+              coupon.owner.push({ user: userId });
+              await coupon.save();
+            }
+          }
+        } else {
+          var order = await new Order({
+            user: userId,
+            address: address_id,
+            items: cartItem,
+            total: totalPrice,
+            delivery: delivery,
+            payment_method: payment,
+            payment_status: "completed",
+            order_status: "pending",
+            razorpay_payment_id:paymentId
+          }).save();
+        }
+        if (order) {
+          await Cart.findOneAndDelete({ owner: userId });
+  
+          for (item of order.items) {
+            await Product.findByIdAndUpdate(item.productId, {
+              $inc: {
+                [`size.${item.size}`]: -item.quantity,
+                quantity: -item.quantity,
+              },
+            });
+          }
+          await User.findByIdAndUpdate(userId,{$inc:{totalOrders:1}})
+  
+         res.json({status:true})
+        } else {
+          res.json({status:false})
+        }
+      }
+    } catch (error) {
+      res.json({status:false})
+    }
 };
 
 //checkout choose-shipping
@@ -347,7 +440,11 @@ const loadOrderDetails = async (req, res) => {
       url: "orders",
     });
   } catch (err) {
-    res.send(err);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -361,7 +458,8 @@ const loadOrder = async (req, res) => {
       { path: "user" },
       { path: "items.productId" },
     ]);
-    let return1=order
+    if(order){
+      let return1=order
     let return2={}
     return2.items=[]
     for(let i=0;i<order.items.length;i++){
@@ -416,8 +514,20 @@ const loadOrder = async (req, res) => {
       wishCount: res.locals.wishlist,
       url: "orders",
     });
+    }else{
+      if (!req.session.user) {
+        res.render("error404", { user: null, url: null, req:null});
+      } else {
+        res.render("error404", { user: req.session.user, url: null, req:null});
+      }
+    }
+    
   } catch (err) {
-    res.send(err);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -548,11 +658,18 @@ const loadRefund = async (req, res) => {
         res.redirect(`/user/orders`);
       }
     } else {
-      const user = req.session.user;
-      res.redirect(`/user/orders`);
+      if (!req.session.user) {
+        res.render("error404", { user: null, url: null, req:null});
+      } else {
+        res.render("error404", { user: req.session.user, url: null, req:null});
+      }
     }
   } catch (err) {
-    res.send(err);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -648,29 +765,49 @@ const refundPayment = async (req, res) => {
 };
 
 const loadAddReviews = async (req, res) => {
-  const user = req.session.user_id;
-  const id = req.params.id;
-  const order = await Order.findOne({ order_id: id }).populate([
-    { path: "address" },
-    { path: "user" },
-    { path: "items.productId" },
-  ]);
-  let reviews = [];
-  for (var i = 0; i < order.items.length; i++) {
-    const productId = order.items[i].productId._id;
-    const review = await Review.findOne({ user: user, product: productId });
-    if (review) {
-      reviews[i] = review;
+  try{
+    const user = req.session.user_id;
+    const id = req.params.id;
+    const order = await Order.findOne({ order_id: id }).populate([
+      { path: "address" },
+      { path: "user" },
+      { path: "items.productId" },
+    ]);
+    let reviews = [];
+    if(order){
+      if(order.order_status=="delivered"){
+        for (var i = 0; i < order.items.length; i++) {
+          const productId = order.items[i].productId._id;
+          const review = await Review.findOne({ user: user, product: productId });
+          if (review) {
+            reviews[i] = review;
+          }
+        }
+        res.render("user/review", {
+          user: order.user,
+          order: order,
+          reviews,
+          cartCount: res.locals.count,
+          wishCount: res.locals.wishlist,
+          url: "orders",
+        });
+      }else{
+        res.redirect(`/user/orders/${order.order_id}`)
+      }
+    }else{
+      if (!req.session.user) {
+        res.render("error404", { user: null, url: null, req:null});
+      } else {
+        res.render("error404", { user: req.session.user, url: null, req:null});
+      }
+    }
+  }catch(err){
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
     }
   }
-  res.render("user/review", {
-    user: order.user,
-    order: order,
-    reviews,
-    cartCount: res.locals.count,
-    wishCount: res.locals.wishlist,
-    url: "orders",
-  });
 };
 
 const addReview = async (req, res) => {
@@ -782,22 +919,42 @@ const loadReturnOrder = async (req,res) =>{
       { path: "user" },
       { path: "items.productId" },
     ]);
-    let return1=order
-    for(let i=0;i<order.items.length;i++){
-      if(order.items[i].returned){
-        let quantity=order.items[i].quantity-order.items[i].returned
-        return1.items[i].quantity=quantity
+    if(order){
+      const currentDate = new Date();
+      const deliveryDate = new Date(order.delivery_date);
+      const daysSinceDelivery = (currentDate - deliveryDate) / (1000 * 60 * 60 * 24); 
+
+      if (daysSinceDelivery <= 7  && order.order_status === "delivered") { 
+        let return1=order
+        for(let i=0;i<order.items.length;i++){
+          if(order.items[i].returned){
+            let quantity=order.items[i].quantity-order.items[i].returned
+            return1.items[i].quantity=quantity
+          }
+        }
+        res.render("user/returnOrder", {
+          user: order.user,
+          return1: return1,
+          cartCount: res.locals.count,
+          wishCount: res.locals.wishlist,
+          url: "orders",
+        });
+      }else{
+        res.redirect(`/user/orders/${order.order_id}`)
+      }
+    }else{
+      if (!req.session.user) {
+        res.render("error404", { user: null, url: null, req:null});
+      } else {
+        res.render("error404", { user: req.session.user, url: null, req:null});
       }
     }
-    res.render("user/returnOrder", {
-      user: order.user,
-      return1: return1,
-      cartCount: res.locals.count,
-      wishCount: res.locals.wishlist,
-      url: "orders",
-    });
   }catch(err){
-    res.send(err)
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 }
 

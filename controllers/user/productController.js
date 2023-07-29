@@ -11,17 +11,33 @@ const loadHome = async (req, res) => {
     const banner= await Banner.find()
     const categories = await Category.find()
     const name = categories.map(category => category.name)
-    const products = await Product.find({ category: { $in: name } })
+    const products = await Product.find()
     const productValue = [];
     let k=0
-    for (let i = 0; i < categories.length; i++) {
-      for (let j=0;j< categories[i].sub.length;j++){
-      productValue[k] = await Product.findOne({
-        category: categories[i].name,
-        subcategory: categories[i].sub[j]
-      },{category:1, subcategory:1});
-      k++;
+    let exists
+    for(let i=0;i<categories.length;i++){
+      exists=false
+      for(let j=0;j<products.length;j++){
+        if(products[j].category==categories[i].name){
+          exists=true
+          break;
+        }
+      }
+      if(!exists){
+        categories[i]=null
+      }
     }
+    for (let i = 0; i < categories.length; i++) {
+      if(categories[i]){
+        for (let j=0;j< categories[i].sub.length;j++){
+          productValue[k] = await Product.findOne({
+            category: categories[i].name,
+            subcategory: categories[i].sub[j]
+          },{category:1, subcategory:1});
+          k++;
+        }
+      }
+     
     }
 
     if (!req.session.user) {
@@ -30,7 +46,11 @@ const loadHome = async (req, res) => {
       res.render("home", { user: req.session.user, cat: categories, url: '/', cartCount: res.locals.count, wishCount: res.locals.wishlist, products, productValue, banner ,req});
     }
   } catch (err) {
-    res.send(err)
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null,req});
+    } else {
+      res.render("error404", { user: req.session.user, url: null,});
+    }
   }
 
 };
@@ -71,10 +91,11 @@ if (req.query.color) {
 if (req.query.size) {
   query[`size.${req.query.size}`] = { $gt: 0 };
 }
-if (req.query.name){
+
 if(req.query.sub) {
-  const name = Array.isArray(req.query.name) ? req.query.name : [req.query.name];
-  const sub = Array.isArray(req.query.sub) ? req.query.sub : [req.query.sub];
+  const name = Array.isArray(req.query.sub) ? req.query.sub.map((element) => element.split('|')[0]) : [req.query.sub.split('|')[0]];
+  const sub = Array.isArray(req.query.sub) ? req.query.sub.map((element) => element.split('|')[1]) : [req.query.sub.split('|')[1]];
+  const cat =Array.isArray(req.query.name) ? req.query.name : [req.query.name]
 if(!query.$or){
   query.$or = [];
 }
@@ -86,23 +107,34 @@ if(!query.$or){
       ]
     });
   }
-} else{
-  const name = Array.isArray(req.query.name) ? req.query.name : [req.query.name];
-  if(!query.$or){
-    query.$or = [];
-  }
-  if(Array.isArray(name)){
-    for (let i = 0; i < name.length; i++) {
-      query.$or.push({
-         category: name[i] 
-      });
+  for(let i=0;i<cat.length;i++){
+    if(name.includes(cat[i])){
+      cat[i]=''
     }
-  }else{
-    query.$or.push({category:name})
   }
-  
+  console.log(cat)
+  for(c of cat){
+    if(c!=''){
+      query.$or.push({
+        category: c,
+   });
+    }
+    
+  }
+} else{
+  if(req.query.name){
+    const name =Array.isArray(req.query.name) ? req.query.name : [req.query.name]
+    if(!query.$or){
+      query.$or = [];
+    }
+    for (let i = 0; i < name.length; i++) {
+      query.$or.push(
+          { category: name[i] },
+      );
+    }
+  }
 }
-}
+
 
 
 const currentPage = parseInt(req.query.page) || 1;
@@ -136,7 +168,11 @@ const products = await Product.find(query)
 
     }
   } catch (err) {
-    res.send(err)
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 
 };
@@ -203,21 +239,64 @@ const loadProduct = async (req, res) => {
           });
         }
       } else {
-        res.redirect("/shop");
+        if (!req.session.user) {
+          res.render("error404", { user: null, url: null, req:null});
+        } else {
+          res.render("error404", { user: req.session.user, url: null, req:null});
+        }
       }
     } else {
       res.redirect("/shop");
     }
 
   } catch (err) {
-    res.send(err)
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 
 };
+
+const loadReturnP= async (req,res) =>{
+ try{
+  let user=null
+  if(req.session.user){
+    user=req.session.user
+  }
+  res.render("returnPolicy", { user: user, url: null, req:null});
+ }catch(err){
+  if (!req.session.user) {
+    res.render("error404", { user: null, url: null, req:null});
+  } else {
+    res.render("error404", { user: req.session.user, url: null, req:null});
+  }
+}
+ }
+
+ const loadCancelP= async (req,res) =>{
+  try{
+   let user=null
+   if(req.session.user){
+     user=req.session.user
+   }
+   res.render("cancelPolicy", { user: user, url: null, req:null});
+  }catch(err){
+   if (!req.session.user) {
+     res.render("error404", { user: null, url: null, req:null});
+   } else {
+     res.render("error404", { user: req.session.user, url: null, req:null});
+   }
+ }
+  }
+
 
 
 module.exports = {
   loadHome,
   loadShop,
   loadProduct,
+  loadReturnP,
+  loadCancelP
 };

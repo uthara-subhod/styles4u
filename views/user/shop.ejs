@@ -4,7 +4,7 @@
 </div>
 
 
-  <div class="container-fluid pt-5">
+  <div class="container-fluid pt-" style="overflow-x: hidden !important;">
     <div class="row px-xl-5">
       
       <!-- Shop Sidebar Start -->
@@ -27,7 +27,7 @@
                 <div id="<%= mainCategory.name %>-subcategories" class="ml-4 collapse">
                   <% mainCategory.sub.forEach((subcategory) => { %>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                      <input type="checkbox" class="custom-control-input category-checkbox" id="category-<%= mainCategory.name %>subcategory-<%= subcategory %>" name="sub" value="<%= subcategory %>">
+                      <input type="checkbox" class="custom-control-input <%=mainCategory.name%>subcategory-checkbox" id="category-<%= mainCategory.name %>subcategory-<%= subcategory %>" name="sub" value="<%= mainCategory.name %>|<%= subcategory %>">
                       <label class="custom-control-label" for="category-<%= mainCategory.name %>subcategory-<%= subcategory %>"><%= subcategory %></label>
                     </div>
                   <% }); %>
@@ -130,7 +130,7 @@
           </div>
 
           <%items.forEach(item=>{%>
-            <div class="col-lg-3 col-md-3 col-6 pb-1 ">
+            <div class="col-lg-3 col-md-3 col-6 pb-1 overflow-hidden">
               <div class="card product-item border-0 h-100">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                   <img class="img-fluid w-100" src="<%=item.productImages[0]%>" alt="">
@@ -141,7 +141,7 @@
                     <%=item.productName%>
                   </p>
 
-                  <p class="text-dark" style="font-size: 1.2vw;">&#x20B9;<%=item.price%>
+                  <p class="text-dark">&#x20B9;<%=item.price%>
                       </h6>
                       <h6 class="text-muted ml-2">
                   </p>
@@ -155,13 +155,13 @@
             </div>
             <div class="modal fade" id="productModal<%= item._id %>" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                <div class="modal-content">
+                <div class="modal-content" style="background-image: url('https://png.pngtree.com/background/20221127/original/pngtree-floral-minimalist-background-with-aesthetic-shape-picture-image_1965435.jpg'); background-size: cover;">
                   
-                  <div class="modal-body">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
+                  <div class="modal-body" >
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 20px !important;">
+                      <span aria-hidden="true" class="p-4" >&times;</span>
                     </button>
-                    <div class="container py-5">
+                    <div class="container py-5"  style="background-color: white;">
                       <div class="row px-xl-5">
                         <div class="col-lg-4 pb-2">
                           <div id="product-carousel" class="carousel slide" data-ride="carousel">
@@ -184,8 +184,8 @@
                                     </div>
                                 </div>
                     
-                                <div class="col-lg-8 pb-2">
-                                  <h5 class="font-weight-semi-bold mb-3">
+                                <div class="col-lg-8" >
+                                  <h5 class="font-weight-semi-bold mb-1 mt-2">
                                     <%=item.productName%>
                           </h5>
                               <p >
@@ -202,7 +202,7 @@
                             <div class="d-flex mb-3">
                               <p class="text-dark font-weight-medium mb-0 mr-3">Price: </p><span>&#x20B9;<%=item.price%></span>
                             </div>
-                            <div class="d-flex mb-3">
+                            <div class="d-flex mb-2">
                               <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
                               <form>
                                 <div class="custom-control custom-radio custom-control-inline">
@@ -227,7 +227,7 @@
                                 </div>
                               </form>
                             </div>
-                              <div class="d-flex align-items-center mb-2 pt-4">
+                              <div class="d-flex align-items-center mb-0 pt-4">
                               
                               <button class="btn btn-primary px-3 mb-2" id="addTo" onclick="addtocartShop('<%=item._id%>')"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
                               <button class="btn btn-primary mb-2 ml-2" onclick="addtowishlist('<%=item._id%>')"><i class="fa-solid fa-heart-circle-plus fa-lg"></i></button>
@@ -304,7 +304,6 @@
     </div>
   </div>
   <!-- Shop End -->
-  </div>
 
   <script>
     const priceRangeInput = document.getElementById("priceRange");
@@ -379,16 +378,20 @@
           subcategoriesContainer.classList.add("show");
         }
       }
-      const subcategoryName = checkbox.value;
-      if (urlParams.getAll("sub").includes(subcategoryName)) {
-        checkbox.checked = true;
-        const subcategoriesContainer = document.getElementById(`${categoryName}-subcategories`);
-        if (subcategoriesContainer) {
-          subcategoriesContainer.classList.add("show");
-        }
+      const subcategoryCheckboxes = document.querySelectorAll(`.${categoryName}subcategory-checkbox`);
+      subcategoryCheckboxes.forEach((check)=>{
+        const subcategoryName = check.value;
+        const filterValue = `${subcategoryName}`;
+        if (urlParams.getAll("sub").includes(filterValue)) {
+        check.checked = true;
       }
+      })
+     
     });
+
   });
+
+
 </script>
 
 
@@ -400,13 +403,49 @@ filter.addEventListener('submit',(e)=>{
   const formData = new FormData(filter);
 const formParams = Array.from(formData.entries());
 const urlParams = new URLSearchParams(window.location.search);
-console.log(urlParams);
+const urlKeys = Array.from(urlParams.keys());
+urlKeys.forEach((key) => {
+  const urlValues = urlParams.getAll(key);
+  const formValues = formData.getAll(key);
+
+  // Check if all URL values are present in the form data values
+  const isAllValuesInForm = urlValues.every((urlValue) => formValues.includes(urlValue));
+
+  if (!isAllValuesInForm) {
+    // If any of the URL values are not in the form data, remove the key from the URL parameters
+    urlParams.delete(key);
+  }
+});
+const nameValues = formData.getAll("name");
+const subValues = urlParams.getAll("sub")
+const subDel=[]
+subValues.forEach((s) => {
+  const categoryName = s.split("|")[0];
+  if (!nameValues.includes(categoryName)) {
+    subDel.push(s)
+  }
+});
+
+subDel.forEach((valueToDelete) => {
+  urlParams.forEach((value, key) => {
+    if (value === valueToDelete) {
+      urlParams.delete(key);
+    }
+  });
+});
+
 for (const [key, value] of formData.entries()) {
     // Append the key-value pair as a new URL parameter
     if (key === 'price') {
       // Replace the existing value for "price"
       urlParams.set(key, value);
-    } else {
+    } else if(key==='sub'){
+      if(!subDel.includes(value)){
+        const values=urlParams.getAll(key)
+      if(!values.includes(value))
+        urlParams.append(key, value);
+      }
+    }else {
       const values=urlParams.getAll(key)
       if(!values.includes(value))
         urlParams.append(key, value);

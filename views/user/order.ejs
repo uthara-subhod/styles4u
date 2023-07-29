@@ -1,5 +1,25 @@
 <%- include("../layouts/profileheader.ejs") %>
+<style>
+  /* Target the input field */
+  input[type="number"] {
+    /* Hide the default arrows in webkit-based browsers */
+    -webkit-appearance: none;
+    /* Hide the arrows in other browsers */
+    appearance: none;
+    /* Set a custom background to indicate it's an input field */
+    background-color: white;
+    /* Add padding to align the text */
+    padding: 0.5rem;
+    /* Set a border to style the input field */
+  }
 
+  /* Target the inner spin button in webkit-based browsers */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    /* Set the display property to none to hide the arrows */
+    display: none;
+  }
+</style>
 
 <!-- end left panel -->
 
@@ -78,58 +98,41 @@
                         <div class="card-body">
                             
                                   <%if(order.items.length){%>
-                                    <table class="table text-center table-primary">
-                                      <colgroup>
-                                          <col width="100" />
-                                          <col />
-                                          <col width="1" />
-                                          <col />
-                                          <col width="100" />
-                                          <col />
-                                          <col width="1" />
-                                          <col />
-      
-                                      </colgroup>
-                                      <thead class="bg-primary text-dark">
-                                          <tr>
-                                              <th class="first">Image</th>
-                                              <th class="text-center font-weight-500" >Product</th>
-                                              <th class="text-center font-weight-500" >Size</th>
-                                              <th class="text-center  font-weight-500" >Price</th>
-                                              <th class="text-center  font-weight-500">Qty</th>
-                                              <th class="text-start  font-weight-500">Total</th>
-                                          </tr>
-                                      </thead>
-                                      <tbody class="table-bordered">
-                                    <% for( let i=0; i < order.items.length; i++ ) { %>
-                    <tr class="bg-light">
-                      <td class="product-thumbnail text-start">
-                        <a href="#"><img src="<%=order.items[i].productId.productImages[0]%>" alt="..." class="img-fluid" width="60vw"></a>
-                      </td>
-                      <td class="text-center" style="font-size: 1.2vw;">
-                        <a href="/product?id=<%=order.items[i].productId._id%>" class="text-dark ">
-                          <%=order.items[i].productId.productName%>
-                        </a>
-                      </td>
-                      <td class="text-center text-dark" style="font-size: 1vw;">
-                        <%=order.items[i].size%>
-                      </td>
-                      <td class="text-center" style="font-size: 1vw;"><span>&#x20B9;</span>
-                        <%=order.items[i].productId.price%>
-                      </td>
-                      <td class="product-quantity" style="font-size: 1vw;">
-                        <%=order.items[i].quantity%>
-                      </td>
-                      <td id="totalPrice<%=order.items[i].productId._id%>" class="product-subtotal text-center" style="font-size: 1vw;">
-                        <span>&#x20B9;</span>
-                        <%=order.items[i].totalPrice%>
-                      </td>
-                    </tr>
-                 
-                    
-                    <% } %>
-                  </tbody>
-                </table>
+                                    <%for(let i=0;i<order.items.length;i++){%>
+                                      <div class="row gy-3 mb-2">
+                                          <div class="col-lg-6">
+                                            <div class="me-lg-5">
+                                              <div class="d-flex">
+                                                <img src="<%=order.items[i].productId.productImages[0]%>" class="border rounded me-3  mb-3" style="width: 30%" />
+                                                <div class="ml-3">
+                                                  <a href="/product?id=<%=order.items[i].productId._id%>" class="text-dark ">
+                                                      <%=order.items[i].productId.productName%> </a>
+                                                  <p class="text-muted"><%=order.items[i].productId.color%>, <%=order.items[i].size.toUpperCase()%></p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="col-lg-6 col-sm-6 col-6 d-flex flex-lg-column text-nowrap mb-2">
+                                              <div class="">
+                                                  <div class="d-flex align-items-center"> <!-- Add d-flex and align-items-center here -->
+                                                    <!-- Minus button -->
+                                                    <!-- Quantity input field -->
+                                                    <label class="form-label mt-2 mr-2">Quantity:</label>
+                                                    <div class="input-group input-group-sm">
+                                                      <input type="number" class="text-center form-control col-4" id="<%=order.items[i].itemId%>"
+                                                        value="<%=order.items[i].quantity%>" style="width: 30px !important; height: 30px; background-color: white !important;" readonly/>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                            <div class="">
+                                              <text class="h6" id="totalPrice<%=order.items[i].itemId%>"><span>&#x20B9;</span>
+                                                  <%=order.items[i].totalPrice%></text> <br />
+                                              <small class="text-muted text-nowrap"> <span>&#x20B9;</span><%=order.items[i].productId.price%>/ per item </small>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      
+                                    <%}%>
                 <% const currentDate = new Date(); %>
                     <% const deliveryDate = new Date(order.delivery_date); %>
                     <% const daysSinceDelivery = (currentDate - deliveryDate) / (1000 * 60 * 60 * 24); %>
@@ -151,58 +154,43 @@
                         Return details<br><small>Your returned items</small>
                     </div>
                     <div class="card-body">
-                  <table class="table text-center table-primary">
-                    <colgroup>
-                        <col width="100" />
-                        <col />
-                        <col width="1" />
-                        <col />
-                        <col width="100" />
-                        <col />
-                        <col width="1" />
-                        <col />
-
-                    </colgroup>
-                    <thead class="bg-primary text-dark">
-                        <tr>
-                            <th class="first">Image</th>
-                            <th class="text-center font-weight-500" >Product</th>
-                            <th class="text-center font-weight-500" >Size</th>
-                            <th class="text-center  font-weight-500" >Price</th>
-                            <th class="text-center  font-weight-500">Qty</th>
-                            <th class="text-start  font-weight-500">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-bordered">
-                  <% for( let i=0; i < return1.items.length; i++ ) { %>
-  <tr class="bg-light">
-    <td class="product-thumbnail text-start">
-      <a href="#"><img src="<%=return1.items[i].productId.productImages[0]%>" alt="..." class="img-fluid" width="60vw"></a>
-    </td>
-    <td class="text-center" style="font-size: 1.2vw;">
-      <a href="/product?id=<%=return1.items[i].productId._id%>" class="text-dark ">
-        <%=return1.items[i].productId.productName%>
-      </a>
-    </td>
-    <td class="text-center text-dark" style="font-size: 1vw;">
-      <%=return1.items[i].size%>
-    </td>
-    <td class="text-center" style="font-size: 1vw;"><span>&#x20B9;</span>
-      <%=return1.items[i].productId.price%>
-    </td>
-    <td class="product-quantity" style="font-size: 1vw;">
-      <%=return1.items[i].quantity%>
-    </td>
-    <td id="totalPrice<%=return1.items[i].productId._id%>" class="product-subtotal text-center" style="font-size: 1vw;">
-      <span>&#x20B9;</span>
-      <%=return1.items[i].totalPrice%>
-    </td>
-  </tr>
-</tbody>
-</table>
+                      <%for(let i=0;i<return1.items.length;i++){%>
+                        <div class="row gy-3 mb-2">
+                            <div class="col-lg-5">
+                              <div class="me-lg-5">
+                                <div class="d-flex">
+                                  <img src="<%=return1.items[i].productId.productImages[0]%>" class="border rounded me-3  mb-3" style="width: 30%" />
+                                  <div class="ml-3">
+                                    <a href="/product?id=<%=return1.items[i].productId._id%>" class="text-dark ">
+                                        <%=order.items[i].productId.productName%> </a>
+                                    <p class="text-muted"><%=return1.items[i].productId.color%>, <%=return1.items[i].size.toUpperCase()%></p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-2 col-sm-6 col-6 d-flex flex-lg-column text-nowrap mb-2">
+                                <div class="">
+                                    <div class="d-flex align-items-center"> <!-- Add d-flex and align-items-center here -->
+                                      <!-- Minus button -->
+                                      <!-- Quantity input field -->
+                                      <label class="form-label mt-2 mr-2">Quantity:</label>
+                                      <div class="input-group input-group-sm">
+                                        <input type="number" class="form-control text-center" id="<%=return1.items[i].itemId%>"
+                                          value="<%=return1.items[i].quantity%>" style="width: 30px; height: 30px; background-color: white !important;" readonly/>
+                                      </div>
+                                    </div>
+                                  </div>
+                              <div class="">
+                                <text class="h6" id="totalPrice<%=return1.items[i].itemId%>"><span>&#x20B9;</span>
+                                    <%=return1.items[i].totalPrice%></text> <br />
+                                <small class="text-muted text-nowrap"> <span>&#x20B9;</span><%=return1.items[i].productId.price%>/ per item </small>
+                              </div>
+                            </div>
+                          </div>
+                        
+                      <%}%>
 </div>
 </div>
-                <%}%>
                 <%}%>
                 <div class="card">
                   <div class="card-header">

@@ -28,8 +28,11 @@ const loadCart = async (req, res, next) => {
       wishCount: res.locals.wishlist,
     });
   } catch (error) {
-    console.error(error);
-    next(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -120,7 +123,7 @@ const quantityChange = async (req, res, next) => {
 
     if (cartCount == 1) {
       const index = cart.items.findIndex(
-        (obj) => obj.productId == req.body.productId
+        (obj) => obj.itemId == req.body.itemId
       );
       
       if (cart.items[index].quantity >= products.size[req.body.size]) {
@@ -134,7 +137,7 @@ const quantityChange = async (req, res, next) => {
     }
 
     let updateCart = await Cart.findOneAndUpdate(
-      { _id: req.body.cartId, "items.productId": req.body.productId },
+      { _id: req.body.cartId, "items.itemId": req.body.itemId },
       {
         $inc: {
           "items.$.quantity": cartCount,
@@ -145,7 +148,7 @@ const quantityChange = async (req, res, next) => {
     );
 
     let index = updateCart.items.findIndex(
-      (objItems) => objItems.productId == req.body.productId
+      (objItems) => objItems.itemId == req.body.itemId
     );
     let newCart = await Cart.findOne({ _id: req.body.cartId });
     let qty = newCart.items[index].quantity;

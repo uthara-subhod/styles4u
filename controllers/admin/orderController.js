@@ -1,5 +1,7 @@
 const Order = require("../../models/order");
 const User = require("../../models/user")
+const Wallet = require('../../models/wallet')
+const Razorpay=require('razorpay')
 
 //dashboard -get
 const loadDashboard = async (req, res) => {
@@ -228,7 +230,10 @@ const weekly = async (req, res, next) => {
   }
 };
 
-
+const razorpayInstance = new Razorpay({
+  key_id: "rzp_test_lBhHdo9vOqWbPn",
+  key_secret: "Y8eVWHfxOhAD2X6lau3YXtBj",
+});
 
 //orderlist -get
 const loadOrders = async (req, res) => {
@@ -299,9 +304,61 @@ const statusChange = async (req, res, next) => {
           currentDate.getTime() + 12 * 24 * 60 * 60 * 1000
         );
       }
-      await Order.findByIdAndUpdate(id, { $set: { delivery_date: deliveryD } });
+      await Order.findOneAndUpdate({order_id:id}, { $set: { delivery_date: deliveryD } });
+    }else if (status=="rejected"){
+      if(order.payment_method=='online'){
+        const paymentId = order.razorpay_payment_id; // Payment ID of the order to be refunded
+        const refundAmount = order.total * 100; // Refund amount in paise (Rupees * 100)
+
+        razorpayInstance.payments.refund(
+          paymentId,
+          { amount: refundAmount },
+          async (err, refund) => {
+            if (!err) {
+              order.payment_status = "refunded";
+              await order.save();
+              res.json({status: status});
+            } else {
+              res.json({ status: false});
+            }
+          }
+        );
+      }else if(order.payment_method=='wallet'){
+        const userId = order.user;
+        let wallet = await Wallet.findOne({ user: userId });
+        if (!wallet) {
+          wallet = await new Wallet({
+            user: userId,
+            balance: order.total,
+            history: [
+              { type: "add", amount: order.total, newBalance: order.total },
+            ],
+          }).save();
+          await User.findByIdAndUpdate(userId, {
+            $set: { wallet: wallet._id },
+          });
+        } else {
+          let balance = wallet.balance;
+          let newBalance = balance + order.total;
+          let history = {
+            type: "add",
+            amount: order.total,
+            newBalance: newBalance,
+          };
+          wallet.balance = newBalance;
+          wallet.history.push(history);
+          await wallet.save();
+        }
+        order.payment_status = "refunded";
+        await order.save();
+        if (wallet) {
+          res.json({ status: status });
+        } else {
+          res.json({ status: false });
+        }
+      }
     }
-    res.json(status);
+    res.json({status:status});
   } catch (error) {
     console.log(error);
   }

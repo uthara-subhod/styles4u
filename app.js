@@ -38,7 +38,7 @@ app.use(session({
     saveUninitialized: true
   }));
 
-
+ 
 app.use(express.static("public"));
 app.use(cookieParser())
 app.use(nocache())
@@ -47,7 +47,21 @@ app.use(count.wishlistCount)
 app.use('/',user)
 app.use('/admin',admin)
 
-
+app.use((req, res, next) => {
+    const error = new Error('Page Not Found');
+    error.status = 404;
+    next(error);
+  });
+  
+  app.use((err, req, res, next) => {
+    let user=null
+    if(req.session.user){
+        user=req.session.user
+    }
+    res.status(err.status || 500);
+    res.render('error404', { url:null,req, user});
+  });
+  
 //server
 app.listen(process.env.PORT, ()=>{
     console.log('server is running http://localhost:8000');

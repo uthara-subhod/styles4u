@@ -11,8 +11,11 @@ const loadWishlist = async (req, res, next) => {
         let wishlist = await Wishlist.findOne({ user: user }).populate("items.product");
         res.render("user/wishlist", { cat:categories,url:null,user:req.session.user,wishlist:wishlist,cartCount:res.locals.count ,wishCount:res.locals.wishlist });
     } catch (error) {
-        console.log(error);
-        next(error);
+        if (!req.session.user) {
+            res.render("error404", { user: null, url: null, req:null});
+          } else {
+            res.render("error404", { user: req.session.user, url: null, req:null});
+          }
     }
 };
 
@@ -52,12 +55,11 @@ const addToWishlist = async (req, res, next) => {
                         });
                 }
             } else {
-                console.log("error");
+                res.json({ response: false });
             }
         }
     } catch (error) {
-        console.log(error);
-        next(error);
+        res.json({ response: false });
     }
 };
 
@@ -79,8 +81,7 @@ const deleteWishlist = async (req, res, next) => {
         );
         res.json({ status: true });
     } catch (error) {
-        console.log(error);
-        next(error);
+        res.json({ status: false });
     }
 };
 

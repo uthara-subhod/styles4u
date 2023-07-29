@@ -30,7 +30,7 @@
     
 </head>
 
-<body style="overflow-x: hidden;">
+<body style="overflow-x: hidden !important;">
     <!-- Topbar Start -->
     <div class="container-fluid">
         <div class="row py-2 px-xl-5" style="background-color: #e9d4d4; overflow: hidden;">
@@ -46,7 +46,7 @@
                     <h1 class="m-0 px-4 display-5">Styles<span class="text-primary px-1 mr-1">4U</span></h1>
                 </a>
             </div>
-            <div class="col-lg-6 col-6 text-left">
+            <div class="col-lg-6<%if(user){%> col-6<%}%> text-left">
                 <form action="/shop" id="searchForm">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search for products" name="search">
@@ -62,11 +62,11 @@
             <div class="col-lg-3 col-6 text-right">
                 <a href="/wishlist" class="btn border">
                     <i class="fas fa-heart text-primary"></i>
-                    <span class="badge"><%=wishCount%></span>
+                    <span class="badge" id="wishCount"><%=wishCount%></span>
                 </a>
                 <a href="/cart" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge"><%=cartCount%></span>
+                    <span class="badge" id="cartCount"><%=cartCount%></span>
                 </a>
                 <%}%>
             </div>
@@ -76,7 +76,7 @@
 
 
     <!-- Navbar Start -->
-    <div class="container-fluid px-0">
+    <div class="container-fluid px-0" style="overflow-x: hidden !important;">
         <div class="row border-top">
             <div class="col-lg-12">
                 <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0  px-xl-5" >
@@ -100,18 +100,9 @@
                             <%}%>
                         </div>
                         <%if(user){%>
-                                <div class="nav-item dropdown mr-5">
-                                    <a class="btn text-dark" data-toggle="dropdown"><%=user%></a>
-                                    <div class="dropdown-menu bg-light ">
-                                        <a class="dropdown-item pr-1 container-fluid" href="/user">My Account</a>
-                                          <a id="logoutLink" class="dropdown-item pr-1 container-fluid">
-                                                <button class="btn btn-primary px-4">logout</button></a>
-                                                <script>
-                                                    const url = window.location.href.replace("http://localhost:8000", "");
-                                                    const logoutLink = document.getElementById("logoutLink");
-                                                    logoutLink.href = `/logout?url=${url}`;
-                                                  </script>
-                                    </div>
+                                <div class="nav-item dropdown">
+                                    <a class="btn text-dark border-primary py-1" href="/user" ><small><i class="fa-solid fa-user text-primary mr-2"></i><%=user%></small></a>
+                                    <a href="/logout"  class="btn text-dark border-primary py-1"><small><i class="fa-solid fa-right-from-bracket text-primary mr-2"></i>Logout</small> </a>
                                 </div>
                             <%}else{%>
                         <div class="navbar-nav ml-auto py-0">
