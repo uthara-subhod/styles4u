@@ -40,10 +40,10 @@
                             <thead>
                                 <tr>
                                     <th>Image</th>
-                                    <th>Product</th>
-                                    <th>Price</th>
-                                    <th>Brand</th>
-                                    <th>Delete</th>
+                                    <th class="text-center">Product</th>
+                                    <th class="text-center">Price</th>
+                                    <th class="text-center">Add to cart</th>
+                                    <th class="text-center">Delete</th>
                                     <!-- <th>Add To Cart</th> -->
                                 </tr>
                             </thead>
@@ -57,12 +57,16 @@
                                             alt="..."
                                         />
                                     </td>
-                                    <td><a><%=wishlist.product.productName%></a></td>
-                                    <td class="product-price"><span>$</span><%=wishlist.product.price%></td>
-                                    <td class="product-brand"><%=wishlist.product.brand%></td>
-                                    <td>
-                                        <a onclick="deleteItem('<%=wishlist.product._id%>')"
-                                            ><i class="fas fa-trash"></i
+                                    <td class="text-center"><a class="text-center btn text-dark" href="/product?id=<%=wishlist.product.product_id%>"><%=wishlist.product.productName%></a></td>
+                                    <td class="product-price text-center"><span>&#x20B9;</span><%=wishlist.product.price%></td>
+                                    <td class="product-cart text-center">
+                                        <a onclick="addtocartwish('<%=wishlist.product._id%>')" class="text-center text-dark btn"
+                                            ><i class="fa-solid fa-cart-plus mr-2"></i>Add to cart
+                                        </a>
+                                        </td>
+                                    <td class="text-center">
+                                        <a onclick="deleteItem('<%=wishlist.product._id%>')" class="text-center text-dark btn"
+                                            ><i class="fas fa-trash text-center"></i
                                         ></a>
                                     </td>
 

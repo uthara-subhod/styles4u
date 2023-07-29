@@ -14,7 +14,11 @@ const loadWallet = async (req, res) => {
           wishCount: res.locals.wishlist,
         });
       } catch (error) {
-        res.send(error);
+        if (!req.session.user) {
+          res.render("error404", { user: null, url: null, req:null});
+        } else {
+          res.render("error404", { user: req.session.user, url: null, req:null});
+        }
       }
 }
 

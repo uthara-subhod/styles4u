@@ -141,4 +141,8 @@ router.post('/signup/otp',userController.otp)
 router.get('/signup/otp/resend', session.isLogOut,userController.resendOTP)
 
 
+router.get('/policy/return',productController.loadReturnP)
+router.get('/policy/cancellation',productController.loadCancelP)
+
+
 module.exports=router

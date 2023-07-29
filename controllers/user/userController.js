@@ -48,7 +48,11 @@ const loadSignup = async (req, res) => {
   try {
     res.render("auth/signup", { message: null, url: "/signup" });
   } catch (err) {
-    res.send(err);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -74,7 +78,11 @@ const insertUser = async (req, res) => {
       res.redirect(`/signup/otp?email=${req.body.email}`);
     }
   } catch (error) {
-    res.send(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -93,7 +101,11 @@ const loadOtp = async (req, res) => {
       res.redirect("/signup");
     }
   } catch (err) {
-    res.send(err);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -123,7 +135,11 @@ const otp = async (req, res) => {
     }
     
   } catch (error) {
-    res.send(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -139,7 +155,11 @@ const resendOTP = async (req, res) => {
       res.redirect(`/signup/otp?email=${user.email}`);
     }
   } catch (error) {
-    res.send(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -153,7 +173,11 @@ const loadlogin = async (req, res) => {
     }
     res.render("auth/login", { message: null, url: "/login" ,URL});
   } catch (err) {
-    res.send(err);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -225,7 +249,11 @@ const autheticateUser = async (req, res) => {
     }
     
   } catch (error) {
-    res.send(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -242,7 +270,11 @@ const loadLogout = async (req, res) => {
       res.redirect('/')
     }
   } catch (error) {
-    console.log(error.message);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -258,7 +290,11 @@ const loadChangePassword = async (req, res) => {
       cartCount:res.locals.count ,wishCount:res.locals.wishlist
     });
   } catch (error) {
-    res.send(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -295,7 +331,11 @@ const loadForgotPassword = async (req, res) => {
   try {
     res.render("auth/forgotpass", { message: null });
   } catch (error) {
-    res.send(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -323,7 +363,11 @@ const ForgotPassword = async (req, res) => {
       res.render("auth/forgotpass", { message: "user does not exist"});
     }
   } catch (error) {
-    res.send(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -339,7 +383,11 @@ const loadResetPassword = async (req, res) => {
       res.send("Error");
     }
   } catch (error) {
-    res.send(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -361,7 +409,11 @@ const resetPassword = async (req, res) => {
       res.render("auth/passreset", { user: null });
     }
   } catch (error) {
-    res.send(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -377,7 +429,11 @@ const loadProfile = async (req, res) => {
       wishCount: res.locals.wishlist,
     });
   } catch (error) {
-    res.send(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -394,7 +450,11 @@ const loadEditProfile = async (req, res) => {
       wishCount: res.locals.wishlist,
     });
   } catch (error) {
-    res.send(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -425,7 +485,11 @@ const EditProfile = async (req, res) => {
       }
     }
   } catch (error) {
-    res.send(error);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 

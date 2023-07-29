@@ -33,7 +33,11 @@ const loadAddress = async (req, res) => {
     });
 
   } catch (err) {
-    res.send(err);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
@@ -52,7 +56,7 @@ const loadAddAddress = async (req, res) => {
     }
 
     if (address) {
-      res.render("user/editAddress", {
+      res.render("user/editaddress", {
         address: address,
         type: type,
         user: userData,
@@ -62,7 +66,7 @@ const loadAddAddress = async (req, res) => {
         wishCount: res.locals.wishlist,
       });
     } else {
-      res.render("user/editAddress", {
+      res.render("user/editaddress", {
         address: null,
         type: type,
         user: userData,
@@ -74,7 +78,11 @@ const loadAddAddress = async (req, res) => {
     }
 
   } catch (err) {
-    res.send(err);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, url: null, req:null});
+    }
   }
 };
 
