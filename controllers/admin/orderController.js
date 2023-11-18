@@ -268,19 +268,54 @@ const loadOrders = async (req, res) => {
 //order -get
 const loadOrder = async (req, res) => {
   try {
-    const order = await Order.findOne({order_id:req.params.id}).populate([
-      { path: "user" },
+    const order = await Order.findOne({ order_id: req.params.id }).populate([
       { path: "address" },
+      { path: "user" },
       { path: "items.productId" },
     ]);
+    if(order){
+      let return1=order
+    let return2={}
+    return2.items=[]
+    for(let i=0;i<order.items.length;i++){
+      if(order.items[i].returned){
+        let quantity=order.items[i].returned
+        return1.items[i].quantity=quantity
+        if(order.items[i].returned>0){
+          return2.items.push(return1.items[i])
+        }
+      }
+    }
+    let order1=await Order.findOne({ order_id: req.params.id }).populate([
+      { path: "address" },
+      { path: "user" },
+      { path: "items.productId" },
+    ]);
+    let order2=JSON.parse(JSON.stringify(order1))
+    order2.order_date=new Date(order2.order_date)
+    if(order2.delivery_date){
+      order2.delivery_date=new Date(order2.delivery_date)
+    }
+    order2.items=[]
+    for(let i=0;i<order1.items.length;i++){
+      if(order1.items[i].returned){
+        let quantity=order1.items[i].quantity-order1.items[i].returned
+        order1.items[i].quantity=quantity
+      }
+        if(order1.items[i].quantity!=0){
+          order2.items.push(order1.items[i])
+        }
+    }
     res.render("admin/order", {
       url: "order",
-      order,
+      order:order2,
+      return1:return2
     });
-  } catch (err) {
+  }} catch (err) {
     res.send(err);
   }
-};
+}
+
 
 //order -post
 const statusChange = async (req, res, next) => {

@@ -31,7 +31,7 @@ const loadCart = async (req, res, next) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist, url: null, req:null});
     }
   }
 };

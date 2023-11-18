@@ -36,7 +36,7 @@ const loadAddress = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user,cartCount: res.locals.count, wishCount: res.locals.wishlist, url: null, req:null});
     }
   }
 };
@@ -81,7 +81,7 @@ const loadAddAddress = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist, url: null, req:null});
     }
   }
 };
@@ -129,7 +129,11 @@ const addAddress = async (req, res) => {
 
     res.redirect(`/user/address`);
   } catch (err) {
-    res.send(err);
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user,cartCount: res.locals.count, wishCount: res.locals.wishlist, url: null, req:null});
+    }
   }
 };
 

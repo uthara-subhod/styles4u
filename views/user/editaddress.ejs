@@ -15,33 +15,33 @@
                     <form action="/user/address/edit" method="post">
                             <div class="form-group">
                               <label for="building">Building Name</label>
-                              <input type="text" class="form-control" id="building" name="building" value="<%=address.buildingName%>">
+                              <input type="text" class="form-control" id="building" name="building" value="<%=address.buildingName%>" required>
                             </div>
                             <div class="form-group">
                               <label for="state">Street</label>
-                              <input type="text" class="form-control" id="state" name="street" value="<%=address.street%>">
+                              <input type="text" class="form-control" id="state" name="street" value="<%=address.street%>" required>
                             </div>
                           <div class="form-row">
                             <div class="form-group col-md-6">
                               <label for="inputCity">City</label>
-                              <input type="text" class="form-control" id="inputCity" name="city" value="<%=address.city%>">
+                              <input type="text" class="form-control" id="inputCity" name="city" value="<%=address.city%>" required>
                             </div>
                             <div class="form-group col-md-4">
                               <label for="inputState">State</label>
-                              <input type="text" class="form-control" id="inputState" name="state" value="<%=address.state%>">
+                              <input type="text" class="form-control" id="inputState" name="state" value="<%=address.state%>" required>
                             </div>
                             <div class="form-group col-md-2">
                               <label for="inputZip">Zip</label>
-                              <input type="text" class="form-control" id="inputZip" name="zip" value="<%=address.zipCode%>">
+                              <input type="text" class="form-control" id="inputZip" name="zip" value="<%=address.zipCode%>" required>
                             </div>
                           </div>
                           <div class="form-group">
                             <label for="country">Country</label>
-                            <input type="text" class="form-control" id="country" name="country" value="<%=address.country%>">
+                            <input type="text" class="form-control" id="country" name="country" value="<%=address.country%>" required>
                           </div>
                           <div class="form-group">
                             <label for="country">Phone Number</label>
-                            <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]+" value="<%=address.phoneNumber%>">
+                            <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]+" value="<%=address.phoneNumber%>" required>
                           </div>
                           <input type="hidden" value="<%=address.type%>" name="type">
                           <input type="hidden" value="<%=address._id%>" name="id">
@@ -51,33 +51,33 @@
                         <form action="/user/address/add" method="post">
                             <div class="form-group">
                               <label for="building">Building Name</label>
-                              <input type="text" class="form-control" id="building" name="building" >
+                              <input type="text" class="form-control" id="building" name="building" required>
                             </div>
                             <div class="form-group">
                               <label for="state">Street</label>
-                              <input type="text" class="form-control" id="state" name="street" >
+                              <input type="text" class="form-control" id="state" name="street" required>
                             </div>
                           <div class="form-row">
                             <div class="form-group col-md-6">
                               <label for="inputCity">City</label>
-                              <input type="text" class="form-control" id="inputCity" name="city">
+                              <input type="text" class="form-control" id="inputCity" name="city" required>
                             </div>
                             <div class="form-group col-md-4">
                               <label for="inputState">State</label>
-                              <input type="text" class="form-control" id="inputState" name="state" >
+                              <input type="text" class="form-control" id="inputState" name="state" required>
                             </div>
                             <div class="form-group col-md-2">
                               <label for="inputZip">Zip</label>
-                              <input type="text" class="form-control" id="inputZip" name="zip">
+                              <input type="text" class="form-control" id="inputZip" name="zip" required>
                             </div>
                           </div>
                           <div class="form-group">
                             <label for="country">Country</label>
-                            <input type="text" class="form-control" id="country" name="country" >
+                            <input type="text" class="form-control" id="country" name="country" required>
                           </div>
                           <div class="form-group">
                             <label for="country">Phone Number</label>
-                            <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]+" >
+                            <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]+" required>
                           </div>
                           <input type="hidden" value="<%=type%>" name="type">
                           <button type="submit" class="btn btn-primary">Add</button>

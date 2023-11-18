@@ -48,7 +48,7 @@ const loadCheckout = async (req, res) => {
       if (!req.session.user) {
         res.render("error404", { user: null, url: null, req:null});
       } else {
-        res.render("error404", { user: req.session.user, url: null, req:null});
+        res.render("error404", { user: req.session.user,cartCount: res.locals.count, wishCount: res.locals.wishlist, url: null, req:null});
       }
     }
     
@@ -56,7 +56,7 @@ const loadCheckout = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user,cartCount: res.locals.count, wishCount: res.locals.wishlist, url: null, req:null});
     }
   }
 };
@@ -213,7 +213,7 @@ const checkout = async (req, res, next) => {
         if (!req.session.user) {
           res.render("error404", { user: null, url: null, req:null});
         } else {
-          res.render("error404", { user: req.session.user, url: null, req:null});
+          res.render("error404", { user: req.session.user,cartCount: res.locals.count, wishCount: res.locals.wishlist, url: null, req:null});
         }
       }
     }
@@ -221,7 +221,7 @@ const checkout = async (req, res, next) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user,cartCount: res.locals.count, wishCount: res.locals.wishlist, url: null, req:null});
     }
   }
 };
@@ -231,6 +231,7 @@ const addWallet = async (req, res) => {
   try {
     const userId = req.session.user_id;
     const total = parseInt(req.body.total);
+    console.log(total);
     const { nanoid } = await import("nanoid");
     const receipt = nanoid();
     const options = {
@@ -516,7 +517,7 @@ const loadOrder = async (req, res) => {
       if (!req.session.user) {
         res.render("error404", { user: null, url: null, req:null});
       } else {
-        res.render("error404", { user: req.session.user, url: null, req:null});
+        res.render("error404", { user: req.session.user,cartCount: res.locals.count, wishCount: res.locals.wishlist, url: null, req:null});
       }
     }
     
@@ -524,7 +525,7 @@ const loadOrder = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -659,14 +660,14 @@ const loadRefund = async (req, res) => {
       if (!req.session.user) {
         res.render("error404", { user: null, url: null, req:null});
       } else {
-        res.render("error404", { user: req.session.user, url: null, req:null});
+        res.render("error404", { user: req.session.user,cartCount: res.locals.count, wishCount: res.locals.wishlist, url: null, req:null});
       }
     }
   } catch (err) {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -796,14 +797,14 @@ const loadAddReviews = async (req, res) => {
       if (!req.session.user) {
         res.render("error404", { user: null, url: null, req:null});
       } else {
-        res.render("error404", { user: req.session.user, url: null, req:null});
+        res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
       }
     }
   }catch(err){
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -885,6 +886,7 @@ const downloadInvoice = async (req, res) => {
 
       // Render the invoice template with dynamic data
       const invoiceHtml = ejs.render(data, { order });
+      console.log("Invoice HTML Content:", invoiceHtml);
 
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
@@ -943,14 +945,14 @@ const loadReturnOrder = async (req,res) =>{
       if (!req.session.user) {
         res.render("error404", { user: null, url: null, req:null});
       } else {
-        res.render("error404", { user: req.session.user, url: null, req:null});
+        res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
       }
     }
   }catch(err){
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 }

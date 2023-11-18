@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendMail=async (user,passLink) => {
+const sendMail=async (user,passLink,req) => {
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -15,11 +15,13 @@ const sendMail=async (user,passLink) => {
       },
     });
 
+    const url=`${req.protocol}://${req.get('host')}`
+
     const mailOptions2 = {
       from: "styles4ubusiness@gmail.com",
-      to: "utharasubhod2@gmail.com",
+      to: user.email,
       subject: "Password Recovery",
-      html: `<a href="/forgotPassword/${passLink}">Please click this link</a>`,
+      html: `<a href="${url}/forgotPassword/${passLink}">Please click this link to recover your password</a>`,
     };
     
 

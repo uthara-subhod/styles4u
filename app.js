@@ -54,12 +54,11 @@ app.use((req, res, next) => {
   });
   
   app.use((err, req, res, next) => {
-    let user=null
-    if(req.session.user){
-        user=req.session.user
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null,req});
+    } else {
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist, url: null,});
     }
-    res.status(err.status || 500);
-    res.render('error404', { url:null,req, user});
   });
   
 //server

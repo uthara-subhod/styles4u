@@ -49,7 +49,7 @@ const loadHome = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null,req});
     } else {
-      res.render("error404", { user: req.session.user, url: null,});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist, url: null,});
     }
   }
 
@@ -112,6 +112,7 @@ if(!query.$or){
       cat[i]=''
     }
   }
+  console.log(cat)
   for(c of cat){
     if(c!=''){
       query.$or.push({
@@ -170,7 +171,7 @@ const products = await Product.find(query)
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 
@@ -241,7 +242,7 @@ const loadProduct = async (req, res) => {
         if (!req.session.user) {
           res.render("error404", { user: null, url: null, req:null});
         } else {
-          res.render("error404", { user: req.session.user, url: null, req:null});
+          res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
         }
       }
     } else {
@@ -252,7 +253,7 @@ const loadProduct = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 
@@ -269,7 +270,7 @@ const loadReturnP= async (req,res) =>{
   if (!req.session.user) {
     res.render("error404", { user: null, url: null, req:null});
   } else {
-    res.render("error404", { user: req.session.user, url: null, req:null});
+    res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
   }
 }
  }
@@ -282,11 +283,11 @@ const loadReturnP= async (req,res) =>{
    }
    res.render("cancelPolicy", { user: user, url: null, req:null});
   }catch(err){
-   if (!req.session.user) {
-     res.render("error404", { user: null, url: null, req:null});
-   } else {
-     res.render("error404", { user: req.session.user, url: null, req:null});
-   }
+    if (!req.session.user) {
+      res.render("error404", { user: null, url: null, req:null});
+    } else {
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
+    }
  }
   }
 

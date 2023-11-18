@@ -51,7 +51,7 @@ const loadSignup = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -81,7 +81,7 @@ const insertUser = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -104,7 +104,7 @@ const loadOtp = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -138,7 +138,7 @@ const otp = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -158,7 +158,7 @@ const resendOTP = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -176,7 +176,7 @@ const loadlogin = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -252,7 +252,7 @@ const autheticateUser = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -273,7 +273,7 @@ const loadLogout = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -293,7 +293,7 @@ const loadChangePassword = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -334,7 +334,7 @@ const loadForgotPassword = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -355,7 +355,7 @@ const ForgotPassword = async (req, res) => {
         maxAge: 10 * 60 * 1000,
         httpOnly: true,
       });
-      await mail.sendMail(user, passLink);
+      await mail.sendMail(user, passLink,req);
       res.render("auth/forgotpass", {
         message: "The email to recover your password has been sent. Please proceed.",
       });
@@ -366,7 +366,7 @@ const ForgotPassword = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -386,7 +386,7 @@ const loadResetPassword = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -412,7 +412,7 @@ const resetPassword = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -432,7 +432,7 @@ const loadProfile = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -453,7 +453,7 @@ const loadEditProfile = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
@@ -488,7 +488,7 @@ const EditProfile = async (req, res) => {
     if (!req.session.user) {
       res.render("error404", { user: null, url: null, req:null});
     } else {
-      res.render("error404", { user: req.session.user, url: null, req:null});
+      res.render("error404", { user: req.session.user, cartCount: res.locals.count, wishCount: res.locals.wishlist,url: null, req:null});
     }
   }
 };
